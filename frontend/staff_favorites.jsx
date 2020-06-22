@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.fetchEmployees = fetchEmployees;
   window.getState = store.getState;
   window.dispatch = store.dispatch;
+  window.fetchEmployees = fetchEmployees;
   const root = document.getElementById("root");
   ReactDOM.render(<Root store={store} />, root);
 });
