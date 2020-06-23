@@ -10,7 +10,6 @@ import EmployeeEditContainer from "./employee_index/employee_edit_container"
 
 const App = () => (
     <>
-        <h1>This is it</h1>
         {/* <ProtectedRoute exact path="/tours/create" component={TourContainer} /> */}
         <Route exact path="/" component={EmployeeIndexContainer} />
         <Route exact path="/employee/edit" component={EmployeeEditContainer} />
