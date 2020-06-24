@@ -4,29 +4,27 @@ import { Link } from "react-router-dom"
 
 
 class EmployeeEdit extends React.Component {
+  constructor(props) {
+    super(props);
+    this.goBack = this.goBack.bind(this);
+  }
 
-    constructor(props) {
-        super(props);
-        this.goBack = this.goBack.bind(this);
+  componentDidMount() {
+        this.props.fetchEmployee(this.props.employee.id);
     }
 
-    componentDidMount() {
-        this.props.fetchEmployees();
-    }
+  goBack() {
+    this.props.history.push("/");
+  }
 
-    goBack(){
-        this.props.history.push('/');
-    }
-
-    render() {
-        return (
-            <>
-                <h1>Made it to the edit page.</h1>
-                <button onClick={this.goBack}>Back</button>
-
-            </>
-        )
-    }
+  render() {
+    return (
+      <>
+        <h1>Made it to the edit page.</h1>
+        <button onClick={this.goBack}>Back</button>
+      </>
+    );
+  }
 }
 
 export default EmployeeEdit;

@@ -90,19 +90,24 @@
 /*!**********************************************!*\
   !*** ./frontend/actions/employee_actions.js ***!
   \**********************************************/
-/*! exports provided: RECEIVE_EMPLOYEES, RECEIVE_EMPLOYEE, fetchEmployees, updateEmployee */
+/*! exports provided: RECEIVE_EMPLOYEES, RECEIVE_EMPLOYEE, REMOVE_EMPLOYEE, fetchEmployees, fetchEmployee, updateEmployee, createEmployee, deleteEmployee */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_EMPLOYEES", function() { return RECEIVE_EMPLOYEES; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_EMPLOYEE", function() { return RECEIVE_EMPLOYEE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_EMPLOYEE", function() { return REMOVE_EMPLOYEE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchEmployees", function() { return fetchEmployees; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchEmployee", function() { return fetchEmployee; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateEmployee", function() { return updateEmployee; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createEmployee", function() { return createEmployee; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteEmployee", function() { return deleteEmployee; });
 /* harmony import */ var _util_employee_api_util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/employee_api_util */ "./frontend/util/employee_api_util.js");
 
 var RECEIVE_EMPLOYEES = "RECEIVE_EMPLOYEES";
 var RECEIVE_EMPLOYEE = 'RECEIVE_EMPLOYEE';
+var REMOVE_EMPLOYEE = "REMOVE_EMPLOYEE";
 
 var receiveEmployees = function receiveEmployees(employees) {
   return {
@@ -118,6 +123,13 @@ var receiveEmployee = function receiveEmployee(employee) {
   };
 };
 
+var removeEmployee = function removeEmployee(employeeId) {
+  return {
+    type: REMOVE_EMPLOYEE,
+    employeeId: employeeId
+  };
+};
+
 var fetchEmployees = function fetchEmployees() {
   return function (dispatch) {
     return _util_employee_api_util__WEBPACK_IMPORTED_MODULE_0__["fetchEmployees"]().then(function (employees) {
@@ -125,10 +137,31 @@ var fetchEmployees = function fetchEmployees() {
     });
   };
 };
+var fetchEmployee = function fetchEmployee(employeeId) {
+  return function (dispatch) {
+    return _util_employee_api_util__WEBPACK_IMPORTED_MODULE_0__["fetchEmployee"](employeeId).then(function (employee) {
+      return dispatch(receiveEmployee(employee));
+    });
+  };
+};
 var updateEmployee = function updateEmployee(employee) {
   return function (dispatch) {
-    return ApiUtil.updateEmployee(employee).then(function (employee) {
+    return _util_employee_api_util__WEBPACK_IMPORTED_MODULE_0__["updateEmployee"](employee).then(function (employee) {
       return dispatch(receiveEmployee(employee));
+    });
+  };
+};
+var createEmployee = function createEmployee(employee) {
+  return function (dispatch) {
+    return _util_employee_api_util__WEBPACK_IMPORTED_MODULE_0__["createEmployee"](employee).then(function (employee) {
+      return dispatch(receiveEmployee(employee));
+    });
+  };
+};
+var deleteEmployee = function deleteEmployee(employeeId) {
+  return function (dispatch) {
+    return _util_employee_api_util__WEBPACK_IMPORTED_MODULE_0__["deleteEmployee"](employeeId).then(function () {
+      return dispatch(removeEmployee(employeeId));
     });
   };
 };
@@ -148,12 +181,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var _employee_index_employee_index_container__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./employee_index/employee_index_container */ "./frontend/components/employee_index/employee_index_container.js");
-/* harmony import */ var _employee_index_employee_edit_container__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./employee_index/employee_edit_container */ "./frontend/components/employee_index/employee_edit_container.js");
+/* harmony import */ var _employee_index_employee_new_container__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./employee_index/employee_new_container */ "./frontend/components/employee_index/employee_new_container.js");
+/* harmony import */ var _employee_index_employee_edit_container__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./employee_index/employee_edit_container */ "./frontend/components/employee_index/employee_edit_container.js");
 
  // import LoginFormContainer from "../components/session/login_form_container";
 // import SignupFormContainer from "../components/session/signup_form_container";
 // import Splash from "../components/splash/splash"
 // import TourContainer from "../components/tour/tour_container"
+
 
 
  // import { AuthRoute, ProtectedRoute } from "../util/route_util";
@@ -165,8 +200,11 @@ var App = function App() {
     component: _employee_index_employee_index_container__WEBPACK_IMPORTED_MODULE_2__["default"]
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
     exact: true,
-    path: "/employee/edit",
-    component: _employee_index_employee_edit_container__WEBPACK_IMPORTED_MODULE_3__["default"]
+    path: "/employee/new",
+    component: _employee_index_employee_new_container__WEBPACK_IMPORTED_MODULE_3__["default"]
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
+    path: "/employees/:employeeId/edit",
+    component: _employee_index_employee_edit_container__WEBPACK_IMPORTED_MODULE_4__["default"]
   }));
 };
 
@@ -229,12 +267,12 @@ var EmployeeEdit = /*#__PURE__*/function (_React$Component) {
   _createClass(EmployeeEdit, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.props.fetchEmployees();
+      this.props.fetchEmployee(this.props.employee.id);
     }
   }, {
     key: "goBack",
     value: function goBack() {
-      this.props.history.push('/');
+      this.props.history.push("/");
     }
   }, {
     key: "render",
@@ -268,16 +306,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var mapStateToProps = function mapStateToProps(state) {
+var mapStateToProps = function mapStateToProps(state, ownProps) {
   return {
-    employees: Object.values(state.entities.employees)
+    employee: state.entities.employees[ownProps.match.params.employeeId]
   };
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
-    fetchEmployees: function fetchEmployees() {
-      return dispatch(Object(_actions_employee_actions__WEBPACK_IMPORTED_MODULE_1__["fetchEmployees"])());
+    fetchEmployee: function fetchEmployee(employeeId) {
+      return dispatch(Object(_actions_employee_actions__WEBPACK_IMPORTED_MODULE_1__["fetchEmployee"])(employeeId));
+    },
+    deleteEmployee: function deleteEmployee(employeeId) {
+      return dispatch(Object(_actions_employee_actions__WEBPACK_IMPORTED_MODULE_1__["deleteEmployee"])(employeeId));
     }
   };
 };
@@ -323,7 +364,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
- // import EmployeeIndexItem from "./employee_index_item"
+
 
 var EmployeeIndex = /*#__PURE__*/function (_React$Component) {
   _inherits(EmployeeIndex, _React$Component);
@@ -331,9 +372,13 @@ var EmployeeIndex = /*#__PURE__*/function (_React$Component) {
   var _super = _createSuper(EmployeeIndex);
 
   function EmployeeIndex(props) {
+    var _this;
+
     _classCallCheck(this, EmployeeIndex);
 
-    return _super.call(this, props);
+    _this = _super.call(this, props);
+    _this.addStaff = _this.addStaff.bind(_assertThisInitialized(_this));
+    return _this;
   }
 
   _createClass(EmployeeIndex, [{
@@ -341,6 +386,12 @@ var EmployeeIndex = /*#__PURE__*/function (_React$Component) {
     value: function componentDidMount() {
       this.props.fetchEmployees();
       console.log(this.props);
+    }
+  }, {
+    key: "addStaff",
+    value: function addStaff() {
+      redirect;
+      console.log("Add them");
     }
   }, {
     key: "renderStaff",
@@ -358,8 +409,11 @@ var EmployeeIndex = /*#__PURE__*/function (_React$Component) {
         title = "";
       }
 
-      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_2__["ResourceList"].Item, {
-        id: id,
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+        to: "/employees/".concat(id, "/edit")
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_2__["ResourceList"].Item, {
+        id: id // url={'/employee/edit'}
+        ,
         accessibilityLabel: "details for ".concat(name, " ")
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "div-container"
@@ -374,13 +428,11 @@ var EmployeeIndex = /*#__PURE__*/function (_React$Component) {
         variation: "strong"
       }, " ", name, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
         id: "job-title-list"
-      }, title), " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_2__["TextStyle"], null, " ", description, " "))));
+      }, title), " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_2__["TextStyle"], null, " ", description, " ")))));
     }
   }, {
     key: "render",
     value: function render() {
-      var _this = this;
-
       var employees = this.props.employees;
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_2__["AppProvider"], {
         i18n: {
@@ -405,12 +457,11 @@ var EmployeeIndex = /*#__PURE__*/function (_React$Component) {
         showHeader: true,
         items: employees,
         renderItem: this.renderStaff
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_2__["Button"], {
-        primary: true,
-        onClick: function onClick() {
-          return _this.addStaff();
-        }
-      }, "Add Staff")));
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
+        to: "/employee/new"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_2__["Button"], {
+        primary: true
+      }, "Add Staff"))));
     }
   }]);
 
@@ -452,6 +503,212 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_0__["connect"])(mapStateToProps, mapDispatchToProps)(_employee_index__WEBPACK_IMPORTED_MODULE_2__["default"]));
+
+/***/ }),
+
+/***/ "./frontend/components/employee_index/employee_new.jsx":
+/*!*************************************************************!*\
+  !*** ./frontend/components/employee_index/employee_new.jsx ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _shopify_polaris__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @shopify/polaris */ "./node_modules/@shopify/polaris/index.es.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+
+
+
+
+
+var EmployeeNew = /*#__PURE__*/function (_Component) {
+  _inherits(EmployeeNew, _Component);
+
+  var _super = _createSuper(EmployeeNew);
+
+  function EmployeeNew(props) {
+    var _this;
+
+    _classCallCheck(this, EmployeeNew);
+
+    _this = _super.call(this, props);
+    _this.state = {
+      name: "",
+      job_title: "",
+      description: "",
+      profile_url: "",
+      save_loading: false,
+      save_disabled: true
+    };
+    _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
+    _this.goBack = _this.goBack.bind(_assertThisInitialized(_this));
+    return _this;
+  }
+
+  _createClass(EmployeeNew, [{
+    key: "goBack",
+    value: function goBack() {
+      this.props.history.push("/");
+    }
+  }, {
+    key: "handleSubmit",
+    value: function handleSubmit() {
+      this.setState({
+        save_loading: true
+      }); // let employee = {
+      //   name: this.state.name,
+      //   job_title: this.state.job_title,
+      //   description: this.state.description,
+      //   profile_url: this.state.profile_url,
+      // };
+
+      var employee = Object.assign({}, this.state);
+      this.props.createEmployee(employee);
+      this.props.history.push("/");
+    }
+  }, {
+    key: "handleChange",
+    value: function handleChange(name, value) {
+      this.setState({
+        save_disabled: false
+      });
+      var state = this.state;
+      state[name] = value;
+      this.setState({
+        state: state
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var name = this.props.employee.name;
+      var _this$state = this.state,
+          save_loading = _this$state.save_loading,
+          save_disabled = _this$state.save_disabled;
+      var title = "Add New Staff";
+      return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["AppProvider"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["Page"], {
+        title: title
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["Form"], {
+        onSubmit: this.handleSubmit
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["FormLayout"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["Stack"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["TextField"], {
+        value: this.state.name,
+        onChange: this.handleChange.bind(this, "name"),
+        label: "Name",
+        type: "text",
+        maxLength: 24,
+        fullWidth: true
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["TextField"], {
+        value: this.state.job_title,
+        onChange: this.handleChange.bind(this, "job_title"),
+        label: "Job Title",
+        type: "text",
+        maxLength: 24
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["TextField"], {
+        value: this.state.description,
+        onChange: this.handleChange.bind(this, "description"),
+        label: "Description",
+        multiline: true,
+        rows: 3,
+        maxLength: 240
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["TextField"], {
+        value: this.state.profile_url,
+        onChange: this.handleChange.bind(this, "profile_url"),
+        label: "Profile Image URL",
+        maxLength: 300,
+        helpText: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Upload images to Shopify Files (Settings/Files) and paste image's URL here")
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+        src: this.state.profile_url,
+        onError: function onError(e) {
+          e.target.onerror = null;
+          e.target.src = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+        },
+        style: {
+          height: "320px",
+          padding: "20px"
+        }
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["Stack"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["Button"], {
+        primary: true,
+        loading: save_loading,
+        disabled: save_disabled,
+        submit: true
+      }, "Add"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["Button"], {
+        loading: save_loading,
+        onClick: this.goBack
+      }, "Back"))))));
+    }
+  }]);
+
+  return EmployeeNew;
+}(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
+
+/* harmony default export */ __webpack_exports__["default"] = (EmployeeNew);
+
+/***/ }),
+
+/***/ "./frontend/components/employee_index/employee_new_container.js":
+/*!**********************************************************************!*\
+  !*** ./frontend/components/employee_index/employee_new_container.js ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _employee_new__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./employee_new */ "./frontend/components/employee_index/employee_new.jsx");
+/* harmony import */ var _actions_employee_actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../actions/employee_actions */ "./frontend/actions/employee_actions.js");
+
+
+
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    employee: {
+      name: "",
+      job_title: "",
+      desciption: "",
+      profile_url: "",
+      shop_id: ""
+    }
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    createEmployee: function createEmployee(employee) {
+      return dispatch(Object(_actions_employee_actions__WEBPACK_IMPORTED_MODULE_2__["createEmployee"])(employee));
+    }
+  };
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_0__["connect"])(mapStateToProps, mapDispatchToProps)(_employee_new__WEBPACK_IMPORTED_MODULE_1__["default"]));
 
 /***/ }),
 
@@ -500,19 +757,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 var employeesReducer = function employeesReducer() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var oldState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var action = arguments.length > 1 ? arguments[1] : undefined;
-  Object.freeze(state);
+  Object.freeze(oldState);
 
   switch (action.type) {
     case _actions_employee_actions__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_EMPLOYEES"]:
-      return Object.assign({}, state, action.employees);
+      return Object.assign({}, oldState, action.employees);
 
     case _actions_employee_actions__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_EMPLOYEE"]:
       return Object.assign({}, oldState, _defineProperty({}, action.employee.id, action.employee));
 
+    case _actions_employee_actions__WEBPACK_IMPORTED_MODULE_0__["REMOVE_EMPLOYEE"]:
+      var nextState = Object.assign({}, oldState);
+      delete nextState[action.employeeId];
+      return nextState;
+
     default:
-      return state;
+      return oldState;
   }
 };
 
@@ -627,26 +889,59 @@ var configureStore = function configureStore() {
 /*!********************************************!*\
   !*** ./frontend/util/employee_api_util.js ***!
   \********************************************/
-/*! exports provided: fetchEmployees, updateEmployee */
+/*! exports provided: fetchEmployees, fetchEmployee, updateEmployee, createEmployee, deleteEmployee */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchEmployees", function() { return fetchEmployees; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchEmployee", function() { return fetchEmployee; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateEmployee", function() { return updateEmployee; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createEmployee", function() { return createEmployee; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteEmployee", function() { return deleteEmployee; });
 var fetchEmployees = function fetchEmployees() {
   return $.ajax({
     url: "api/employees",
     method: "GET"
   });
 };
+var fetchEmployee = function fetchEmployee(employeeId) {
+  return $.ajax({
+    url: "api/employees/".concat(employeeId),
+    method: "GET"
+  });
+};
 var updateEmployee = function updateEmployee(employee) {
   return $.ajax({
     url: "/api/employees/".concat(employee.id),
-    method: 'patch',
+    headers: {
+      "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content")
+    },
+    method: "patch",
     data: {
       employee: employee
     }
+  });
+};
+var createEmployee = function createEmployee(employee) {
+  return $.ajax({
+    url: "api/employees/",
+    method: "POST",
+    headers: {
+      'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+    },
+    data: {
+      employee: employee
+    }
+  });
+};
+var deleteEmployee = function deleteEmployee(employeeId) {
+  return $.ajax({
+    url: "/api/employeess/".concat(employeeId, "/"),
+    headers: {
+      "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content")
+    },
+    method: "DELETE"
   });
 };
 

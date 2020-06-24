@@ -1,0 +1,32 @@
+a {
+    text-decoration: none;
+    color: #212B36;
+}
+
+#div-container{
+    display:flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    min-height: 100px;
+    padding: 10px;
+}
+
+#div-container img {
+    align-self: flex-start;
+}
+
+#description-list{
+    display:flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    padding-left: 10px;
+}
+
+#job-title-list{
+    font-weight: 400;
+    margin-bottom: 100px;
+}
+
+.Polaris-ResourceItem__Button {
+    display:none;
+}

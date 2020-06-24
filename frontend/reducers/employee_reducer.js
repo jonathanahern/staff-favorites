@@ -1,16 +1,22 @@
 import {
-    RECEIVE_EMPLOYEES, RECEIVE_EMPLOYEE
+    RECEIVE_EMPLOYEES, RECEIVE_EMPLOYEE, REMOVE_EMPLOYEE
 } from '../actions/employee_actions';
 
-const employeesReducer = (state = {}, action) => {
-    Object.freeze(state)
+const employeesReducer = (oldState = {}, action) => {
+    Object.freeze(oldState);
     switch (action.type) {
-        case RECEIVE_EMPLOYEES:
-            return Object.assign({}, state, action.employees);
-        case RECEIVE_EMPLOYEE:
-            return Object.assign({}, oldState, { [action.employee.id]: action.employee });
-        default:
-            return state;
+      case RECEIVE_EMPLOYEES:
+        return Object.assign({}, oldState, action.employees);
+      case RECEIVE_EMPLOYEE:
+        return Object.assign({}, oldState, {
+          [action.employee.id]: action.employee,
+        });
+      case REMOVE_EMPLOYEE:
+        let nextState = Object.assign({}, oldState);
+        delete nextState[action.employeeId];
+        return nextState;
+      default:
+        return oldState;
     }
 };
 

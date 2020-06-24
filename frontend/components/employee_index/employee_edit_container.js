@@ -1,13 +1,14 @@
 import { connect } from 'react-redux';
-import { fetchEmployees } from '../../actions/employee_actions';
+import { fetchEmployee, deleteEmployee } from '../../actions/employee_actions';
 import EmployeeEdit from './employee_edit';
 
-const mapStateToProps = state => ({
-    employees: Object.values(state.entities.employees)
+const mapStateToProps = (state, ownProps) => ({
+    employee: state.entities.employees[ownProps.match.params.employeeId]
 });
 
-const mapDispatchToProps = dispatch => ({
-    fetchEmployees: () => dispatch(fetchEmployees())
+const mapDispatchToProps = (dispatch) => ({
+  fetchEmployee: (employeeId) => dispatch(fetchEmployee(employeeId)),
+  deleteEmployee: (employeeId) => dispatch(deleteEmployee(employeeId))
 });
 
 export default connect(
