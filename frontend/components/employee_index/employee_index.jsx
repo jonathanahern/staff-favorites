@@ -13,12 +13,10 @@ class EmployeeIndex extends React.Component {
 
     componentDidMount() {
         this.props.fetchEmployees();
-        console.log(this.props);
     }
 
     addStaff(){
-        redirect
-        console.log("Add them")
+        // redirect
     }
 
     renderStaff(staff) {

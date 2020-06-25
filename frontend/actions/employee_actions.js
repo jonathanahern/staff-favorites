@@ -1,7 +1,7 @@
 import * as APIUtil from "../util/employee_api_util";
 
 export const RECEIVE_EMPLOYEES = "RECEIVE_EMPLOYEES";
-export const RECEIVE_EMPLOYEE = 'RECEIVE_EMPLOYEE';
+export const RECEIVE_EMPLOYEE = "RECEIVE_EMPLOYEE";
 export const REMOVE_EMPLOYEE = "REMOVE_EMPLOYEE";
 
 const receiveEmployees = employees => {
@@ -11,9 +11,14 @@ const receiveEmployees = employees => {
     }
 };
 
-const receiveEmployee = employee => ({
-    type: RECEIVE_EMPLOYEE,
-    employee
+const receiveEmployee = (employee) => ({
+  type: RECEIVE_EMPLOYEE,
+  employee,
+});
+
+const receiveEmployeeUpdate = (employee) => ({
+  type: RECEIVE_EMPLOYEE,
+  employee,
 });
 
 const removeEmployee = (employeeId) => ({
@@ -33,7 +38,7 @@ export const fetchEmployee = (employeeId) => (dispatch) =>
 
 export const updateEmployee = (employee) => (dispatch) =>
          APIUtil.updateEmployee(employee).then((employee) =>
-           dispatch(receiveEmployee(employee))
+           dispatch(receiveEmployeeUpdate(employee))
          );
 
 export const createEmployee = (employee) => (dispatch) =>

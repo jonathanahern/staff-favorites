@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
 
-import employeesReducer from "./employee_reducer.js";
+import EmployeesReducer from "./employee_reducer.js";
 
 const entitiesReducer = combineReducers({
-    employees: employeesReducer
+    employees: EmployeesReducer
 });
 
 export default entitiesReducer;

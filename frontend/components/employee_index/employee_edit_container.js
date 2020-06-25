@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { fetchEmployee, deleteEmployee } from '../../actions/employee_actions';
+import { fetchEmployee, deleteEmployee, updateEmployee } from '../../actions/employee_actions';
 import EmployeeEdit from './employee_edit';
 
 const mapStateToProps = (state, ownProps) => ({
@@ -8,7 +8,8 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   fetchEmployee: (employeeId) => dispatch(fetchEmployee(employeeId)),
-  deleteEmployee: (employeeId) => dispatch(deleteEmployee(employeeId))
+  updateEmployee: (employee) => dispatch(updateEmployee(employee)),
+  deleteEmployee: (employeeId) => dispatch(deleteEmployee(employeeId)),
 });
 
 export default connect(

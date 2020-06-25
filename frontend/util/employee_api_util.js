@@ -32,7 +32,7 @@ export const createEmployee = (employee) =>
 
 export const deleteEmployee = (employeeId) =>
          $.ajax({
-           url: `/api/employeess/${employeeId}/`,
+           url: `/api/employees/${employeeId}/`,
            headers: {
              "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"),
            },

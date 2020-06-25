@@ -12,12 +12,13 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
 
   def update
     @employee = Employee.find(params[:id])
-
+    
     if @employee.update(employee_params)
-      render json: @employee
+      render :show
     else
       render json: @employee.errors.full_messages, status: 422
     end
+
   end
 
   def create
@@ -31,6 +32,12 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
       render json: @employee.errors.full_messages, status: 401
     end
 
+  end
+
+  def destroy
+    @employee = Employee.find(params[:id])
+    @employee.destroy
+    render :show
   end
 
   private

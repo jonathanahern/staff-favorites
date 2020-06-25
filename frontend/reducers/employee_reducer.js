@@ -1,8 +1,8 @@
 import {
     RECEIVE_EMPLOYEES, RECEIVE_EMPLOYEE, REMOVE_EMPLOYEE
-} from '../actions/employee_actions';
+} from '../actions/employee_actions.js';
 
-const employeesReducer = (oldState = {}, action) => {
+const EmployeesReducer = (oldState = {}, action) => {
     Object.freeze(oldState);
     switch (action.type) {
       case RECEIVE_EMPLOYEES:
@@ -20,4 +20,4 @@ const employeesReducer = (oldState = {}, action) => {
     }
 };
 
-export default employeesReducer;
+export default EmployeesReducer;
