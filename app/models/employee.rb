@@ -17,5 +17,10 @@ class Employee < ApplicationRecord
         class_name: :Shop,
         primary_key: :id,
         foreign_key: :shop_id
+
+    has_many :products,
+        class_name: :Product,
+        primary_key: :id,
+        foreign_key: :employee_id
   
 end

@@ -1,20 +1,21 @@
 import React from "react";
 import { Route } from "react-router-dom";
-// import LoginFormContainer from "../components/session/login_form_container";
-// import SignupFormContainer from "../components/session/signup_form_container";
-// import Splash from "../components/splash/splash"
-// import TourContainer from "../components/tour/tour_container"
-import EmployeeIndexContainer from "./employee_index/employee_index_container"
-import EmployeeNewContainer from "./employee_index/employee_new_container";
-import EmployeeEditContainer from "./employee_index/employee_edit_container"
+import EmployeeIndexContainer from "./employee/employee_index_container";
+import EmployeeNewContainer from "./employee/employee_new_container";
+import EmployeeEditContainer from "./employee/employee_edit_container";
+import ProductIndexContainer from "./product/product_index_container"
+import ProductNewContainer from "./product/product_new_container"
 // import { AuthRoute, ProtectedRoute } from "../util/route_util";
 
 const App = () => (
   <>
-    {/* <ProtectedRoute exact path="/tours/create" component={TourContainer} /> */}
-    <Route exact path="/" component={EmployeeIndexContainer} />
+    {/* <Route exact path="/" component={EmployeeIndexContainer} /> */}
+    <Route exact path="/" component={ProductIndexContainer} />
     <Route exact path="/employee/new" component={EmployeeNewContainer} />
     <Route path="/employees/:employeeId/edit" component={EmployeeEditContainer} />
+    <Route exact path="/employee/new" component={EmployeeNewContainer} />
+    <Route exact path="/products/new" component={ProductNewContainer} />
+    
     {/* <AuthRoute exact path="/" component={Splash} /> */}
   </>
 );

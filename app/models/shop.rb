@@ -18,6 +18,11 @@ class Shop < ActiveRecord::Base
     primary_key: :id,
     foreign_key: :shop_id
 
+  has_many :products,
+    class_name: :Product,
+    primary_key: :id,
+    foreign_key: :shop_id
+
   def api_version
     ShopifyApp.configuration.api_version
   end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_19_194043) do
+ActiveRecord::Schema.define(version: 2020_06_26_154053) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,20 @@ ActiveRecord::Schema.define(version: 2020_06_19_194043) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["shop_id"], name: "index_employees_on_shop_id"
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.string "shopify_title", null: false
+    t.string "shopify_image_url"
+    t.bigint "shopify_product_id", null: false
+    t.string "review"
+    t.integer "shop_id", null: false
+    t.integer "employee_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["employee_id"], name: "index_products_on_employee_id"
+    t.index ["shop_id"], name: "index_products_on_shop_id"
+    t.index ["shopify_product_id"], name: "index_products_on_shopify_product_id"
   end
 
   create_table "shops", force: :cascade do |t|
