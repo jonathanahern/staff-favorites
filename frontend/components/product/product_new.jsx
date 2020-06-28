@@ -10,7 +10,8 @@ import {
   FormLayout,
   Card,
   TextField,
-  ResourcePicker
+  ResourcePicker,
+  DisplayText,
 } from "@shopify/polaris";
 
 class ProductNew extends Component {
@@ -83,10 +84,22 @@ class ProductNew extends Component {
         apiKey="a959533e684cfdd1e15084c979598b36"
         shopOrigin="junk-store-test.myshopify.com"
       >
-        <Page
-          title={title}
-          breadcrumbs={[{ content: "Back", onAction: this.goBack }]}
-        >
+        <Page>
+          <Link to="/">
+            <p id="back-link">
+              <span>
+                M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1
+                0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293
+                4.293A.999.999 0 0 1 12 16
+              </span>
+              Back
+            </p>
+          </Link>
+          <br />
+          <DisplayText size="large" element="h1">
+            Add New Pick
+          </DisplayText>
+          <br />
           <Form onSubmit={this.handleSubmit}>
             <FormLayout>
               <Card

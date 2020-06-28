@@ -30,3 +30,13 @@ a {
 .Polaris-ResourceItem__Button {
     display:none;
 }
+
+#back-link{
+    color: #637381;
+    font-size: 1.5rem;
+    font-weight: 400;
+}
+
+#back-link:hover{
+    color: black;
+}
