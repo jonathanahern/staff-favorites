@@ -56,7 +56,10 @@ class EmployeeNew extends Component {
     const title = `Add New Staff`;
     return (
       <AppProvider>
-        <Page title={title}>
+        <Page
+          title={title}
+          breadcrumbs={[{ content: "Back", onAction: this.goBack }]}
+        >
           <Form onSubmit={this.handleSubmit}>
             <FormLayout>
               <Stack>

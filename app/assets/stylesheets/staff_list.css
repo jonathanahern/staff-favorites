@@ -37,6 +37,15 @@ a {
     font-weight: 400;
 }
 
-#back-link:hover{
-    color: black;
+#back-link svg{
+    fill: #637381;
+    transform: translateY(5px);
 }
+
+#back-link:hover, #back-link svg{
+    color: #212B36;
+}
+
+/* #PolarisTextField1{
+    height: 108px;
+} */

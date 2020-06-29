@@ -293,10 +293,6 @@ var App = function App() {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
     exact: true,
     path: "/",
-    component: _employee_employee_index_container__WEBPACK_IMPORTED_MODULE_2__["default"]
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
-    exact: true,
-    path: "/",
     component: _product_product_index_container__WEBPACK_IMPORTED_MODULE_5__["default"]
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
     exact: true,
@@ -866,7 +862,11 @@ var EmployeeNew = /*#__PURE__*/function (_Component) {
           save_disabled = _this$state.save_disabled;
       var title = "Add New Staff";
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["AppProvider"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["Page"], {
-        title: title
+        title: title,
+        breadcrumbs: [{
+          content: "Back",
+          onAction: this.goBack
+        }]
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["Form"], {
         onSubmit: this.handleSubmit
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["FormLayout"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["Stack"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["TextField"], {
@@ -1185,14 +1185,16 @@ var ProductNew = /*#__PURE__*/function (_Component) {
       shopify_image_url: "",
       shopify_product_id: "",
       review: "",
-      employee_id: false,
-      pickerOpen: false
+      employee_id: null,
+      pickerOpen: false,
+      selectedEmployee: ""
     };
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
     _this.openPicker = _this.openPicker.bind(_assertThisInitialized(_this));
     _this.closePicker = _this.closePicker.bind(_assertThisInitialized(_this));
     _this.handleSelection = _this.handleSelection.bind(_assertThisInitialized(_this));
     _this.createNewReview = _this.createNewReview.bind(_assertThisInitialized(_this));
+    _this.handleSelectChange = _this.handleSelectChange.bind(_assertThisInitialized(_this));
     _this.goBack = _this.goBack.bind(_assertThisInitialized(_this));
     return _this;
   }
@@ -1210,7 +1212,11 @@ var ProductNew = /*#__PURE__*/function (_Component) {
       this.setState({
         pickerOpen: true
       });
-      console.log(this.state.pickerOpen);
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.props.fetchEmployees();
     }
   }, {
     key: "goBack",
@@ -1221,7 +1227,15 @@ var ProductNew = /*#__PURE__*/function (_Component) {
     key: "handleSelection",
     value: function handleSelection(selection) {
       this.closePicker();
-      console.log(selection);
+      var imageUrl = selection.selection[0].images[0].originalSrc;
+      var title = selection.selection[0].title;
+      var idArr = selection.selection[0].id.split("Product/");
+      var id = parseInt(idArr[idArr.length - 1]);
+      this.setState({
+        shopify_title: title,
+        shopify_image_url: imageUrl,
+        shopify_product_id: id
+      });
     }
   }, {
     key: "createNewReview",
@@ -1245,7 +1259,6 @@ var ProductNew = /*#__PURE__*/function (_Component) {
   }, {
     key: "handleChange",
     value: function handleChange(name, value) {
-      // this.setState({ save_disabled: false });
       var state = this.state;
       state[name] = value;
       this.setState({
@@ -1253,10 +1266,52 @@ var ProductNew = /*#__PURE__*/function (_Component) {
       });
     }
   }, {
+    key: "handleSelectChange",
+    value: function handleSelectChange(e) {
+      var arr = e.split("&");
+      console.log(arr);
+      this.setState({
+        "selectedEmployee": e
+      });
+      this.setState({
+        "employee_id": parseInt(arr[1])
+      });
+      console.log(this.state);
+    }
+  }, {
     key: "render",
     value: function render() {
       // const { save_loading, save_disabled } = this.state;
       var title = "Add New Pick";
+      var productInfo = "";
+
+      if (this.state.shopify_title.length < 1) {
+        productInfo = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "No product selected");
+      } else {
+        productInfo = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["Stack"], {
+          vertical: true
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["TextStyle"], {
+          variation: "strong"
+        }, this.state.shopify_title), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
+          src: this.state.shopify_image_url,
+          alt: "",
+          height: "100px"
+        }));
+      }
+
+      var options = [];
+
+      if (this.props.employees.length > 0) {
+        this.props.employees.forEach(function (employee) {
+          var val = "".concat(employee.name, "&").concat(employee.id);
+          var newObj = {
+            label: employee.name,
+            value: val
+          };
+          options.push(newObj);
+        });
+      }
+
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["AppProvider"], {
         apiKey: "a959533e684cfdd1e15084c979598b36",
         shopOrigin: "junk-store-test.myshopify.com"
@@ -1264,7 +1319,13 @@ var ProductNew = /*#__PURE__*/function (_Component) {
         to: "/"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
         id: "back-link"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16"), "Back")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["DisplayText"], {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("svg", {
+        height: "20",
+        width: "20"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("path", {
+        d: "M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16",
+        fillRule: "evenodd"
+      })), "Back")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["DisplayText"], {
         size: "large",
         element: "h1"
       }, "Add New Pick"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["Form"], {
@@ -1276,13 +1337,26 @@ var ProductNew = /*#__PURE__*/function (_Component) {
           content: "Find Product",
           onAction: this.openPicker
         }
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "View a summary of your online store\u2019s performance.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["Card"], {
-        title: "Online store dashboard",
+      }, productInfo), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["Card"], {
+        title: "Step Two: Select Staff Member",
         sectioned: true
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "View a summary of your online store\u2019s performance.")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["Card"], {
-        title: "Online store dashboard",
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["Select"], {
+        label: "Staff Members",
+        placeholder: "Select a staff member",
+        options: options,
+        onChange: this.handleSelectChange,
+        value: this.state.selectedEmployee
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["Card"], {
+        title: "Step Three: Write Review",
         sectioned: true
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "View a summary of your online store\u2019s performance."))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["ResourcePicker"], {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["TextField"], {
+        value: this.state.review,
+        onChange: this.handleChange.bind(this, "review"),
+        multiline: true,
+        rows: 4,
+        maxLength: 400,
+        showCharacterCount: true
+      }))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["ResourcePicker"], {
         resourceType: "Product",
         open: this.state.pickerOpen,
         showVariants: false,
@@ -1312,6 +1386,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _product_new__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./product_new */ "./frontend/components/product/product_new.jsx");
 /* harmony import */ var _actions_product_actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../actions/product_actions */ "./frontend/actions/product_actions.js");
+/* harmony import */ var _actions_employee_actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../actions/employee_actions */ "./frontend/actions/employee_actions.js");
+
 
 
 
@@ -1324,7 +1400,8 @@ var mapStateToProps = function mapStateToProps(state) {
       desciption: "",
       profile_url: "",
       shop_id: ""
-    }
+    },
+    employees: Object.values(state.entities.employees)
   };
 };
 
@@ -1332,6 +1409,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     createProduct: function createProduct(product) {
       return dispatch(Object(_actions_product_actions__WEBPACK_IMPORTED_MODULE_2__["createProduct"])(product));
+    },
+    fetchEmployees: function fetchEmployees() {
+      return dispatch(Object(_actions_employee_actions__WEBPACK_IMPORTED_MODULE_3__["fetchEmployees"])());
     }
   };
 };

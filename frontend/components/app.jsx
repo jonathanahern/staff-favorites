@@ -9,7 +9,7 @@ import ProductNewContainer from "./product/product_new_container"
 
 const App = () => (
   <>
-    <Route exact path="/" component={EmployeeIndexContainer} />
+    {/* <Route exact path="/" component={EmployeeIndexContainer} /> */}
     <Route exact path="/" component={ProductIndexContainer} />
     <Route exact path="/employee/new" component={EmployeeNewContainer} />
     <Route path="/employees/:employeeId/edit" component={EmployeeEditContainer} />
