@@ -10,7 +10,7 @@ import ProductEditContainer from "./product/product_edit_container";
 
 const App = () => (
   <>
-    {/* <Route exact path="/" component={EmployeeIndexContainer} /> */}
+    <Route exact path="/" component={EmployeeIndexContainer} />
     <Route exact path="/" component={ProductIndexContainer} />
     <Route exact path="/employee/new" component={EmployeeNewContainer} />
     <Route path="/employees/:employeeId/edit" component={EmployeeEditContainer} />

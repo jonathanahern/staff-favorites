@@ -79,7 +79,7 @@ class ProductIndex extends React.Component {
           },
         }}
       >
-        <Page title="Product Reviews">
+        <Page title="Product Picks">
           <Card>
             <ResourceList
               showHeader

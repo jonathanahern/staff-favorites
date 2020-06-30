@@ -295,6 +295,10 @@ var App = function App() {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
     exact: true,
     path: "/",
+    component: _employee_employee_index_container__WEBPACK_IMPORTED_MODULE_2__["default"]
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
+    exact: true,
+    path: "/",
     component: _product_product_index_container__WEBPACK_IMPORTED_MODULE_5__["default"]
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Route"], {
     exact: true,
@@ -1029,7 +1033,7 @@ var ProductNew = /*#__PURE__*/function (_Component) {
       review: _this.props.product.review,
       employee_id: _this.props.product.employee_id,
       pickerOpen: false,
-      selectedEmployee: ""
+      selectedEmployee: ''
     };
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
     _this.openPicker = _this.openPicker.bind(_assertThisInitialized(_this));
@@ -1161,6 +1165,7 @@ var ProductNew = /*#__PURE__*/function (_Component) {
       }
 
       var options = [];
+      var selectorVal = '';
 
       if (this.props.employees.length > 0) {
         this.props.employees.forEach(function (employee) {
@@ -1170,7 +1175,12 @@ var ProductNew = /*#__PURE__*/function (_Component) {
             value: val
           };
           options.push(newObj);
-        });
+
+          if (employee.id === _this2.state.employee_id) {
+            selectorVal = val;
+          }
+        }); // let selectorVal = `${this.state.selectedEmployee}&${this.state.employee_id}`;
+        // this.setState({ selectedEmployee: selectorVal });
       }
 
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["AppProvider"], {
@@ -1205,7 +1215,7 @@ var ProductNew = /*#__PURE__*/function (_Component) {
         placeholder: "Select a staff member",
         options: options,
         onChange: this.handleSelectChange,
-        value: this.state.selectedEmployee
+        value: selectorVal
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["Card"], {
         title: "Edit Review",
         sectioned: true
@@ -1422,7 +1432,7 @@ var ProductIndex = /*#__PURE__*/function (_React$Component) {
           }
         }
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_2__["Page"], {
-        title: "Product Reviews"
+        title: "Product Picks"
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_2__["Card"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_2__["ResourceList"], {
         showHeader: true,
         items: products,

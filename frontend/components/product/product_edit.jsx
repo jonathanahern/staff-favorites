@@ -20,7 +20,7 @@ import {
 class ProductNew extends Component {
   constructor(props) {
     super(props);
-
+    
     this.state = {
       shopify_title: this.props.product.shopify_title,
       shopify_image_url: this.props.product.shopify_image_url,
@@ -28,7 +28,7 @@ class ProductNew extends Component {
       review: this.props.product.review,
       employee_id: this.props.product.employee_id,
       pickerOpen: false,
-      selectedEmployee: "",
+      selectedEmployee: '',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.openPicker = this.openPicker.bind(this);
@@ -125,12 +125,20 @@ class ProductNew extends Component {
       );
     }
     let options = [];
+    let selectorVal = '';
     if (this.props.employees.length > 0) {
       this.props.employees.forEach((employee) => {
         let val = `${employee.name}&${employee.id}`;
         let newObj = { label: employee.name, value: val };
         options.push(newObj);
+        if (employee.id === this.state.employee_id) {
+          selectorVal = val;
+        }
       });
+
+    // let selectorVal = `${this.state.selectedEmployee}&${this.state.employee_id}`;
+    // this.setState({ selectedEmployee: selectorVal });
+    
     }
     return (
       <>
@@ -172,7 +180,7 @@ class ProductNew extends Component {
                     placeholder={"Select a staff member"}
                     options={options}
                     onChange={this.handleSelectChange}
-                    value={this.state.selectedEmployee}
+                    value={selectorVal}
                   />
                 </Card>
                 <Card title="Edit Review" sectioned>
