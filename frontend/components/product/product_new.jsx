@@ -32,7 +32,6 @@ class ProductNew extends Component {
     this.openPicker = this.openPicker.bind(this);
     this.closePicker = this.closePicker.bind(this);
     this.handleSelection = this.handleSelection.bind(this);
-    this.createNewReview = this.createNewReview.bind(this);
     this.handleSelectChange = this.handleSelectChange.bind(this);
     this.goBack = this.goBack.bind(this);
   }
@@ -66,19 +65,14 @@ class ProductNew extends Component {
     });
   }
 
-  createNewReview() {
-    console.log("created!");
-  }
-
   handleSubmit() {
-    // this.setState({ save_loading: true });
-    // let product = {
-    //   name: this.state.name,
-    //   job_title: this.state.job_title,
-    //   description: this.state.description,
-    //   profile_url: this.state.profile_url,
-    // };
-    const product = Object.assign({}, this.state);
+    let product = {
+      shopify_title: this.state.shopify_title,
+      shopify_image_url: this.state.shopify_image_url,
+      shopify_product_id: this.state.shopify_product_id,
+      review: this.state.review,
+      employee_id: this.state.employee_id
+    };
     this.props.createProduct(product);
     this.props.history.push("/");
   }
@@ -91,14 +85,11 @@ class ProductNew extends Component {
 
   handleSelectChange(e) {
     let arr = e.split("&");
-    console.log(arr);
     this.setState({"selectedEmployee": e})
     this.setState({"employee_id": parseInt(arr[1])})
-    console.log(this.state);
   }
 
   render() {
-    // const { save_loading, save_disabled } = this.state;
     const title = `Add New Pick`;
     let productInfo = "";
     if (this.state.shopify_title.length < 1) {
@@ -144,7 +135,7 @@ class ProductNew extends Component {
           <Form onSubmit={this.handleSubmit}>
             <FormLayout>
               <Card
-                title="Step One: Select Product"
+                title="Select Product"
                 sectioned
                 primaryFooterAction={{
                   content: "Find Product",
@@ -153,25 +144,32 @@ class ProductNew extends Component {
               >
                 {productInfo}
               </Card>
-              <Card title="Step Two: Select Staff Member" sectioned>
+              <Card title="Select Staff Member" sectioned>
                 <Select
-                  label="Staff Members"
                   placeholder={"Select a staff member"}
                   options={options}
                   onChange={this.handleSelectChange}
                   value={this.state.selectedEmployee}
                 />
               </Card>
-              <Card title="Step Three: Write Review" sectioned>
+              <Card title="Write Review" sectioned>
                 <TextField
                   value={this.state.review}
                   onChange={this.handleChange.bind(this, "review")}
                   multiline={true}
-                  rows={4}
+                  rows={7}
                   maxLength={400}
                   showCharacterCount={true}
                 />
               </Card>
+              <Stack distribution="trailing">
+                <Button onClick={() => this.goBack()}>
+                  Cancel
+                </Button>
+                <Button primary onClick={() => this.handleSubmit()}>
+                  Create New Pick
+                </Button>
+              </Stack>
             </FormLayout>
           </Form>
         </Page>

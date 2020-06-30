@@ -14,11 +14,13 @@ import {
 class ProductIndex extends React.Component {
   constructor(props) {
     super(props);
-
+    this.renderProduct = this.renderProduct.bind(this);
   }
 
   componentDidMount() {
+    this.props.fetchEmployees();
     this.props.fetchProducts();
+   
   }
 
   renderProduct(product) {
@@ -30,13 +32,17 @@ class ProductIndex extends React.Component {
       review,
       employee_id,
     } = product;
-    let title = `Jonathan's ${shopify_title} review:`;
+    let name = "Employee";
+    const { employees } = this.props;
+    if (Object.keys(employees).length > 0) {
+        name = this.props.entities[0][employee_id].name;
+    }
+    let title = `${name}'s ${shopify_title} review:`;
 
     return (
-      //   <Link to={`/products/${id}/edit`}>
+      <Link to={`/products/${id}/edit`}>
       <ResourceList.Item
         id={id}
-        // url={'/product/edit'}
         accessibilityLabel={`details for ${shopify_title} `}
       >
         <div id="div-container">
@@ -47,22 +53,21 @@ class ProductIndex extends React.Component {
           </div>
         </div>
       </ResourceList.Item>
-      //   </Link>
+        </Link>
         
     );
   }
 
   render() {
     const { products } = this.props;
-
     return (
       <AppProvider
         i18n={{
           Polaris: {
             ResourceList: {
               sortingLabel: "Sort by",
-              defaultItemSingular: "review",
-              defaultItemPlural: "reviews",
+              defaultItemSingular: "pick",
+              defaultItemPlural: "picks",
               showing: "Showing {itemsCount} {resource}",
               Item: {
                 viewItem: "View details for {itemName}",
