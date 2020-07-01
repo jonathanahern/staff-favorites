@@ -3,12 +3,14 @@ ShopifyApp.configure do |config|
   config.api_key = ENV['api_key']
   config.secret = ENV['api_secret']
   config.old_secret = ""
-  config.scope = "read_products, read_script_tags, write_script_tags" # Consult this page for more scope options:
-                                 # https://help.shopify.com/en/api/getting-started/authentication/oauth/scopes
+  config.scope = "read_products, read_script_tags, write_script_tags" 
   config.embedded_app = true
   config.after_authenticate_job = false
   config.api_version = "2020-04"
   config.shop_session_repository = 'Shop'
+  config.scripttags = [
+    {event:'onload', src: 'https://c2c49a73f50a.ngrok.io/test.js'}
+  ]
 end
 
 # ShopifyApp::Utils.fetch_known_api_versions                        # Uncomment to fetch known api versions from shopify servers on boot
