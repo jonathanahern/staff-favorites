@@ -27,5 +27,9 @@ class Product < ApplicationRecord
     def self.pickInfo(data)
         Product.select(:shopify_title, :shopify_image_url, :shopify_product_id, :review, :shop_id, :employee_id, "employees.name, employees.job_title, employees.profile_url, employees.description").joins(:employee).where("products.shopify_product_id = #{data}")
     end
+
+    def self.getProductIDs(shopDomain)
+        Product.select(:id, :shopify_product_id).joins(:shop).where("shops.shopify_domain = '#{shopDomain}'")
+    end
   
 end
