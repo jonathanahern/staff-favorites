@@ -59,16 +59,23 @@ function setupPageForPick(){
 function insertData(data){
     const staffPick = document.getElementById(`staff_pick_ele`);
 
+    let h3 = document.createElement("h1");
+    h3.innerHTML = "Staff Pick!";
+    staffPick.appendChild(h3);
+
     let img = document.createElement("img");
     img.src = data["profile_url"];
     staffPick.appendChild(img);
 
     let pDescription = document.createElement("p");
-    pName.innerHTML = data["name"];
-    staffPick.appendChild(pName);
+    pDescription.innerHTML = data["review"];
+    pDescription.style.fontStyle = "italic";
+    pDescription.style.margin = "0px";
+    staffPick.appendChild(pDescription);
 
     let pName = document.createElement("p");
-    pName.innerHTML = data["name"];
+    let nameString = `-${data["name"]}`
+    pName.innerHTML = nameString;
     staffPick.appendChild(pName);
 
 }
