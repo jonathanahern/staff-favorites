@@ -58,8 +58,17 @@ function setupPageForPick(){
 
 function insertData(data){
     const staffPick = document.getElementById(`staff_pick_ele`);
+
     let img = document.createElement("img");
     img.src = data["profile_url"];
-    console.log(data["profile_url"]);
     staffPick.appendChild(img);
+
+    let pDescription = document.createElement("p");
+    pName.innerHTML = data["name"];
+    staffPick.appendChild(pName);
+
+    let pName = document.createElement("p");
+    pName.innerHTML = data["name"];
+    staffPick.appendChild(pName);
+
 }
