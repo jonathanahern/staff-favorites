@@ -60,7 +60,7 @@ function insertData(data){
     const staffPick = document.getElementById(`staff_pick_ele`);
 
     let h3 = document.createElement("h1");
-    h3.innerHTML = "Staff Pick!";
+    h3.innerHTML = "Staff Pick";
     staffPick.appendChild(h3);
 
     let img = document.createElement("img");
