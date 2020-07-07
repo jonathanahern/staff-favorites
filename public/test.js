@@ -49,10 +49,34 @@ function setupPageForPick(){
     const mainContent = document.getElementById(`main_content`);
     const fullContainer = document.getElementById(`full_container`);
     const staffPick = document.getElementById(`staff_pick_ele`);
-    fullContainer.style.display = "flex";
-    mainContent.style.width = "80%";
-    staffPick.style.width= "20%";
-    staffPick.style.height = "200px";
+    var style = document.createElement('style');
+    style.innerHTML =
+        '#main_content {' +
+            'width: 80%;' +
+        '}' +
+        '#full_container {' +
+            'display: block;' +
+        '}' +
+        '#staff_pick_ele {' +
+            'width: 20%;' +
+        '}' +
+        '@media screen and(max - width: 850px) {'+
+            'body{' +
+            'background-color: blue;' +
+            '}' +
+        '}';
+
+    // Get the first script tag
+    var ref = document.querySelector('script');
+
+    // Insert our new styles before the first script tag
+    ref.parentNode.insertBefore(style, ref);
+    $('head').append('<style type="text/css">@media screen and (max-width: 1012px){ background-color: blue;}</style>');
+
+    // fullContainer.style.display = "flex";
+    // mainContent.style.width = "80%";
+    // staffPick.style.width= "20%";
+    // staffPick.style.height = "200px";
     // staffPick.style.padding = "0 30px";
 }
 
