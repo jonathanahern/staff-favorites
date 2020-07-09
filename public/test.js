@@ -109,7 +109,7 @@ function insertData(data){
     const staffPick = document.getElementById(`staff_pick_ele`);
 
     let h1 = document.createElement("h1");
-    h1.innerHTML = "Staff Pick!";
+    h1.innerHTML = "Staff Pick";
     staffPick.appendChild(h1);
 
     const staffDiv = document.createElement("div");
