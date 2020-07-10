@@ -61,8 +61,10 @@ function setupPageForPick(){
             'width: 20%;' +
             'margin-left: 20px;' +
         '}' +
-        '#staff_pick_ele h1{' +
+        '#staff_pick_ele > h1{' +
             'text-align: center;' +
+            'font-size: 1.75em;' +
+            'margin: 4px 0;' +
         '}' +
         '@media screen and (max-width: 750px) {'+
             '#full_container {' +
@@ -79,9 +81,6 @@ function setupPageForPick(){
             '#staff_pick_ele img {' +
                 'max-width: 150px;' +
                 'max-height: 260px;' +
-            '}' +
-            '#staff_pick_ele h1 {' +
-                'text-align: center;' +
             '}' +
             '#staff_pick_ele > div {' +
             'display:flex;' +
