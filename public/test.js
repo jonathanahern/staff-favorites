@@ -80,7 +80,7 @@ function setupPageForPick(){
             '}' +
             '#staff_pick_ele img {' +
                 'max-width: 150px;' +
-                'max-height: 260px;' +
+                'max-height: 250px;' +
             '}' +
             '#staff_pick_ele > div {' +
             'display:flex;' +
