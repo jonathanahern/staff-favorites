@@ -95,13 +95,7 @@ function setupPageForPick(){
 
     // Insert our new styles before the first script tag
     ref.parentNode.insertBefore(style, ref);
-    // $('head').append('<style type="text/css">@media screen and (max-width: 600px) {#staff_pick_ele{ background-color: blue;}}</style>');
 
-    // fullContainer.style.display = "flex";
-    // mainContent.style.width = "80%";
-    // staffPick.style.width= "20%";
-    // staffPick.style.height = "200px";
-    // staffPick.style.padding = "0 30px";
 }
 
 function insertData(data){
