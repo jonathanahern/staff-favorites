@@ -52,13 +52,13 @@ function setupPageForPick(){
     var style = document.createElement('style');
     style.innerHTML =
         '#main_content {' +
-            'width: 78%;' +
+            'width: 80%;' +
         '}' +
         '#full_container {' +
             'display: flex;' +
         '}' +
         '#staff_pick_ele {' +
-            'width: 22%;' +
+            'width: 20%;' +
             'margin-left: 20px;' +
         '}' +
         '#staff_pick_ele > h1{' +
