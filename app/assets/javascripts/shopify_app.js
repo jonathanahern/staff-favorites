@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.app = createApp({
     apiKey: data.apiKey,
     shopOrigin: data.shopOrigin,
-    forceRedirect: false
+    forceRedirect: true
   });
 
   var actions = AppBridge.actions;

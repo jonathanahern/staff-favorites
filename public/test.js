@@ -11,7 +11,7 @@ if (url.includes('/products/')) {
 
 if (url.includes('/products/') && pickedProducts.includes(prodID)) {
     setupPageForPick();
-    fetch(`https://c2c49a73f50a.ngrok.io/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
+    fetch(`https://6c89a353ccaa.ngrok.io/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
     method: "GET",
     })
   .then(res => res.json())
@@ -21,7 +21,7 @@ if (url.includes('/products/') && pickedProducts.includes(prodID)) {
 }
 
 function setPicks (shop) {
-    fetch(`https://c2c49a73f50a.ngrok.io/api/front_end?shop=${shop}`, {
+    fetch(`https://6c89a353ccaa.ngrok.io/api/front_end?shop=${shop}`, {
         method: "GET",
     })
         .then(res => res.json())
