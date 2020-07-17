@@ -9,7 +9,7 @@ ShopifyApp.configure do |config|
   config.api_version = "2020-04"
   config.shop_session_repository = 'Shop'
   config.scripttags = [
-    {event:'onload', src: 'https://6c89a353ccaa.ngrok.io/test.js'}
+    {event:'onload', src: 'https://e78ecf608df2.ngrok.io/test.js'}
   ]
 end
 
