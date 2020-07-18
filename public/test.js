@@ -11,7 +11,7 @@ if (url.includes('/products/')) {
 
 if (url.includes('/products/') && pickedProducts.includes(prodID)) {
     setupPageForPick();
-    fetch(`https://e78ecf608df2.ngrok.io/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
+    fetch(`https://af02662d4346.ngrok.io/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
     method: "GET",
     })
   .then(res => res.json())
@@ -21,18 +21,18 @@ if (url.includes('/products/') && pickedProducts.includes(prodID)) {
 }
 
 function setPicks (shop) {
-    fetch(`https://e78ecf608df2.ngrok.io/api/front_end?shop=${shop}`, {
-        method: "GET",
+    fetch(`https://af02662d4346.ngrok.io/api/front_end?shop=${shop}`, {
+      method: "GET",
     })
-        .then(res => res.json())
-        .then(resp => {
-            let newArr = []
-            resp.forEach(element => {
-                ele = element["shopify_product_id"]
-                newArr.push(ele)
-            });
-            localStorage.setItem('pickedProducts', JSON.stringify(newArr));
-        })
+      .then((res) => res.json())
+      .then((resp) => {
+        let newArr = [];
+        resp.forEach((element) => {
+          ele = element["shopify_product_id"];
+          newArr.push(ele);
+        });
+        localStorage.setItem("pickedProducts", JSON.stringify(newArr));
+      });
 }
 
 function getPicks (){
