@@ -3,10 +3,35 @@ var url = window.location.href;
 var shop = window.location.host;
 var handle = url.split("/").pop();
 var pickedProducts = getPicks();
-var prodID = meta.product.id;
+var prodID = null;
+
 
 if (url.includes('/products/')) {
+    prodID = meta.product.id;
     setPicks(shop);
+}
+    
+if (url.includes("/collections/")) {
+    console.log(pickedProducts);
+    let eles = document.getElementsByClassName("staff-pick-alert");
+    for (var i = 0; i < eles.length; i++) {
+        let ele = eles[i];
+        let idCheck = parseInt(ele.dataset.prodid);
+        if (pickedProducts.includes(idCheck)){
+            insertPickPic(ele);
+        }
+    }
+}
+
+function insertPickPic(ele) {
+  let img = document.createElement("img");
+  img.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Golden_star.svg/1200px-Golden_star.svg.png";
+  img.style.position = "absolute";
+  img.style.top = "0px";
+  img.style.right = "0px";
+  img.style.width = "40%";
+  img.style.padding = "3px";
+  ele.appendChild(img);
 }
 
 if (url.includes('/products/') && pickedProducts.includes(prodID)) {
@@ -125,5 +150,4 @@ function insertData(data){
     let nameString = `-${data["name"]}`
     pName.innerHTML = nameString;
     wordsDiv.appendChild(pName);
-
 }
