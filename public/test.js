@@ -6,6 +6,7 @@ var pickedProducts = getPicks();
 var prodID = null;
 
 
+
 if (url.includes('/products/')) {
     prodID = meta.product.id;
     setPicks(shop);
@@ -24,14 +25,31 @@ if (url.includes("/collections/")) {
 }
 
 function insertPickPic(ele) {
-  let img = document.createElement("img");
-  img.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Golden_star.svg/1200px-Golden_star.svg.png";
-  img.style.position = "absolute";
-  img.style.top = "0px";
-  img.style.right = "0px";
-  img.style.width = "40%";
-  img.style.padding = "3px";
-  ele.appendChild(img);
+
+  let container = document.createElement("div");
+    container.style.position = "absolute";
+    container.style.top = "0px";
+    container.style.right = "0px";
+    container.style.margin = "10px";
+    ele.appendChild(container);
+
+
+  let circle = document.createElement("img");
+  circle.src = "https://i.ibb.co/7yzF9zw/Starburst-High-Quality-PNG.png";
+  circle.style.width = "84px";
+  circle.style.height = "84px";
+  
+  container.appendChild(circle);
+
+  let text = document.createElement("h4");
+  text.innerHTML = "STAFF<br/>PICK!";
+text.style.position = "absolute";
+text.style.textAlign = "center";
+text.style.top = "24%";
+text.style.right = "15%";
+  text.style.color = "white";
+  
+  container.appendChild(text);
 }
 
 if (url.includes('/products/') && pickedProducts.includes(prodID)) {
