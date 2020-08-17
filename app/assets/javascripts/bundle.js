@@ -826,6 +826,7 @@ var EmployeeNew = /*#__PURE__*/function (_Component) {
     };
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
     _this.goBack = _this.goBack.bind(_assertThisInitialized(_this));
+    _this.test = _this.test.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -835,17 +836,24 @@ var EmployeeNew = /*#__PURE__*/function (_Component) {
       this.props.history.push("/");
     }
   }, {
+    key: "test",
+    value: function test() {// fetch(
+      //   `https://junk-store-test.myshopify.com/admin/api/2020-04/pages/count.json`,
+      //   {
+      //     method: "GET",
+      //   }
+      // )
+      //   .then((res) => res.json())
+      //   .then((resp) => {
+      //     console.log(resp);
+      //   });
+    }
+  }, {
     key: "handleSubmit",
     value: function handleSubmit() {
       this.setState({
         save_loading: true
-      }); // let employee = {
-      //   name: this.state.name,
-      //   job_title: this.state.job_title,
-      //   description: this.state.description,
-      //   profile_url: this.state.profile_url,
-      // };
-
+      });
       var employee = Object.assign({}, this.state);
       this.props.createEmployee(employee);
       this.props.history.push("/");
@@ -920,6 +928,8 @@ var EmployeeNew = /*#__PURE__*/function (_Component) {
         disabled: save_disabled,
         submit: true
       }, "Add"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["Button"], {
+        onClick: this.test
+      }, "Test"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["Button"], {
         loading: save_loading,
         onClick: this.goBack
       }, "Back"))))));

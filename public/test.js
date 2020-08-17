@@ -5,8 +5,6 @@ var handle = url.split("/").pop();
 var pickedProducts = getPicks();
 var prodID = null;
 
-
-
 if (url.includes('/products/')) {
     prodID = meta.product.id;
     setPicks(shop);

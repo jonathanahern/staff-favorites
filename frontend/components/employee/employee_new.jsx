@@ -24,20 +24,28 @@ class EmployeeNew extends Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.goBack = this.goBack.bind(this);
+    this.test = this.test.bind(this);
   }
 
   goBack() {
     this.props.history.push("/");
   }
 
+  test() {
+    // fetch(
+    //   `https://junk-store-test.myshopify.com/admin/api/2020-04/pages/count.json`,
+    //   {
+    //     method: "GET",
+    //   }
+    // )
+    //   .then((res) => res.json())
+    //   .then((resp) => {
+    //     console.log(resp);
+    //   });
+  }
+
   handleSubmit() {
     this.setState({ save_loading: true });
-    // let employee = {
-    //   name: this.state.name,
-    //   job_title: this.state.job_title,
-    //   description: this.state.description,
-    //   profile_url: this.state.profile_url,
-    // };
     const employee = Object.assign({}, this.state);
     this.props.createEmployee(employee);
     this.props.history.push("/");
@@ -122,6 +130,8 @@ class EmployeeNew extends Component {
                 >
                   Add
                 </Button>
+
+                <Button onClick={this.test}>Test</Button>
 
                 <Button loading={save_loading} onClick={this.goBack}>
                   Back
