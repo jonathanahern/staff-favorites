@@ -837,16 +837,14 @@ var EmployeeNew = /*#__PURE__*/function (_Component) {
     }
   }, {
     key: "test",
-    value: function test() {// fetch(
-      //   `https://junk-store-test.myshopify.com/admin/api/2020-04/pages/count.json`,
-      //   {
-      //     method: "GET",
-      //   }
-      // )
-      //   .then((res) => res.json())
-      //   .then((resp) => {
-      //     console.log(resp);
-      //   });
+    value: function test() {
+      fetch("api/pages", {
+        method: "GET"
+      }).then(function (res) {
+        return res.json();
+      }).then(function (resp) {
+        console.log(resp);
+      });
     }
   }, {
     key: "handleSubmit",

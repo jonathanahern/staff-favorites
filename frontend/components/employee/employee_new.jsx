@@ -32,16 +32,13 @@ class EmployeeNew extends Component {
   }
 
   test() {
-    // fetch(
-    //   `https://junk-store-test.myshopify.com/admin/api/2020-04/pages/count.json`,
-    //   {
-    //     method: "GET",
-    //   }
-    // )
-    //   .then((res) => res.json())
-    //   .then((resp) => {
-    //     console.log(resp);
-    //   });
+    fetch(`api/pages`, {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((resp) => {
+        console.log(resp);
+      });
   }
 
   handleSubmit() {
