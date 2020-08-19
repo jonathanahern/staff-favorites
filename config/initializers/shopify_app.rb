@@ -3,13 +3,13 @@ ShopifyApp.configure do |config|
   config.api_key = ENV['api_key']
   config.secret = ENV['api_secret']
   config.old_secret = ""
-  config.scope = "read_products, read_script_tags, write_script_tags" 
+  config.scope = "read_products, read_script_tags, write_script_tags, read_content, write_content," 
   config.embedded_app = true
   config.after_authenticate_job = false
   config.api_version = "2020-04"
   config.shop_session_repository = 'Shop'
   config.scripttags = [
-    {event:'onload', src: 'https://af02662d4346.ngrok.io/test.js'}
+    {event:'onload', src: 'https://b0eb13a3b4bf.ngrok.io/test.js'}
   ]
 end
 

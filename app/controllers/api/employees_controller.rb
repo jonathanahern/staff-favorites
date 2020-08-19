@@ -27,7 +27,12 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
     @employee.shop_id = shop_id
 
     if @employee.save
-      render json: @employee, status: 200
+      if createPage(@employee)
+        render json: @employee, status: 200
+      else
+        render json: {error: "Page didn't save"}, status: 401
+      end
+      
     else
       render json: @employee.errors.full_messages, status: 401
     end
@@ -43,6 +48,17 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
   private
     def employee_params
       params.require(:employee).permit(:name, :job_title, :description, :shop_id, :profile_url)
+    end
+
+    def createPage(employee)
+      @page = ShopifyAPI::Page.new
+      @page.title = employee.name
+      @page.body_html = "<p>#{employee.job_title}</p>\n<img src=#{employee.profile_url} alt='Staff Pic' width='500' height='600'>\n<p>#{employee.description}<p/>\n<h4>My Picks:</h4><div class='staff-picks-products' data-staffid='#{employee.id}'></div>"
+      if @page.save
+        return true
+      else
+        return false
+      end
     end
 
 end

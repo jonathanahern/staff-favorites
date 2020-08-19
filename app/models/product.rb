@@ -29,7 +29,7 @@ class Product < ApplicationRecord
     end
 
     def self.getProductIDs(shopDomain)
-        Product.select(:id, :shopify_product_id).joins(:shop).where("shops.shopify_domain = '#{shopDomain}'")
+        test = Product.select(:id, :shopify_product_id).joins(:shop).where("shops.shopify_domain = '#{shopDomain}'")
     end
   
 end

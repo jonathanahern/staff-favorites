@@ -22,6 +22,20 @@ if (url.includes("/collections/")) {
     }
 }
 
+if (url.includes("/pages/")) {
+    let eles = document.getElementsByClassName("staff-picks-products");
+    let staffid = eles[0].dataset.staffid;
+    console.log(staffid);
+    
+    fetch(`https://b0eb13a3b4bf.ngrok.io/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
+        method: "GET",
+    })
+        .then(res => res.json())
+        .then(resp => {
+            insertData(resp[0]);
+        })
+}
+
 function insertPickPic(ele) {
 
   let container = document.createElement("div");
@@ -52,7 +66,7 @@ text.style.right = "15%";
 
 if (url.includes('/products/') && pickedProducts.includes(prodID)) {
     setupPageForPick();
-    fetch(`https://af02662d4346.ngrok.io/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
+    fetch(`https://b0eb13a3b4bf.ngrok.io/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
     method: "GET",
     })
   .then(res => res.json())
@@ -62,7 +76,7 @@ if (url.includes('/products/') && pickedProducts.includes(prodID)) {
 }
 
 function setPicks (shop) {
-    fetch(`https://af02662d4346.ngrok.io/api/front_end?shop=${shop}`, {
+    fetch(`https://b0eb13a3b4bf.ngrok.io/api/front_end?shop=${shop}`, {
       method: "GET",
     })
       .then((res) => res.json())

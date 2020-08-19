@@ -838,8 +838,12 @@ var EmployeeNew = /*#__PURE__*/function (_Component) {
   }, {
     key: "test",
     value: function test() {
+      var token = document.querySelector('[name=csrf-token]').content;
       fetch("api/pages", {
-        method: "GET"
+        method: "POST",
+        headers: {
+          "X-CSRF-Token": token
+        }
       }).then(function (res) {
         return res.json();
       }).then(function (resp) {

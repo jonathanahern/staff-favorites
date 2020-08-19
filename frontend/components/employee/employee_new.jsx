@@ -32,8 +32,12 @@ class EmployeeNew extends Component {
   }
 
   test() {
+    const token = document.querySelector('[name=csrf-token]').content;
     fetch(`api/pages`, {
-      method: "GET",
+      method: "POST",
+      headers: {
+        "X-CSRF-Token": token,
+      }
     })
       .then((res) => res.json())
       .then((resp) => {
