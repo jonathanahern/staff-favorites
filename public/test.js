@@ -24,16 +24,69 @@ if (url.includes("/collections/")) {
 
 if (url.includes("/pages/")) {
     let eles = document.getElementsByClassName("staff-picks-products");
-    let staffid = eles[0].dataset.staffid;
+    let staffid = eles[0].dataset.staffid.toString();
     console.log(staffid);
     
-    fetch(`https://b0eb13a3b4bf.ngrok.io/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
-        method: "GET",
+    fetch(`https://b0eb13a3b4bf.ngrok.io/api/pages?employeeid=${staffid}`, {
+        method: "GET"
     })
         .then(res => res.json())
         .then(resp => {
-            insertData(resp[0]);
-        })
+            createProducts(eles[0], Object.values(resp))
+        });
+}
+
+function createProducts(container, data) {
+    
+    data.forEach((pick) => {
+
+        let containerPick = document.createElement("div");
+        container.appendChild(containerPick); 
+    
+        let img = document.createElement("img");
+        img.src = pick.shopify_image_url;
+        img.style.height = "150px";
+        containerPick.appendChild(img);
+    
+        let containerWords = document.createElement("div");
+        containerPick.appendChild(containerWords); 
+        
+        let title = document.createElement("h4");
+        title.innerHTML = pick.shopify_title;
+        containerWords.appendChild(title); 
+    
+        let description = document.createElement("p");
+        description.innerHTML = pick.review;
+        containerWords.appendChild(description); 
+
+    });
+
+    var style = document.createElement('style');
+    style.innerHTML =
+        '#main_content {' +
+        'width: 80%;' +
+        '}' +
+        '#full_container {' +
+        'display: flex;' +
+        '}' +
+        '#staff_pick_ele {' +
+        'width: 20%;' +
+        'margin-left: 20px;' +
+        '}' +
+        '#staff_pick_ele > h1{' +
+        'text-align: center;' +
+        'font-size: 1.75em;' +
+        'margin: 4px 0;' +
+        '}' +
+        '@media screen and (max-width: 750px) {' +
+        '}';
+
+    // Get the first script tag
+    var ref = document.querySelector('script');
+
+    // Insert our new styles before the first script tag
+    ref.parentNode.insertBefore(style, ref);
+
 }
 
 function insertPickPic(ele) {
