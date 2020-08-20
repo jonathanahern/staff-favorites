@@ -25,7 +25,7 @@ class Product < ApplicationRecord
         foreign_key: :employee_id
 
     def self.pickInfo(data)
-        Product.select(:shopify_title, :shopify_image_url, :shopify_product_id, :review, :shop_id, :employee_id, "employees.name, employees.job_title, employees.profile_url, employees.description").joins(:employee).where("products.shopify_product_id = #{data}")
+        Product.select(:shopify_title, :shopify_image_url, :shopify_product_id, :shopify_handle, :review, :shop_id, :employee_id, "employees.name, employees.job_title, employees.profile_url, employees.description").joins(:employee).where("products.shopify_product_id = #{data}")
     end
 
     def self.getProductIDs(shopDomain)

@@ -42,7 +42,7 @@ class Api::ProductsController < ShopifyApp::AuthenticatedController
 
   private
     def product_params
-      params.require(:product).permit(:shopify_title, :shopify_image_url, :shopify_product_id, :review, :shop_id, :employee_id)
+      params.require(:product).permit(:shopify_title, :shopify_image_url, :shopify_product_id, :review, :shopify_handle, :shop_id, :employee_id)
     end
 
 end

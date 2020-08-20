@@ -23,6 +23,7 @@ class ProductNew extends Component {
       shopify_title: "",
       shopify_image_url: "",
       shopify_product_id: "",
+      shopify_handle: "",
       review: "",
       employee_id: null,
       pickerOpen: false,
@@ -58,10 +59,12 @@ class ProductNew extends Component {
     let title = selection.selection[0].title;
     let idArr = selection.selection[0].id.split("Product/");
     let id = parseInt(idArr[idArr.length - 1]);
+    let handle = selection.selection[0].handle;
     this.setState({
       shopify_title: title,
       shopify_image_url: imageUrl,
       shopify_product_id: id,
+      shopify_handle: handle,
     });
   }
 
@@ -70,6 +73,7 @@ class ProductNew extends Component {
       shopify_title: this.state.shopify_title,
       shopify_image_url: this.state.shopify_image_url,
       shopify_product_id: this.state.shopify_product_id,
+      shopify_handle: this.state.shopify_handle,
       review: this.state.review,
       employee_id: this.state.employee_id
     };

@@ -25,6 +25,7 @@ class ProductNew extends Component {
       shopify_title: this.props.product.shopify_title,
       shopify_image_url: this.props.product.shopify_image_url,
       shopify_product_id: this.props.product.shopify_product_id,
+      shopify_handle: this.props.product.shopify_handle,
       review: this.props.product.review,
       employee_id: this.props.product.employee_id,
       pickerOpen: false,
@@ -71,11 +72,14 @@ class ProductNew extends Component {
     let imageUrl = selection.selection[0].images[0].originalSrc;
     let title = selection.selection[0].title;
     let idArr = selection.selection[0].id.split("Product/");
+    let handle = selection.selection[0].handle;
+    console.log(selection.selection[0]);
     let id = parseInt(idArr[idArr.length - 1]);
     this.setState({
       shopify_title: title,
       shopify_image_url: imageUrl,
       shopify_product_id: id,
+      shopify_handle: handle
     });
   }
 
@@ -85,9 +89,11 @@ class ProductNew extends Component {
       shopify_title: this.state.shopify_title,
       shopify_image_url: this.state.shopify_image_url,
       shopify_product_id: this.state.shopify_product_id,
+      shopify_handle: this.state.shopify_handle,
       review: this.state.review,
       employee_id: this.state.employee_id,
     };
+    console.log(product);
     this.props.updateProduct(product);
     this.props.history.push("/");
   }

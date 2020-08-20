@@ -26,7 +26,6 @@ if (url.includes("/pages/")) {
     let eles = document.getElementsByClassName("staff-picks-products");
     let staffid = eles[0].dataset.staffid.toString();
     console.log(staffid);
-    
     fetch(`https://b0eb13a3b4bf.ngrok.io/api/pages?employeeid=${staffid}`, {
         method: "GET"
     })
@@ -40,43 +39,63 @@ function createProducts(container, data) {
     
     data.forEach((pick) => {
 
-        let containerPick = document.createElement("div");
-        container.appendChild(containerPick); 
-    
+        let containerPick = document.createElement("a");
+        containerPick.href = url.split("/pages/")[0] + "/products/" + pick.shopify_handle;
+        containerPick.className += "pick-container clearfix";
+        containerPick.style.marginBottom = "12px";
+        container.appendChild(containerPick);
+
+        let containerImg = document.createElement("div");
+        containerImg.className += "img-container";
+        containerPick.appendChild(containerImg);
+
         let img = document.createElement("img");
         img.src = pick.shopify_image_url;
-        img.style.height = "150px";
-        containerPick.appendChild(img);
+        containerImg.appendChild(img);
     
-        let containerWords = document.createElement("div");
-        containerPick.appendChild(containerWords); 
+        // let containerWords = document.createElement("div");
+        // containerWords.className += "review-container";
+        // containerPick.appendChild(containerWords); 
         
         let title = document.createElement("h4");
         title.innerHTML = pick.shopify_title;
-        containerWords.appendChild(title); 
+        containerPick.appendChild(title); 
     
         let description = document.createElement("p");
-        description.innerHTML = pick.review;
-        containerWords.appendChild(description); 
+        description.innerHTML = pick.review.replace(/\n/g, "<br />");
+        containerPick.appendChild(description);
 
     });
 
     var style = document.createElement('style');
     style.innerHTML =
-        '#main_content {' +
-        'width: 80%;' +
+        '.pick-container {' +
+            'height: 420px;' +
+            'width: 280px;' +
+            'border-bottom: none !important;' +
+            'overflow: hidden; ' +
         '}' +
-        '#full_container {' +
-        'display: flex;' +
+        '.staff-picks-products {' +
+            'width: 100%;' +
+            'display: flex;' +
+            'flex-wrap: wrap;' +
+            'justify-content: space-between;' +
+            'align-items: center;' +
         '}' +
-        '#staff_pick_ele {' +
-        'width: 20%;' +
-        'margin-left: 20px;' +
+        '.clearfix:: after {' +
+            'content: "";' +
+            'clear: both;' +
+            'display: table;' +
         '}' +
-        '#staff_pick_ele > h1{' +
-        'text-align: center;' +
-        'font-size: 1.75em;' +
-        'margin: 4px 0;' +
+        '.img-container {' +
+            'float: left;' +
+            'width: 120px;' +
+            'align-items: center;' +
+            'margin-top: 4px;' + 
+            'margin-right: 4px;' + 
+        '}'+
+        '.pick-container h4  {' +
+            'margin: 6px 0;' +
         '}' +
         '@media screen and (max-width: 750px) {' +
         '}';
