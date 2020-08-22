@@ -122,8 +122,9 @@ class EmployeeEdit extends React.Component {
                     onChange={this.handleChange.bind(this, "description")}
                     label="Description"
                     multiline={true}
-                    rows={3}
-                    maxLength={240}
+                    rows={6}
+                    maxLength={500}
+                    showCharacterCount={true}
                   />
                   <br />
                   <TextField

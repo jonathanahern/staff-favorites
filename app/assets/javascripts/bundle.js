@@ -494,8 +494,9 @@ var EmployeeEdit = /*#__PURE__*/function (_React$Component) {
         onChange: this.handleChange.bind(this, "description"),
         label: "Description",
         multiline: true,
-        rows: 3,
-        maxLength: 240
+        rows: 6,
+        maxLength: 500,
+        showCharacterCount: true
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_2__["TextField"], {
         value: this.state.profile_url,
         onChange: this.handleChange.bind(this, "profile_url"),
@@ -906,8 +907,9 @@ var EmployeeNew = /*#__PURE__*/function (_Component) {
         onChange: this.handleChange.bind(this, "description"),
         label: "Description",
         multiline: true,
-        rows: 3,
-        maxLength: 240
+        rows: 6,
+        maxLength: 500,
+        showCharacterCount: true
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_3__["TextField"], {
         value: this.state.profile_url,
         onChange: this.handleChange.bind(this, "profile_url"),

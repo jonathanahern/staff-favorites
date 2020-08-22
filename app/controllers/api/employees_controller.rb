@@ -51,9 +51,68 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
     end
 
     def createPage(employee)
+      description = employee.description.gsub("\n", "<br />");
       @page = ShopifyAPI::Page.new
       @page.title = employee.name
-      @page.body_html = "<p>#{employee.job_title}</p>\n<img src=#{employee.profile_url} alt='Staff Pic' width='500' height='600'>\n<p>#{employee.description}<p/>\n<h4>My Picks:</h4><div class='staff-picks-products' data-staffid='#{employee.id}'></div>"
+      @page.body_html =
+          "<div id='profile-container'>\n
+            <img src=#{employee.profile_url} alt='Staff Pic' width='200px' class='staff-profile-img'>\n
+            <p>#{description}<p/>\n
+          </div>\n
+          <h2 id='my-picks-header'>My Picks:</h2>\n
+          <div class='staff-picks-products' data-staffid='#{employee.id}'></div>\n
+          <style>\n
+            #profile-container {\n
+                display: flex;\n
+                justify-content: center;\n
+            }\n
+            #profile-container p {\n
+                max-width: 500px;\n
+            }\n
+            #profile-container img {\n
+                width: 220px;\n
+                margin-right: 20px;\n
+                margin-bottom: 20px;\n
+            }\n
+            #my-picks-header {\n
+                text-align: center;\n
+            }\n
+
+            .pick-container {\n
+                height: 320px;\n
+                width: 280px;\n
+                border-bottom: none !important;\n
+                overflow: hidden; \n
+            }\n
+            .staff-picks-products {\n
+                width: 100%;\n
+                display: flex;\n
+                flex-wrap: wrap;\n
+                justify-content: space-between;\n
+                align-items: center;\n
+            }\n
+            .clearfix:: after {\n
+                content: "";\n
+                clear: both;\n
+                display: table;\n
+            }\n
+            .img-container {\n
+                float: left;\n
+                width: 120px;\n
+                align-items: center;\n
+                margin-top: 4px;\n
+                margin-right: 8px;\n
+            }\n
+            .pick-container h4  {\n
+                margin: 6px 0;\n
+            }\n
+            @media screen and (max-width: 790px) {\n
+                #profile-container {\n
+                    flex-direction: column;\n
+                    align-items: center;\n
+                }\n
+            };\n
+        </style>"
       if @page.save
         return true
       else

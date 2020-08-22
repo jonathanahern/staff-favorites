@@ -23,17 +23,84 @@ if (url.includes("/collections/")) {
 }
 
 if (url.includes("/pages/")) {
+
     let eles = document.getElementsByClassName("staff-picks-products");
-    let staffid = eles[0].dataset.staffid.toString();
-    console.log(staffid);
-    fetch(`https://b0eb13a3b4bf.ngrok.io/api/pages?employeeid=${staffid}`, {
-        method: "GET"
-    })
-        .then(res => res.json())
-        .then(resp => {
-            createProducts(eles[0], Object.values(resp))
-        });
+
+    if (eles.length > 0){
+        // loadStylePages();
+        let staffid = eles[0].dataset.staffid.toString();
+        console.log(staffid);
+        fetch(`https://b0eb13a3b4bf.ngrok.io/api/pages?employeeid=${staffid}`, {
+            method: "GET"
+        })
+            .then(res => res.json())
+            .then(resp => {
+                createProducts(eles[0], Object.values(resp))
+            });
+    }
+    
 }
+
+// function loadStylePages(){
+//     var style = document.createElement('style');
+//     style.innerHTML =
+//         '#profile-container {' +
+//             'display: flex;' +
+//             'justify-content: center;' +
+//         '}' +
+//         '#profile-container p {' +
+//             'max-width: 500px;' +
+//         '}' +
+//         '#profile-container img {' +
+//             'width: 220px;' +
+//             'margin-right: 20px;' +
+//             'margin-bottom: 20px;' +
+//         '}' +
+//         '#my-picks-header {' +
+//             'text-align: center;' +
+//         '}' +
+
+//         '.pick-container {' +
+//             'height: 320px;' +
+//             'width: 280px;' +
+//             'border-bottom: none !important;' +
+//             'overflow: hidden; ' +
+//         '}' +
+//         '.staff-picks-products {' +
+//             'width: 100%;' +
+//             'display: flex;' +
+//             'flex-wrap: wrap;' +
+//             'justify-content: space-between;' +
+//             'align-items: center;' +
+//         '}' +
+//         '.clearfix:: after {' +
+//             'content: "";' +
+//             'clear: both;' +
+//             'display: table;' +
+//         '}' +
+//         '.img-container {' +
+//             'float: left;' +
+//             'width: 120px;' +
+//             'align-items: center;' +
+//             'margin-top: 4px;' +
+//             'margin-right: 8px;' +
+//         '}' +
+//         '.pick-container h4  {' +
+//             'margin: 6px 0;' +
+//         '}' +
+//         '@media screen and (max-width: 790px) {' +
+//             '#profile-container {' +
+//                 'flex-direction: column;' +
+//                 'align-items: center;' +
+//             '}' +
+//         '}';
+
+//     // Get the first script tag
+//     var ref = document.querySelector('script');
+
+//     // Insert our new styles before the first script tag
+//     ref.parentNode.insertBefore(style, ref);
+// }
 
 function createProducts(container, data) {
     
@@ -53,10 +120,6 @@ function createProducts(container, data) {
         img.src = pick.shopify_image_url;
         containerImg.appendChild(img);
     
-        // let containerWords = document.createElement("div");
-        // containerWords.className += "review-container";
-        // containerPick.appendChild(containerWords); 
-        
         let title = document.createElement("h4");
         title.innerHTML = pick.shopify_title;
         containerPick.appendChild(title); 
@@ -66,46 +129,7 @@ function createProducts(container, data) {
         containerPick.appendChild(description);
 
     });
-
-    var style = document.createElement('style');
-    style.innerHTML =
-        '.pick-container {' +
-            'height: 420px;' +
-            'width: 280px;' +
-            'border-bottom: none !important;' +
-            'overflow: hidden; ' +
-        '}' +
-        '.staff-picks-products {' +
-            'width: 100%;' +
-            'display: flex;' +
-            'flex-wrap: wrap;' +
-            'justify-content: space-between;' +
-            'align-items: center;' +
-        '}' +
-        '.clearfix:: after {' +
-            'content: "";' +
-            'clear: both;' +
-            'display: table;' +
-        '}' +
-        '.img-container {' +
-            'float: left;' +
-            'width: 120px;' +
-            'align-items: center;' +
-            'margin-top: 4px;' + 
-            'margin-right: 4px;' + 
-        '}'+
-        '.pick-container h4  {' +
-            'margin: 6px 0;' +
-        '}' +
-        '@media screen and (max-width: 750px) {' +
-        '}';
-
-    // Get the first script tag
-    var ref = document.querySelector('script');
-
-    // Insert our new styles before the first script tag
-    ref.parentNode.insertBefore(style, ref);
-
+    
 }
 
 function insertPickPic(ele) {
