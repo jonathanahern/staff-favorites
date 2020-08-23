@@ -27,7 +27,6 @@ if (url.includes("/pages/")) {
     let eles = document.getElementsByClassName("staff-picks-products");
 
     if (eles.length > 0){
-        // loadStylePages();
         let staffid = eles[0].dataset.staffid.toString();
         console.log(staffid);
         fetch(`https://b0eb13a3b4bf.ngrok.io/api/pages?employeeid=${staffid}`, {
@@ -40,67 +39,6 @@ if (url.includes("/pages/")) {
     }
     
 }
-
-// function loadStylePages(){
-//     var style = document.createElement('style');
-//     style.innerHTML =
-//         '#profile-container {' +
-//             'display: flex;' +
-//             'justify-content: center;' +
-//         '}' +
-//         '#profile-container p {' +
-//             'max-width: 500px;' +
-//         '}' +
-//         '#profile-container img {' +
-//             'width: 220px;' +
-//             'margin-right: 20px;' +
-//             'margin-bottom: 20px;' +
-//         '}' +
-//         '#my-picks-header {' +
-//             'text-align: center;' +
-//         '}' +
-
-//         '.pick-container {' +
-//             'height: 320px;' +
-//             'width: 280px;' +
-//             'border-bottom: none !important;' +
-//             'overflow: hidden; ' +
-//         '}' +
-//         '.staff-picks-products {' +
-//             'width: 100%;' +
-//             'display: flex;' +
-//             'flex-wrap: wrap;' +
-//             'justify-content: space-between;' +
-//             'align-items: center;' +
-//         '}' +
-//         '.clearfix:: after {' +
-//             'content: "";' +
-//             'clear: both;' +
-//             'display: table;' +
-//         '}' +
-//         '.img-container {' +
-//             'float: left;' +
-//             'width: 120px;' +
-//             'align-items: center;' +
-//             'margin-top: 4px;' +
-//             'margin-right: 8px;' +
-//         '}' +
-//         '.pick-container h4  {' +
-//             'margin: 6px 0;' +
-//         '}' +
-//         '@media screen and (max-width: 790px) {' +
-//             '#profile-container {' +
-//                 'flex-direction: column;' +
-//                 'align-items: center;' +
-//             '}' +
-//         '}';
-
-//     // Get the first script tag
-//     var ref = document.querySelector('script');
-
-//     // Insert our new styles before the first script tag
-//     ref.parentNode.insertBefore(style, ref);
-// }
 
 function createProducts(container, data) {
     
