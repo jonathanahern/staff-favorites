@@ -11,6 +11,9 @@ ShopifyApp.configure do |config|
   config.scripttags = [
     {event:'onload', src: 'https://b0eb13a3b4bf.ngrok.io/test.js'}
   ]
+  config.webhooks = [
+    {topic: 'products/update', address: 'https://b0eb13a3b4bf.ngrok.io/webhooks/products_update', format: 'json'},
+  ]
 end
 
 # ShopifyApp::Utils.fetch_known_api_versions                        # Uncomment to fetch known api versions from shopify servers on boot

@@ -31,5 +31,16 @@ class Product < ApplicationRecord
     def self.getProductIDs(shopDomain)
         test = Product.select(:id, :shopify_product_id).joins(:shop).where("shops.shopify_domain = '#{shopDomain}'")
     end
-  
+
+    def self.webhookChange(prodID, img, title)
+        prod = Product.find_by_shopify_product_id(prodID);
+        if prod == nil
+            if img != prod.shopify_image_url
+                prod.update(:shopify_image_url => img);
+            elsif title != prod.shopify_title
+                prod.update(:shopify_title => title);
+            end
+        end
+    end
+
 end
