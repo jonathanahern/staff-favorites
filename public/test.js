@@ -135,9 +135,7 @@ function getPicks (){
 }
 
 function setupPageForPick(){
-    const mainContent = document.getElementById(`main_content`);
-    const fullContainer = document.getElementById(`full_container`);
-    const staffPick = document.getElementById(`staff_pick_ele`);
+
     var style = document.createElement('style');
     style.innerHTML =
         '#main_content {' +
