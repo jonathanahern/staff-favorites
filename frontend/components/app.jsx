@@ -1,5 +1,6 @@
 import React from "react";
 import { Route } from "react-router-dom";
+import NavBarContainer from "./navbar_container";
 import EmployeeIndexContainer from "./employee/employee_index_container";
 import EmployeeNewContainer from "./employee/employee_new_container";
 import EmployeeEditContainer from "./employee/employee_edit_container";
@@ -10,6 +11,7 @@ import ProductEditContainer from "./product/product_edit_container";
 
 const App = () => (
   <>
+    <Route exact path="/" component={NavBarContainer} />
     <Route exact path="/" component={EmployeeIndexContainer} />
     <Route exact path="/" component={ProductIndexContainer} />
     <Route exact path="/employee/new" component={EmployeeNewContainer} />
