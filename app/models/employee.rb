@@ -21,6 +21,7 @@ class Employee < ApplicationRecord
     has_many :products,
         class_name: :Product,
         primary_key: :id,
-        foreign_key: :employee_id
+        foreign_key: :employee_id,
+        dependent: :destroy
   
 end

@@ -8,20 +8,19 @@ class EmployeeIndex extends React.Component {
 
     constructor(props) {
         super(props);
-        this.addStaff = this.addStaff.bind(this);
     }
 
     componentDidMount() {
         this.props.fetchEmployees();
     }
 
-    addStaff(){
-        // redirect
-    }
-
     renderStaff(staff) {
         const { id, name, job_title, description, profile_url } = staff;
         let title = null;
+        let descriptionEdit = description;
+        if (description.length > 240) {
+          descriptionEdit = description.substr(0, 220) + "...";
+        }
         if (job_title.length > 0) {
             title = ` - ${job_title}`
         } else {
@@ -43,7 +42,7 @@ class EmployeeIndex extends React.Component {
                     {name}
                     <span id="job-title-list">{title}</span>{" "}
                   </TextStyle>
-                  <TextStyle> {description} </TextStyle>
+                  <TextStyle> {descriptionEdit} </TextStyle>
                 </div>
               </div>
             </ResourceList.Item>
@@ -53,7 +52,15 @@ class EmployeeIndex extends React.Component {
 
     render() {
         const { employees } = this.props;
+        let noStaff = <><TextStyle variation="subdued">Loading</TextStyle> <br/> <br/></>;
+        if (this.props.employees.length > 0){
+          noStaff = <TextStyle></TextStyle>;
+        } else if (this.props.employees.length === 0){
+          noStaff = <><TextStyle variation="subdued">You do not have any staff entered currently. Add staff before entering picks.</TextStyle> <br /> <br /></>;
+        }
+
         return (
+          
           <AppProvider
             i18n={{
               Polaris: {
@@ -72,7 +79,9 @@ class EmployeeIndex extends React.Component {
               },
             }}
           >
+            <br /><br />
             <Page title="Staff">
+              {noStaff}
               <Card>
                 <ResourceList
                   showHeader

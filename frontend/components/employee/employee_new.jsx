@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
-import { Link } from "react-router-dom";
 import {
   AppProvider,
   Page,
@@ -21,38 +19,49 @@ class EmployeeNew extends Component {
       profile_url: "",
       save_loading: false,
       save_disabled: true,
+      valid_img: false,
+      name_error: "",
+      description_error: "",
+      img_error: "",
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.checkForErrors = this.checkForErrors.bind(this);
     this.goBack = this.goBack.bind(this);
-    this.test = this.test.bind(this);
   }
 
   goBack() {
-    this.props.history.push("/");
+    this.props.history.push("/staff");
   }
 
-  test() {
-    const token = document.querySelector('[name=csrf-token]').content;
-    fetch(`api/pages`, {
-      method: "POST",
-      headers: {
-        "X-CSRF-Token": token,
-      }
-    })
-      .then((res) => res.json())
-      .then((resp) => {
-        console.log(resp);
-      });
+  checkForErrors(){
+    if (this.state.name.length < 1) {
+      this.setState({ name_error: "Name is required" });
+      return true;
+    } else if (this.state.description.length < 5){
+      this.setState({ description_error: "Description must be at least 5 characters" });
+      return true;
+    } else if (this.state.valid_img === false) {
+      this.setState({ description_error: "Valid image url is required" });
+      return true;
+    } else {
+      return false;
+    }
   }
 
   handleSubmit() {
-    this.setState({ save_loading: true });
-    const employee = Object.assign({}, this.state);
-    this.props.createEmployee(employee);
-    this.props.history.push("/");
+    if (this.checkForErrors() === false){
+      this.setState({ save_loading: true });
+      const employee = Object.assign({}, this.state);
+      this.props.createEmployee(employee).then(data => this.props.history.push("/staff"));
+    }
   }
 
   handleChange(name, value) {
+    if (name === "name" && this.state.name_error.length > 0){
+      this.setState({ name_error: "" })
+    } else if (name === "description" && this.state.description_error.length > 0) {
+      this.setState({ description_error: "" })
+    }
     this.setState({ save_disabled: false });
     let state = this.state;
     state[name] = value;
@@ -60,11 +69,11 @@ class EmployeeNew extends Component {
   }
 
   render() {
-    const { name } = this.props.employee;
     const { save_loading, save_disabled } = this.state;
     const title = `Add New Staff`;
     return (
       <AppProvider>
+        <br /><br />
         <Page
           title={title}
           breadcrumbs={[{ content: "Back", onAction: this.goBack }]}
@@ -80,6 +89,7 @@ class EmployeeNew extends Component {
                     type="text"
                     maxLength={24}
                     fullWidth
+                    error={this.state.name_error}
                   />
                   <br />
                   <TextField
@@ -94,10 +104,10 @@ class EmployeeNew extends Component {
                     value={this.state.description}
                     onChange={this.handleChange.bind(this, "description")}
                     label="Description"
-                    multiline={true}
-                    rows={6}
+                    multiline={6}
                     maxLength={500}
                     showCharacterCount={true}
+                    error={this.state.description_error}
                   />
                   <br />
                   <TextField
@@ -133,11 +143,10 @@ class EmployeeNew extends Component {
                   Add
                 </Button>
 
-                <Button onClick={this.test}>Test</Button>
-
                 <Button loading={save_loading} onClick={this.goBack}>
                   Back
                 </Button>
+
               </Stack>
             </FormLayout>
           </Form>

@@ -1,5 +1,4 @@
 import React from "react"
-import { Link } from "react-router-dom"
 import {
   AppProvider,
   Page,
@@ -9,6 +8,7 @@ import {
   Form,
   FormLayout,
   TextField,
+  TextContainer
 } from "@shopify/polaris";
 
 
@@ -61,13 +61,13 @@ class EmployeeEdit extends React.Component {
     this.closeModal();
     this.setState({ save_loading: true });
     this.setState({ delete_loading: true });
-    this.props.deleteEmployee(this.props.employee.id);
-    this.props.history.push("/");
+    this.props.deleteEmployee(this.props.employee.id).then(data => this.props.history.push("/"));
   }
 
   handleSubmit(e) {
     e.preventDefault();
     this.setState({ save_loading: true });
+    this.setState({ delete_loading: true });
     let employeeUpdated = {
       id: this.props.employee.id,
       name: this.state.name,
@@ -75,13 +75,16 @@ class EmployeeEdit extends React.Component {
       description: this.state.description,
       profile_url: this.state.profile_url,
     };
-    this.props.updateEmployee(employeeUpdated);
-    this.props.history.push("/");
-
+    this.props.updateEmployee(employeeUpdated).then(data => this.props.history.push("/"));
   }
 
   render() {
-    const { name } = this.props.employee;
+    let name = '';
+
+    if (this.props.employee !== undefined) {
+      name = this.props.employee.name;
+    }
+    
     const {
       deleting,
       save_loading,
@@ -89,9 +92,11 @@ class EmployeeEdit extends React.Component {
       delete_loading,
     } = this.state;
     const title = `${name}'s Profile`;
-    const delete_question = `Delete poor ${name}?`;
+    const delete_question = `Are you sure you want to delete ${name}?`;
+    const delete_subtitle = `Doing so will delete their page and all of their pick reviews. This cannot be undone.`
     return (
       <AppProvider>
+        <br/><br/>
         <Page
           title={title}
           breadcrumbs={[{ content: "Back", onAction: this.goBack }]}
@@ -121,8 +126,7 @@ class EmployeeEdit extends React.Component {
                     value={this.state.description}
                     onChange={this.handleChange.bind(this, "description")}
                     label="Description"
-                    multiline={true}
-                    rows={6}
+                    multiline={6}
                     maxLength={500}
                     showCharacterCount={true}
                   />
@@ -175,6 +179,12 @@ class EmployeeEdit extends React.Component {
             title={delete_question}
           >
             <Modal.Section>
+              <TextContainer>
+                <p>
+                  {delete_subtitle}
+                </p>
+              </TextContainer>
+              <br/><hr/><br/>
               <Stack>
                 <Button onClick={() => this.closeModal()}>Cancel</Button>
                 <Button

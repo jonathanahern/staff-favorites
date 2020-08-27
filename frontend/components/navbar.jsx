@@ -1,11 +1,8 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 import { Link } from "react-router-dom";
-import {
-    AppProvider
-} from "@shopify/polaris";
 
 class NavBar extends Component {
+
     constructor(props) {
         super(props);
     }
@@ -15,9 +12,9 @@ class NavBar extends Component {
         return(
             <>
                 <div className="nav-bar-container">
-                    <Link className="nav-bar-link" to={`/`}>Home</Link>
-                    <Link className="nav-bar-link" to={`/staff`}>Staff</Link>
-                    <Link className="nav-bar-link" to={`/picks`}>Picks</Link>
+                    <Link className="nav-bar-link" to={`/staff`}><div className="link-underline"></div>Staff</Link>
+                    <Link className="nav-bar-link" to={`/picks`}><div className="link-underline"></div>Picks</Link>
+                    <Link className="nav-bar-link" to={`/settings`}><div className="link-underline"></div>Settings</Link>
                 </div>
             </>
         );

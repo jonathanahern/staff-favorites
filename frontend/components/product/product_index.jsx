@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import {
   AppProvider,
   Page,
-  Stack,
   TextStyle,
   Card,
   ResourceList,
@@ -20,7 +19,6 @@ class ProductIndex extends React.Component {
   componentDidMount() {
     this.props.fetchEmployees();
     this.props.fetchProducts();
-   
   }
 
   renderProduct(product) {
@@ -28,7 +26,6 @@ class ProductIndex extends React.Component {
       id,
       shopify_title,
       shopify_image_url,
-      shopify_product_id,
       review,
       employee_id,
     } = product;
@@ -79,6 +76,7 @@ class ProductIndex extends React.Component {
           },
         }}
       >
+        <br/><br/>
         <Page title="Product Picks">
           <Card>
             <ResourceList

@@ -55,7 +55,7 @@ class ProductNew extends Component {
   }
 
   goBack() {
-    this.props.history.push("/");
+    this.props.history.push("/picks");
   }
 
   closeModal() {

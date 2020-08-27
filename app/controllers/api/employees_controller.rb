@@ -41,13 +41,21 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
 
   def destroy
     @employee = Employee.find(params[:id])
-    @employee.destroy
+    if @employee.destroy
+      deletePage(@employee.shopify_page_id)
+    end
     render :show
   end
 
   private
+
     def employee_params
-      params.require(:employee).permit(:name, :job_title, :description, :shop_id, :profile_url)
+      params.require(:employee).permit(:name, :job_title, :description, :shop_id, :shopify_page_id, :profile_url)
+    end
+
+    def deletePage(pageID)
+      result = ShopifyAPI::Page.find(pageID)
+      result.destroy
     end
 
     def createPage(employee)
@@ -114,6 +122,7 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
             };\n
         </style>"
       if @page.save
+        employee.update(:shopify_page_id => @page.id);
         return true
       else
         return false
