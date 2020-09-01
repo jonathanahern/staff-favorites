@@ -90,7 +90,7 @@
 /*!**********************************************!*\
   !*** ./frontend/actions/employee_actions.js ***!
   \**********************************************/
-/*! exports provided: RECEIVE_EMPLOYEES, RECEIVE_EMPLOYEE, REMOVE_EMPLOYEE, fetchEmployees, fetchEmployee, updateEmployee, createEmployee, deleteEmployee */
+/*! exports provided: RECEIVE_EMPLOYEES, RECEIVE_EMPLOYEE, REMOVE_EMPLOYEE, RECEIVE_EMPLOYEE_ERRORS, fetchEmployees, fetchEmployee, updateEmployee, createEmployee, deleteEmployee, receiveEmployeeErrors */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -98,16 +98,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_EMPLOYEES", function() { return RECEIVE_EMPLOYEES; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_EMPLOYEE", function() { return RECEIVE_EMPLOYEE; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "REMOVE_EMPLOYEE", function() { return REMOVE_EMPLOYEE; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_EMPLOYEE_ERRORS", function() { return RECEIVE_EMPLOYEE_ERRORS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchEmployees", function() { return fetchEmployees; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchEmployee", function() { return fetchEmployee; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateEmployee", function() { return updateEmployee; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createEmployee", function() { return createEmployee; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteEmployee", function() { return deleteEmployee; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "receiveEmployeeErrors", function() { return receiveEmployeeErrors; });
 /* harmony import */ var _util_employee_api_util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util/employee_api_util */ "./frontend/util/employee_api_util.js");
 
 var RECEIVE_EMPLOYEES = "RECEIVE_EMPLOYEES";
 var RECEIVE_EMPLOYEE = "RECEIVE_EMPLOYEE";
 var REMOVE_EMPLOYEE = "REMOVE_EMPLOYEE";
+var RECEIVE_EMPLOYEE_ERRORS = 'RECEIVE_EMPLOYEE_ERRORS';
 
 var receiveEmployees = function receiveEmployees(employees) {
   return {
@@ -157,11 +160,18 @@ var updateEmployee = function updateEmployee(employee) {
       return dispatch(receiveEmployeeUpdate(employee));
     });
   };
-};
+}; // export const createEmployee = (employee) => (dispatch) =>
+//          APIUtil.createEmployee(employee).then((employee) =>
+//            dispatch(receiveEmployee(employee))
+//          ).fail
+
 var createEmployee = function createEmployee(employee) {
   return function (dispatch) {
     return _util_employee_api_util__WEBPACK_IMPORTED_MODULE_0__["createEmployee"](employee).then(function (employee) {
-      return dispatch(receiveEmployee(employee));
+      dispatch(receiveEmployee(employee));
+      return employee;
+    }).fail(function (err) {
+      return dispatch(receiveEmployeeErrors(err.responseJSON));
     });
   };
 };
@@ -170,6 +180,12 @@ var deleteEmployee = function deleteEmployee(employeeId) {
     return _util_employee_api_util__WEBPACK_IMPORTED_MODULE_0__["deleteEmployee"](employeeId).then(function () {
       return dispatch(removeEmployee(employeeId));
     });
+  };
+};
+var receiveEmployeeErrors = function receiveEmployeeErrors(errors) {
+  return {
+    type: RECEIVE_EMPLOYEE_ERRORS,
+    errors: errors
   };
 };
 
@@ -877,7 +893,7 @@ var EmployeeNew = /*#__PURE__*/function (_Component) {
         return true;
       } else if (this.state.valid_img === false) {
         this.setState({
-          description_error: "Valid image url is required"
+          img_error: "Valid image url is required"
         });
         return true;
       } else {
@@ -895,7 +911,7 @@ var EmployeeNew = /*#__PURE__*/function (_Component) {
         });
         var employee = Object.assign({}, this.state);
         this.props.createEmployee(employee).then(function (data) {
-          return _this2.props.history.push("/staff");
+          return _this2.props.history.push("/");
         });
       }
     }
@@ -922,8 +938,22 @@ var EmployeeNew = /*#__PURE__*/function (_Component) {
       });
     }
   }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps, prevState) {
+      if (prevProps.errors.length !== this.props.errors.length) {
+        this.setState({
+          save_loading: false
+        });
+        this.setState({
+          name_error: this.props.errors[0]
+        });
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
+      var _this3 = this;
+
       var _this$state = this.state,
           save_loading = _this$state.save_loading,
           save_disabled = _this$state.save_disabled;
@@ -963,10 +993,26 @@ var EmployeeNew = /*#__PURE__*/function (_Component) {
         onChange: this.handleChange.bind(this, "profile_url"),
         label: "Profile Image URL",
         maxLength: 300,
+        error: this.state.img_error,
         helpText: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Upload images to Shopify Files (Settings/Files) and paste image's URL here")
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
         src: this.state.profile_url,
+        onLoad: function onLoad(e) {
+          if (e.target.src !== "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png") {
+            _this3.setState({
+              img_error: ""
+            });
+
+            _this3.setState({
+              valid_img: true
+            });
+          }
+        },
         onError: function onError(e) {
+          _this3.setState({
+            valid_img: false
+          });
+
           e.target.onerror = null;
           e.target.src = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
         },
@@ -982,7 +1028,7 @@ var EmployeeNew = /*#__PURE__*/function (_Component) {
       }, "Add"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_1__["Button"], {
         loading: save_loading,
         onClick: this.goBack
-      }, "Back"))))));
+      }, "Back")))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null)));
     }
   }]);
 
@@ -1017,7 +1063,8 @@ var mapStateToProps = function mapStateToProps(state) {
       desciption: "",
       profile_url: "",
       shop_id: ""
-    }
+    },
+    errors: state.entities.errors
   };
 };
 
@@ -2018,14 +2065,59 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var _employee_reducer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./employee_reducer.js */ "./frontend/reducers/employee_reducer.js");
 /* harmony import */ var _product_reducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./product_reducer */ "./frontend/reducers/product_reducer.js");
+/* harmony import */ var _errors_reducer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./errors_reducer */ "./frontend/reducers/errors_reducer.js");
+
 
 
 
 var entitiesReducer = Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])({
   employees: _employee_reducer_js__WEBPACK_IMPORTED_MODULE_1__["default"],
-  products: _product_reducer__WEBPACK_IMPORTED_MODULE_2__["default"]
+  products: _product_reducer__WEBPACK_IMPORTED_MODULE_2__["default"],
+  errors: _errors_reducer__WEBPACK_IMPORTED_MODULE_3__["default"]
 });
 /* harmony default export */ __webpack_exports__["default"] = (entitiesReducer);
+
+/***/ }),
+
+/***/ "./frontend/reducers/errors_reducer.js":
+/*!*********************************************!*\
+  !*** ./frontend/reducers/errors_reducer.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _actions_employee_actions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actions/employee_actions */ "./frontend/actions/employee_actions.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+
+
+var errorsReducer = function errorsReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+  Object.freeze(state);
+
+  switch (action.type) {
+    case _actions_employee_actions__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_EMPLOYEE_ERRORS"]:
+      return _toConsumableArray(action.errors);
+
+    default:
+      return state;
+  }
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (errorsReducer);
 
 /***/ }),
 

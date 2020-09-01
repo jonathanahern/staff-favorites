@@ -3,6 +3,7 @@ import * as APIUtil from "../util/employee_api_util";
 export const RECEIVE_EMPLOYEES = "RECEIVE_EMPLOYEES";
 export const RECEIVE_EMPLOYEE = "RECEIVE_EMPLOYEE";
 export const REMOVE_EMPLOYEE = "REMOVE_EMPLOYEE";
+export const RECEIVE_EMPLOYEE_ERRORS = 'RECEIVE_EMPLOYEE_ERRORS';
 
 const receiveEmployees = employees => {
     return {
@@ -41,12 +42,24 @@ export const updateEmployee = (employee) => (dispatch) =>
            dispatch(receiveEmployeeUpdate(employee))
          );
 
-export const createEmployee = (employee) => (dispatch) =>
-         APIUtil.createEmployee(employee).then((employee) =>
-           dispatch(receiveEmployee(employee))
-         );
+// export const createEmployee = (employee) => (dispatch) =>
+//          APIUtil.createEmployee(employee).then((employee) =>
+//            dispatch(receiveEmployee(employee))
+//          ).fail
+
+export const createEmployee = employee => dispatch => (
+  APIUtil.createEmployee(employee).then(employee => {
+    dispatch(receiveEmployee(employee));
+    return employee;
+  }).fail(err => dispatch(receiveEmployeeErrors(err.responseJSON)))
+);
 
 export const deleteEmployee = (employeeId) => (dispatch) =>
          APIUtil.deleteEmployee(employeeId).then(() =>
            dispatch(removeEmployee(employeeId))
          );
+
+export const receiveEmployeeErrors = errors => ({
+  type: RECEIVE_EMPLOYEE_ERRORS,
+  errors
+});

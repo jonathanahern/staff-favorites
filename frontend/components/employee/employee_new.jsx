@@ -6,7 +6,7 @@ import {
   Button,
   Form,
   FormLayout,
-  TextField,
+  TextField
 } from "@shopify/polaris";
 
 class EmployeeNew extends Component {
@@ -41,7 +41,7 @@ class EmployeeNew extends Component {
       this.setState({ description_error: "Description must be at least 5 characters" });
       return true;
     } else if (this.state.valid_img === false) {
-      this.setState({ description_error: "Valid image url is required" });
+      this.setState({ img_error: "Valid image url is required" });
       return true;
     } else {
       return false;
@@ -52,7 +52,9 @@ class EmployeeNew extends Component {
     if (this.checkForErrors() === false){
       this.setState({ save_loading: true });
       const employee = Object.assign({}, this.state);
-      this.props.createEmployee(employee).then(data => this.props.history.push("/staff"));
+      this.props.createEmployee(employee).then(data =>
+        this.props.history.push("/")
+        );
     }
   }
 
@@ -66,6 +68,13 @@ class EmployeeNew extends Component {
     let state = this.state;
     state[name] = value;
     this.setState({ state });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.errors.length !== this.props.errors.length){
+      this.setState({ save_loading: false });
+      this.setState({ name_error: this.props.errors[0] });
+    }
   }
 
   render() {
@@ -115,6 +124,7 @@ class EmployeeNew extends Component {
                     onChange={this.handleChange.bind(this, "profile_url")}
                     label="Profile Image URL"
                     maxLength={300}
+                    error={this.state.img_error}
                     helpText={
                       <span>
                         Upload images to Shopify Files (Settings/Files) and
@@ -125,7 +135,14 @@ class EmployeeNew extends Component {
                 </div>
                 <img
                   src={this.state.profile_url}
+                  onLoad={(e) => {
+                    if (e.target.src !== "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"){
+                      this.setState({ img_error: "" });
+                      this.setState({ valid_img: true })
+                    }
+                  }}
                   onError={(e) => {
+                    this.setState({ valid_img: false });
                     e.target.onerror = null;
                     e.target.src =
                       "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
@@ -133,6 +150,7 @@ class EmployeeNew extends Component {
                   style={{ height: "320px", padding: "20px" }}
                 />
               </Stack>
+              {/* <List type="bullet">{this.errors()}</List> */}
               <Stack>
                 <Button
                   primary={true}
@@ -146,10 +164,11 @@ class EmployeeNew extends Component {
                 <Button loading={save_loading} onClick={this.goBack}>
                   Back
                 </Button>
-
               </Stack>
+              
             </FormLayout>
           </Form>
+          <br/><br/>
         </Page>
       </AppProvider>
     );

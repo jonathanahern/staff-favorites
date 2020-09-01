@@ -13,6 +13,10 @@
 #
 class Employee < ApplicationRecord
 
+    validates :name, :description, :profile_url, :shop_id, presence: true
+    validates :description, length: { maximum: 500 }
+    validates :name, uniqueness: { case_sensitive: false, scope: :shop_id, message: "already in use" }
+
     belongs_to :shop,
         class_name: :Shop,
         primary_key: :id,

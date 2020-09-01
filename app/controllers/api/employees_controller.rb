@@ -25,16 +25,15 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
     shop_id = session[:shop_id]
     @employee = Employee.new(employee_params)
     @employee.shop_id = shop_id
-
     if @employee.save
       if createPage(@employee)
         render json: @employee, status: 200
       else
-        render json: {error: "Page didn't save"}, status: 401
+        render json: {error: "Page didn't save"}, status: 422
       end
       
     else
-      render json: @employee.errors.full_messages, status: 401
+      render json: @employee.errors.full_messages, status: 422
     end
 
   end

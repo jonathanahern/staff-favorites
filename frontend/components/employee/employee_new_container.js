@@ -9,7 +9,8 @@ const mapStateToProps = (state) => ({
     desciption: "",
     profile_url: "",
     shop_id: ""
-  }
+  },
+  errors: state.entities.errors
 });
 
 const mapDispatchToProps = (dispatch) => ({
