@@ -37,10 +37,19 @@ export const fetchEmployee = (employeeId) => (dispatch) =>
            dispatch(receiveEmployee(employee))
          );
 
-export const updateEmployee = (employee) => (dispatch) =>
-         APIUtil.updateEmployee(employee).then((employee) =>
-           dispatch(receiveEmployeeUpdate(employee))
-         );
+// export const updateEmployee = (employee) => (dispatch) =>
+//          APIUtil.updateEmployee(employee).then((employee) =>
+//            dispatch(receiveEmployeeUpdate(employee))
+//          );
+
+export const updateEmployee = employee => dispatch => (
+  APIUtil.updateEmployee(employee).then(employee => {
+    if (!('error' in employee)) {
+      dispatch(receiveEmployeeUpdate(employee));
+    }
+    return employee;
+  })
+);
 
 // export const createEmployee = (employee) => (dispatch) =>
 //          APIUtil.createEmployee(employee).then((employee) =>
@@ -49,9 +58,11 @@ export const updateEmployee = (employee) => (dispatch) =>
 
 export const createEmployee = employee => dispatch => (
   APIUtil.createEmployee(employee).then(employee => {
-    dispatch(receiveEmployee(employee));
+    if (!('error' in employee)){
+      dispatch(receiveEmployee(employee));
+    }
     return employee;
-  }).fail(err => dispatch(receiveEmployeeErrors(err.responseJSON)))
+  })
 );
 
 export const deleteEmployee = (employeeId) => (dispatch) =>

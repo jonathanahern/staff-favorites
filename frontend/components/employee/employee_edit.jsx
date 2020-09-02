@@ -23,6 +23,10 @@ class EmployeeEdit extends React.Component {
       profile_url: this.props.employee.profile_url,
       save_loading: false,
       save_disabled: true,
+      valid_img: false,
+      name_error: "",
+      description_error: "",
+      img_error: "",
       deleting: false,
       delete_loading: false,
     };
@@ -32,6 +36,8 @@ class EmployeeEdit extends React.Component {
     this.openModal = this.openModal.bind(this);
     this.deleteEmployee = this.deleteEmployee.bind(this);
     this.goBack = this.goBack.bind(this);
+    this.processSubmit = this.processSubmit.bind(this);
+    this.checkForErrors = this.checkForErrors.bind(this);
   }
 
   componentDidMount() {
@@ -39,6 +45,11 @@ class EmployeeEdit extends React.Component {
   }
 
   handleChange(name, value) {
+    if (name === "name" && this.state.name_error.length > 0) {
+      this.setState({ name_error: "" })
+    } else if (name === "description" && this.state.description_error.length > 0) {
+      this.setState({ description_error: "" })
+    }
     this.setState({ save_disabled: false });
     let state = this.state;
     state[name] = value;
@@ -47,6 +58,27 @@ class EmployeeEdit extends React.Component {
 
   goBack() {
     this.props.history.push("/");
+  }
+
+  checkForErrors() {
+    if (this.state.name.length < 1) {
+      this.setState({ name_error: "Name is required" });
+      const elmnt = document.getElementById("name-ele");
+      elmnt.scrollIntoView({ behavior: "smooth", block: "center" });
+      return true;
+    } else if (this.state.description.length < 5) {
+      const elmnt = document.getElementById("description-ele");
+      elmnt.scrollIntoView({ behavior: "smooth", block: "center" });
+      this.setState({ description_error: "Description must be at least 5 characters" });
+      return true;
+    } else if (this.state.valid_img === false) {
+      const elmnt = document.getElementById("img-url-ele");
+      elmnt.scrollIntoView({ behavior: "smooth", block: "center" });
+      this.setState({ img_error: "Valid image url is required" });
+      return true;
+    } else {
+      return false;
+    }
   }
 
   closeModal() {
@@ -66,16 +98,31 @@ class EmployeeEdit extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    this.setState({ save_loading: true });
-    this.setState({ delete_loading: true });
-    let employeeUpdated = {
-      id: this.props.employee.id,
-      name: this.state.name,
-      job_title: this.state.job_title,
-      description: this.state.description,
-      profile_url: this.state.profile_url,
-    };
-    this.props.updateEmployee(employeeUpdated).then(data => this.props.history.push("/"));
+    if (this.checkForErrors() === false) {
+      this.setState({ save_loading: true });
+      this.setState({ delete_loading: true });
+      let employeeUpdated = {
+        id: this.props.employee.id,
+        name: this.state.name,
+        job_title: this.state.job_title,
+        description: this.state.description,
+        profile_url: this.state.profile_url,
+      };
+      this.props.updateEmployee(employeeUpdated)
+        .then(data => this.processSubmit(data));
+    }
+  }
+
+  processSubmit(data) {
+    if ('error' in data) {
+      this.setState({ save_loading: false });
+      this.setState({ delete_loading: false });
+      this.setState({ name_error: data.error });
+      const elmnt = document.getElementById("name-ele");
+      elmnt.scrollIntoView({ behavior: "smooth", block: "center" });
+    } else {
+      this.props.history.push("/")
+    }
   }
 
   render() {
@@ -110,8 +157,10 @@ class EmployeeEdit extends React.Component {
                     onChange={this.handleChange.bind(this, "name")}
                     label="Name"
                     type="text"
+                    id="name-ele"
                     maxLength={24}
                     fullWidth
+                    error={this.state.name_error}
                   />
                   <br />
                   <TextField
@@ -123,19 +172,23 @@ class EmployeeEdit extends React.Component {
                   />
                   <br />
                   <TextField
+                    id="description-ele"
                     value={this.state.description}
                     onChange={this.handleChange.bind(this, "description")}
                     label="Description"
                     multiline={6}
                     maxLength={500}
                     showCharacterCount={true}
+                    error={this.state.description_error}
                   />
                   <br />
                   <TextField
+                    id="img-url-ele"
                     value={this.state.profile_url}
                     onChange={this.handleChange.bind(this, "profile_url")}
                     label="Profile Image URL"
                     maxLength={300}
+                    error={this.state.img_error}
                     helpText={
                       <span>
                         Upload images to Shopify Files (Settings/Files) and
@@ -146,7 +199,14 @@ class EmployeeEdit extends React.Component {
                 </div>
                 <img
                   src={this.state.profile_url}
+                  onLoad={(e) => {
+                    if (e.target.src !== "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png") {
+                      this.setState({ img_error: "" });
+                      this.setState({ valid_img: true })
+                    }
+                  }}
                   onError={(e) => {
+                    this.setState({ valid_img: false });
                     e.target.onerror = null;
                     e.target.src =
                       "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";

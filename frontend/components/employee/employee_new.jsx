@@ -25,6 +25,7 @@ class EmployeeNew extends Component {
       img_error: "",
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.processSubmit = this.processSubmit.bind(this);
     this.checkForErrors = this.checkForErrors.bind(this);
     this.goBack = this.goBack.bind(this);
   }
@@ -36,11 +37,17 @@ class EmployeeNew extends Component {
   checkForErrors(){
     if (this.state.name.length < 1) {
       this.setState({ name_error: "Name is required" });
+      const elmnt = document.getElementById("name-ele");
+      elmnt.scrollIntoView({behavior: "smooth", block: "center"});
       return true;
     } else if (this.state.description.length < 5){
+      const elmnt = document.getElementById("description-ele");
+      elmnt.scrollIntoView({ behavior: "smooth", block: "center" });
       this.setState({ description_error: "Description must be at least 5 characters" });
       return true;
     } else if (this.state.valid_img === false) {
+      const elmnt = document.getElementById("img-url-ele");
+      elmnt.scrollIntoView({ behavior: "smooth", block: "center" });
       this.setState({ img_error: "Valid image url is required" });
       return true;
     } else {
@@ -53,8 +60,19 @@ class EmployeeNew extends Component {
       this.setState({ save_loading: true });
       const employee = Object.assign({}, this.state);
       this.props.createEmployee(employee).then(data =>
-        this.props.history.push("/")
+        this.processSubmit(data)
         );
+    }
+  }
+
+  processSubmit(data){
+    if ('error' in data){
+      this.setState({ save_loading: false });
+      this.setState({ name_error: data.error });
+      const elmnt = document.getElementById("name-ele");
+      elmnt.scrollIntoView({ behavior: "smooth", block: "center" });
+    } else {
+      this.props.history.push("/")
     }
   }
 
@@ -70,13 +88,6 @@ class EmployeeNew extends Component {
     this.setState({ state });
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.errors.length !== this.props.errors.length){
-      this.setState({ save_loading: false });
-      this.setState({ name_error: this.props.errors[0] });
-    }
-  }
-
   render() {
     const { save_loading, save_disabled } = this.state;
     const title = `Add New Staff`;
@@ -90,12 +101,13 @@ class EmployeeNew extends Component {
           <Form onSubmit={this.handleSubmit}>
             <FormLayout>
               <Stack>
-                <div>
+                <div >
                   <TextField
                     value={this.state.name}
                     onChange={this.handleChange.bind(this, "name")}
                     label="Name"
                     type="text"
+                    id="name-ele"
                     maxLength={24}
                     fullWidth
                     error={this.state.name_error}
@@ -110,6 +122,7 @@ class EmployeeNew extends Component {
                   />
                   <br />
                   <TextField
+                    id="description-ele"
                     value={this.state.description}
                     onChange={this.handleChange.bind(this, "description")}
                     label="Description"
@@ -120,6 +133,7 @@ class EmployeeNew extends Component {
                   />
                   <br />
                   <TextField
+                    id="img-url-ele"
                     value={this.state.profile_url}
                     onChange={this.handleChange.bind(this, "profile_url")}
                     label="Profile Image URL"
@@ -150,7 +164,6 @@ class EmployeeNew extends Component {
                   style={{ height: "320px", padding: "20px" }}
                 />
               </Stack>
-              {/* <List type="bullet">{this.errors()}</List> */}
               <Stack>
                 <Button
                   primary={true}

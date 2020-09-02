@@ -16,7 +16,7 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
     if @employee.update(employee_params)
       render :show
     else
-      render json: @employee.errors.full_messages, status: 422
+      render json: {error: @employee.errors.full_messages, status: 422 }
     end
 
   end
@@ -26,6 +26,7 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
     @employee = Employee.new(employee_params)
     @employee.shop_id = shop_id
     if @employee.save
+
       if createPage(@employee)
         render json: @employee, status: 200
       else
@@ -33,7 +34,9 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
       end
       
     else
-      render json: @employee.errors.full_messages, status: 422
+
+      render json: {error: @employee.errors.full_messages, status: 422 }
+
     end
 
   end

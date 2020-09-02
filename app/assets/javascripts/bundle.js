@@ -153,11 +153,19 @@ var fetchEmployee = function fetchEmployee(employeeId) {
       return dispatch(receiveEmployee(employee));
     });
   };
-};
+}; // export const updateEmployee = (employee) => (dispatch) =>
+//          APIUtil.updateEmployee(employee).then((employee) =>
+//            dispatch(receiveEmployeeUpdate(employee))
+//          );
+
 var updateEmployee = function updateEmployee(employee) {
   return function (dispatch) {
     return _util_employee_api_util__WEBPACK_IMPORTED_MODULE_0__["updateEmployee"](employee).then(function (employee) {
-      return dispatch(receiveEmployeeUpdate(employee));
+      if (!('error' in employee)) {
+        dispatch(receiveEmployeeUpdate(employee));
+      }
+
+      return employee;
     });
   };
 }; // export const createEmployee = (employee) => (dispatch) =>
@@ -168,10 +176,11 @@ var updateEmployee = function updateEmployee(employee) {
 var createEmployee = function createEmployee(employee) {
   return function (dispatch) {
     return _util_employee_api_util__WEBPACK_IMPORTED_MODULE_0__["createEmployee"](employee).then(function (employee) {
-      dispatch(receiveEmployee(employee));
+      if (!('error' in employee)) {
+        dispatch(receiveEmployee(employee));
+      }
+
       return employee;
-    }).fail(function (err) {
-      return dispatch(receiveEmployeeErrors(err.responseJSON));
     });
   };
 };
@@ -398,6 +407,10 @@ var EmployeeEdit = /*#__PURE__*/function (_React$Component) {
       profile_url: _this.props.employee.profile_url,
       save_loading: false,
       save_disabled: true,
+      valid_img: false,
+      name_error: "",
+      description_error: "",
+      img_error: "",
       deleting: false,
       delete_loading: false
     };
@@ -406,6 +419,8 @@ var EmployeeEdit = /*#__PURE__*/function (_React$Component) {
     _this.openModal = _this.openModal.bind(_assertThisInitialized(_this));
     _this.deleteEmployee = _this.deleteEmployee.bind(_assertThisInitialized(_this));
     _this.goBack = _this.goBack.bind(_assertThisInitialized(_this));
+    _this.processSubmit = _this.processSubmit.bind(_assertThisInitialized(_this));
+    _this.checkForErrors = _this.checkForErrors.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -417,6 +432,16 @@ var EmployeeEdit = /*#__PURE__*/function (_React$Component) {
   }, {
     key: "handleChange",
     value: function handleChange(name, value) {
+      if (name === "name" && this.state.name_error.length > 0) {
+        this.setState({
+          name_error: ""
+        });
+      } else if (name === "description" && this.state.description_error.length > 0) {
+        this.setState({
+          description_error: ""
+        });
+      }
+
       this.setState({
         save_disabled: false
       });
@@ -430,6 +455,47 @@ var EmployeeEdit = /*#__PURE__*/function (_React$Component) {
     key: "goBack",
     value: function goBack() {
       this.props.history.push("/");
+    }
+  }, {
+    key: "checkForErrors",
+    value: function checkForErrors() {
+      if (this.state.name.length < 1) {
+        this.setState({
+          name_error: "Name is required"
+        });
+        var elmnt = document.getElementById("name-ele");
+        elmnt.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+        return true;
+      } else if (this.state.description.length < 5) {
+        var _elmnt = document.getElementById("description-ele");
+
+        _elmnt.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+
+        this.setState({
+          description_error: "Description must be at least 5 characters"
+        });
+        return true;
+      } else if (this.state.valid_img === false) {
+        var _elmnt2 = document.getElementById("img-url-ele");
+
+        _elmnt2.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+
+        this.setState({
+          img_error: "Valid image url is required"
+        });
+        return true;
+      } else {
+        return false;
+      }
     }
   }, {
     key: "closeModal",
@@ -467,22 +533,47 @@ var EmployeeEdit = /*#__PURE__*/function (_React$Component) {
       var _this3 = this;
 
       e.preventDefault();
-      this.setState({
-        save_loading: true
-      });
-      this.setState({
-        delete_loading: true
-      });
-      var employeeUpdated = {
-        id: this.props.employee.id,
-        name: this.state.name,
-        job_title: this.state.job_title,
-        description: this.state.description,
-        profile_url: this.state.profile_url
-      };
-      this.props.updateEmployee(employeeUpdated).then(function (data) {
-        return _this3.props.history.push("/");
-      });
+
+      if (this.checkForErrors() === false) {
+        this.setState({
+          save_loading: true
+        });
+        this.setState({
+          delete_loading: true
+        });
+        var employeeUpdated = {
+          id: this.props.employee.id,
+          name: this.state.name,
+          job_title: this.state.job_title,
+          description: this.state.description,
+          profile_url: this.state.profile_url
+        };
+        this.props.updateEmployee(employeeUpdated).then(function (data) {
+          return _this3.processSubmit(data);
+        });
+      }
+    }
+  }, {
+    key: "processSubmit",
+    value: function processSubmit(data) {
+      if ('error' in data) {
+        this.setState({
+          save_loading: false
+        });
+        this.setState({
+          delete_loading: false
+        });
+        this.setState({
+          name_error: data.error
+        });
+        var elmnt = document.getElementById("name-ele");
+        elmnt.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+      } else {
+        this.props.history.push("/");
+      }
     }
   }, {
     key: "render",
@@ -516,8 +607,10 @@ var EmployeeEdit = /*#__PURE__*/function (_React$Component) {
         onChange: this.handleChange.bind(this, "name"),
         label: "Name",
         type: "text",
+        id: "name-ele",
         maxLength: 24,
-        fullWidth: true
+        fullWidth: true,
+        error: this.state.name_error
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_1__["TextField"], {
         value: this.state.job_title,
         onChange: this.handleChange.bind(this, "job_title"),
@@ -525,21 +618,40 @@ var EmployeeEdit = /*#__PURE__*/function (_React$Component) {
         type: "text",
         maxLength: 24
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_1__["TextField"], {
+        id: "description-ele",
         value: this.state.description,
         onChange: this.handleChange.bind(this, "description"),
         label: "Description",
         multiline: 6,
         maxLength: 500,
-        showCharacterCount: true
+        showCharacterCount: true,
+        error: this.state.description_error
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_1__["TextField"], {
+        id: "img-url-ele",
         value: this.state.profile_url,
         onChange: this.handleChange.bind(this, "profile_url"),
         label: "Profile Image URL",
         maxLength: 300,
+        error: this.state.img_error,
         helpText: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Upload images to Shopify Files (Settings/Files) and paste image's URL here")
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
         src: this.state.profile_url,
+        onLoad: function onLoad(e) {
+          if (e.target.src !== "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png") {
+            _this4.setState({
+              img_error: ""
+            });
+
+            _this4.setState({
+              valid_img: true
+            });
+          }
+        },
         onError: function onError(e) {
+          _this4.setState({
+            valid_img: false
+          });
+
           e.target.onerror = null;
           e.target.src = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
         },
@@ -868,6 +980,7 @@ var EmployeeNew = /*#__PURE__*/function (_Component) {
       img_error: ""
     };
     _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
+    _this.processSubmit = _this.processSubmit.bind(_assertThisInitialized(_this));
     _this.checkForErrors = _this.checkForErrors.bind(_assertThisInitialized(_this));
     _this.goBack = _this.goBack.bind(_assertThisInitialized(_this));
     return _this;
@@ -885,13 +998,32 @@ var EmployeeNew = /*#__PURE__*/function (_Component) {
         this.setState({
           name_error: "Name is required"
         });
+        var elmnt = document.getElementById("name-ele");
+        elmnt.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
         return true;
       } else if (this.state.description.length < 5) {
+        var _elmnt = document.getElementById("description-ele");
+
+        _elmnt.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+
         this.setState({
           description_error: "Description must be at least 5 characters"
         });
         return true;
       } else if (this.state.valid_img === false) {
+        var _elmnt2 = document.getElementById("img-url-ele");
+
+        _elmnt2.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+
         this.setState({
           img_error: "Valid image url is required"
         });
@@ -911,8 +1043,27 @@ var EmployeeNew = /*#__PURE__*/function (_Component) {
         });
         var employee = Object.assign({}, this.state);
         this.props.createEmployee(employee).then(function (data) {
-          return _this2.props.history.push("/");
+          return _this2.processSubmit(data);
         });
+      }
+    }
+  }, {
+    key: "processSubmit",
+    value: function processSubmit(data) {
+      if ('error' in data) {
+        this.setState({
+          save_loading: false
+        });
+        this.setState({
+          name_error: data.error
+        });
+        var elmnt = document.getElementById("name-ele");
+        elmnt.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+      } else {
+        this.props.history.push("/");
       }
     }
   }, {
@@ -938,18 +1089,6 @@ var EmployeeNew = /*#__PURE__*/function (_Component) {
       });
     }
   }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate(prevProps, prevState) {
-      if (prevProps.errors.length !== this.props.errors.length) {
-        this.setState({
-          save_loading: false
-        });
-        this.setState({
-          name_error: this.props.errors[0]
-        });
-      }
-    }
-  }, {
     key: "render",
     value: function render() {
       var _this3 = this;
@@ -971,6 +1110,7 @@ var EmployeeNew = /*#__PURE__*/function (_Component) {
         onChange: this.handleChange.bind(this, "name"),
         label: "Name",
         type: "text",
+        id: "name-ele",
         maxLength: 24,
         fullWidth: true,
         error: this.state.name_error
@@ -981,6 +1121,7 @@ var EmployeeNew = /*#__PURE__*/function (_Component) {
         type: "text",
         maxLength: 24
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_1__["TextField"], {
+        id: "description-ele",
         value: this.state.description,
         onChange: this.handleChange.bind(this, "description"),
         label: "Description",
@@ -989,6 +1130,7 @@ var EmployeeNew = /*#__PURE__*/function (_Component) {
         showCharacterCount: true,
         error: this.state.description_error
       }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_shopify_polaris__WEBPACK_IMPORTED_MODULE_1__["TextField"], {
+        id: "img-url-ele",
         value: this.state.profile_url,
         onChange: this.handleChange.bind(this, "profile_url"),
         label: "Profile Image URL",
