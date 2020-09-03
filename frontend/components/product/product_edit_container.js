@@ -5,6 +5,7 @@ import { fetchEmployees } from '../../actions/employee_actions';
 import ProductEdit from './product_edit';
 
 const mapStateToProps = (state, ownProps) => ({
+  data: document.getElementById("shopify-app-init"),
   product: state.entities.products[ownProps.match.params.productId],
   employees: Object.values(state.entities.employees),
 });

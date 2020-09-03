@@ -57,6 +57,13 @@ class ProductIndex extends React.Component {
 
   render() {
     const { products } = this.props;
+    
+    let noProducts = <><TextStyle variation="subdued">Loading</TextStyle> <br /> <br /></>;
+    if (this.props.products.length > 0) {
+      noProducts = <TextStyle></TextStyle>;
+    } else if (this.props.products.length === 0) {
+      noProducts = <><TextStyle variation="subdued">You do not have any picks entered currently.</TextStyle> <br /> <br /></>;
+    }
     return (
       <AppProvider
         i18n={{
@@ -77,7 +84,8 @@ class ProductIndex extends React.Component {
         }}
       >
         <br/><br/>
-        <Page title="Product Picks">
+        <Page title="Picks">
+          {noProducts}
           <Card>
             <ResourceList
               showHeader

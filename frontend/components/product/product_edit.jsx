@@ -10,12 +10,16 @@ import {
   FormLayout,
   Card,
   TextField,
-  ResourcePicker,
   DisplayText,
   TextStyle,
   Select,
   Modal
 } from "@shopify/polaris";
+import {
+  Provider as AppBridgeProvider,
+  ResourcePicker,
+} from "@shopify/app-bridge-react";
+
 
 class ProductNew extends Component {
   constructor(props) {
@@ -29,7 +33,9 @@ class ProductNew extends Component {
       review: this.props.product.review,
       employee_id: this.props.product.employee_id,
       pickerOpen: false,
-      selectedEmployee: '',
+      selectedEmployee: "",
+      apiKey: this.props.data.dataset.apiKey,
+      domain_name: this.props.data.dataset.shopOrigin,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.openPicker = this.openPicker.bind(this);
@@ -73,7 +79,6 @@ class ProductNew extends Component {
     let title = selection.selection[0].title;
     let idArr = selection.selection[0].id.split("Product/");
     let handle = selection.selection[0].handle;
-    console.log(selection.selection[0]);
     let id = parseInt(idArr[idArr.length - 1]);
     this.setState({
       shopify_title: title,
@@ -116,7 +121,10 @@ class ProductNew extends Component {
   }
 
   render() {
-    const title = `Edit Pick`;
+    const config = {
+      apiKey: this.state.apiKey,
+      shopOrigin: this.state.domain_name,
+    };
     const { deleting } = this.state;
     const delete_question = `Are you sure you want to delete this pick?`;
     let productInfo = "";
@@ -148,92 +156,91 @@ class ProductNew extends Component {
     }
     return (
       <>
-        <AppProvider
-          apiKey="a959533e684cfdd1e15084c979598b36"
-          shopOrigin="junk-store-test.myshopify.com"
-        >
-          <Page>
-            <Link to="/">
-              <p id="back-link">
-                <svg height="20" width="20">
-                  <path
-                    d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16"
-                    fillRule="evenodd"
-                  ></path>
-                </svg>
-                Back
-              </p>
-            </Link>
-            <br />
-            <DisplayText size="large" element="h1">
-              Edit Pick
-            </DisplayText>
-            <br />
-            <Form onSubmit={this.handleSubmit}>
-              <FormLayout>
-                <Card
-                  title="Edit Product"
-                  sectioned
-                  primaryFooterAction={{
-                    content: "Find Product",
-                    onAction: this.openPicker,
-                  }}
-                >
-                  {productInfo}
-                </Card>
-                <Card title="Edit Staff Member" sectioned>
-                  <Select
-                    placeholder={"Select a staff member"}
-                    options={options}
-                    onChange={this.handleSelectChange}
-                    value={selectorVal}
-                  />
-                </Card>
-                <Card title="Edit Review" sectioned>
-                  <TextField
-                    value={this.state.review}
-                    onChange={this.handleChange.bind(this, "review")}
-                    multiline={true}
-                    rows={7}
-                    maxLength={400}
-                    showCharacterCount={true}
-                  />
-                </Card>
-                <Stack distribution="trailing">
-                  <Button destructive onClick={() => this.openModal()}>
-                    Delete
-                  </Button>
-                  <Button primary onClick={() => this.handleSubmit()}>
-                    Save
-                  </Button>
-                </Stack>
-              </FormLayout>
-            </Form>
-          </Page>
-          <ResourcePicker
-            resourceType="Product"
-            open={this.state.pickerOpen}
-            showVariants={false}
-            allowMultiple={false}
-            onSelection={this.handleSelection}
-            onCancel={this.closePicker}
-          />
+        <AppProvider>
+          <AppBridgeProvider config={config}>
+            <Page>
+              <Link to="/">
+                <p id="back-link">
+                  <svg height="20" width="20">
+                    <path
+                      d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16"
+                      fillRule="evenodd"
+                    ></path>
+                  </svg>
+                  Back
+                </p>
+              </Link>
+              <br />
+              <DisplayText size="large" element="h1">
+                Edit Pick
+              </DisplayText>
+              <br />
+              <Form onSubmit={this.handleSubmit}>
+                <FormLayout>
+                  <Card
+                    title="Edit Product"
+                    sectioned
+                    primaryFooterAction={{
+                      content: "Find Product",
+                      onAction: this.openPicker,
+                    }}
+                  >
+                    {productInfo}
+                  </Card>
+                  <Card title="Edit Staff Member" sectioned>
+                    <Select
+                      placeholder={"Select a staff member"}
+                      options={options}
+                      onChange={this.handleSelectChange}
+                      value={selectorVal}
+                    />
+                  </Card>
+                  <Card title="Edit Review" sectioned>
+                    <TextField
+                      value={this.state.review}
+                      onChange={this.handleChange.bind(this, "review")}
+                      multiline={true}
+                      rows={7}
+                      maxLength={400}
+                      showCharacterCount={true}
+                    />
+                  </Card>
+                  <Stack distribution="trailing">
+                    <Button destructive onClick={() => this.openModal()}>
+                      Delete
+                    </Button>
+                    <Button primary onClick={() => this.handleSubmit()}>
+                      Save
+                    </Button>
+                  </Stack>
+                </FormLayout>
+              </Form>
+            </Page>
+            <ResourcePicker
+              resourceType="Product"
+              open={this.state.pickerOpen}
+              showVariants={false}
+              allowMultiple={false}
+              onSelection={this.handleSelection}
+              onCancel={this.closePicker}
+            />
+          </AppBridgeProvider>
         </AppProvider>
         <AppProvider>
-        <Modal
-          open={deleting}
-          onClose={this.closeModal}
-          title={delete_question}
-        >
-          <Modal.Section>
-            <Stack>
-              <Button onClick={() => this.closeModal()}>Cancel</Button>
-              <Button destructive={true} onClick={() => this.deletePick()}>
-                Delete
-              </Button>
-            </Stack>
-          </Modal.Section>
-        </Modal>
+          <Modal
+            open={deleting}
+            onClose={this.closeModal}
+            title={delete_question}
+          >
+            <Modal.Section>
+              <Stack>
+                <Button onClick={() => this.closeModal()}>Cancel</Button>
+                <Button destructive={true} onClick={() => this.deletePick()}>
+                  Delete
+                </Button>
+              </Stack>
+            </Modal.Section>
+          </Modal>
         </AppProvider>
       </>
     );

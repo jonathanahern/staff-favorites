@@ -1,6 +1,6 @@
 import React from "react"
 import {Link} from "react-router-dom"
-import { AppProvider , Page , Stack , TextStyle , Card , ResourceList, Button }
+import { AppProvider , Page , TextStyle , Card , ResourceList, Button }
 from '@shopify/polaris' ;
 
 

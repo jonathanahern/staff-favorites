@@ -4,6 +4,7 @@ import { createProduct } from "../../actions/product_actions";
 import { fetchEmployees } from "../../actions/employee_actions";
 
 const mapStateToProps = (state) => ({
+  data: document.getElementById("shopify-app-init"),
   product: {
     name: "",
     job_title: "",

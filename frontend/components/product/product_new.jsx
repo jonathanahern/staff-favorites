@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 import { Link } from "react-router-dom";
 import {
   AppProvider,
@@ -10,11 +9,11 @@ import {
   FormLayout,
   Card,
   TextField,
-  ResourcePicker,
   DisplayText,
   TextStyle,
   Select,
 } from "@shopify/polaris";
+import { Provider as AppBridgeProvider, ResourcePicker } from "@shopify/app-bridge-react";
 
 class ProductNew extends Component {
   constructor(props) {
@@ -27,7 +26,9 @@ class ProductNew extends Component {
       review: "",
       employee_id: null,
       pickerOpen: false,
-      selectedEmployee: ""
+      selectedEmployee: "",
+      apiKey: this.props.data.dataset.apiKey,
+      domain_name: this.props.data.dataset.shopOrigin,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.openPicker = this.openPicker.bind(this);
@@ -50,7 +51,7 @@ class ProductNew extends Component {
   }
 
   goBack() {
-    this.props.history.push("/");
+    this.props.history.push("/picks");
   }
 
   handleSelection(selection) {
@@ -78,7 +79,7 @@ class ProductNew extends Component {
       employee_id: this.state.employee_id
     };
     this.props.createProduct(product);
-    this.props.history.push("/");
+    this.props.history.push("/picks");
   }
 
   handleChange(name, value) {
@@ -94,7 +95,6 @@ class ProductNew extends Component {
   }
 
   render() {
-    const title = `Add New Pick`;
     let productInfo = "";
     if (this.state.shopify_title.length < 1) {
       productInfo = <p>No product selected</p>;
@@ -107,6 +107,11 @@ class ProductNew extends Component {
       );
     }
     let options = [];
+    const config = {
+      apiKey: this.state.apiKey,
+      shopOrigin: this.state.domain_name,
+    };
+
     if (this.props.employees.length > 0) {
       this.props.employees.forEach(employee => {
           let val = `${employee.name}&${employee.id}`
@@ -114,79 +119,86 @@ class ProductNew extends Component {
           options.push(newObj);
       });
     }
+
     return (
-      <AppProvider
-        apiKey="a959533e684cfdd1e15084c979598b36"
-        shopOrigin="junk-store-test.myshopify.com"
-      >
-        <Page>
-          <Link to="/">
-            <p id="back-link">
-              <svg height="20" width="20">
-                <path
-                  d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16"
-                  fillRule="evenodd"
-                ></path>
-              </svg>
-              Back
-            </p>
-          </Link>
+      <AppProvider>
+        <AppBridgeProvider config={config}>
           <br />
-          <DisplayText size="large" element="h1">
-            Add New Pick
-          </DisplayText>
           <br />
-          <Form onSubmit={this.handleSubmit}>
-            <FormLayout>
-              <Card
-                title="Select Product"
-                sectioned
-                primaryFooterAction={{
-                  content: "Find Product",
-                  onAction: this.openPicker,
-                }}
-              >
-                {productInfo}
-              </Card>
-              <Card title="Select Staff Member" sectioned>
-                <Select
-                  placeholder={"Select a staff member"}
-                  options={options}
-                  onChange={this.handleSelectChange}
-                  value={this.state.selectedEmployee}
-                />
-              </Card>
-              <Card title="Write Review" sectioned>
-                <TextField
-                  value={this.state.review}
-                  onChange={this.handleChange.bind(this, "review")}
-                  multiline={true}
-                  rows={7}
-                  maxLength={400}
-                  showCharacterCount={true}
-                />
-              </Card>
-              <Stack distribution="trailing">
-                <Button onClick={() => this.goBack()}>
-                  Cancel
-                </Button>
-                <Button primary onClick={() => this.handleSubmit()}>
-                  Create New Pick
-                </Button>
-              </Stack>
-            </FormLayout>
-          </Form>
-        </Page>
-        <ResourcePicker
-          resourceType="Product"
-          open={this.state.pickerOpen}
-          showVariants={false}
-          allowMultiple={false}
-          onSelection={this.handleSelection}
-          onCancel={this.closePicker}
-        />
+          <Page>
+            <Link to="/">
+              <p id="back-link">
+                <svg height="20" width="20">
+                  <path
+                    d="M12 16a.997.997 0 0 1-.707-.293l-5-5a.999.999 0 0 1 0-1.414l5-5a.999.999 0 1 1 1.414 1.414L8.414 10l4.293 4.293A.999.999 0 0 1 12 16"
+                    fillRule="evenodd"
+                  ></path>
+                </svg>
+                Back
+              </p>
+            </Link>
+            <br />
+            <DisplayText size="large" element="h1">
+              Add New Pick
+            </DisplayText>
+            <br />
+            <Form onSubmit={this.handleSubmit}>
+              <FormLayout>
+                <Card
+                  title="Select Product"
+                  sectioned
+                  primaryFooterAction={{
+                    content: "Find Product",
+                    onAction: this.openPicker,
+                  }}
+                >
+                  {productInfo}
+                </Card>
+                <Card title="Select Staff Member" sectioned>
+                  <Select
+                    placeholder={"Select a staff member"}
+                    options={options}
+                    onChange={this.handleSelectChange}
+                    value={this.state.selectedEmployee}
+                    error="test"
+                  />
+                </Card>
+                <Card title="Write Review" sectioned>
+                  <TextField
+                    value={this.state.review}
+                    onChange={this.handleChange.bind(this, "review")}
+                    multiline={true}
+                    rows={7}
+                    maxLength={400}
+                    showCharacterCount={true}
+                    error="test"
+                  />
+                </Card>
+                <Stack distribution="trailing">
+                  <Button onClick={() => this.goBack()}>Cancel</Button>
+                  <Button primary onClick={() => this.handleSubmit()}>
+                    Create New Pick
+                  </Button>
+                </Stack>
+                {/* <TextStyle variation="negative">{apiKey}</TextStyle>
+              <TextStyle variation="negative">{domain_name}</TextStyle> */}
+              </FormLayout>
+            </Form>
+          </Page>
+          <ResourcePicker
+            resourceType="Product"
+            open={this.state.pickerOpen}
+            showVariants={false}
+            allowMultiple={false}
+            onSelection={this.handleSelection}
+            onCancel={this.closePicker}
+          />
+          <br />
+          <br />
+        </AppBridgeProvider>
       </AppProvider>
     );
   }
 }
+
 export default ProductNew;
