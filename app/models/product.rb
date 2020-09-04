@@ -14,6 +14,10 @@
 #
 class Product < ApplicationRecord
 
+    validates :shopify_title, :shopify_image_url, :shopify_product_id, :review, :shop_id, :employee_id,  presence: true
+    validates :review, length: { maximum: 400 }
+    validates :shopify_product_id, uniqueness: { scope: :shop_id, message: "already reviewed" }
+
     belongs_to :shop,
         class_name: :Shop,
         primary_key: :id,

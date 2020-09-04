@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 import { Link } from "react-router-dom";
 import {
   AppProvider,
@@ -15,6 +14,7 @@ import {
   Select,
   Modal
 } from "@shopify/polaris";
+
 import {
   Provider as AppBridgeProvider,
   ResourcePicker,
@@ -24,18 +24,23 @@ import {
 class ProductNew extends Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
+      original_id: this.props.product.shopify_product_id,
       shopify_title: this.props.product.shopify_title,
       shopify_image_url: this.props.product.shopify_image_url,
       shopify_product_id: this.props.product.shopify_product_id,
       shopify_handle: this.props.product.shopify_handle,
       review: this.props.product.review,
       employee_id: this.props.product.employee_id,
+      loading: false,
       pickerOpen: false,
       selectedEmployee: "",
       apiKey: this.props.data.dataset.apiKey,
       domain_name: this.props.data.dataset.shopOrigin,
+      product_error: "",
+      review_error: "",
+      employee_error: "",
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.openPicker = this.openPicker.bind(this);
@@ -48,6 +53,30 @@ class ProductNew extends Component {
     this.deletePick = this.deletePick.bind(this);
   }
 
+  checkForErrors() {
+
+    if (this.state.shopify_title.length < 1) {
+      this.setState({ product_error: "Select a product" });
+      const elmnt = document.getElementById("product-ele");
+      elmnt.scrollIntoView({ behavior: "smooth", block: "center" });
+      return true;
+    } else if (this.state.review.length < 5) {
+      const elmnt = document.getElementById("review-ele");
+      elmnt.scrollIntoView({ behavior: "smooth", block: "center" });
+      this.setState({
+        review_error: "Review must be at least 5 characters",
+      });
+      return true;
+    } else if (this.state.selectedEmployee.length < 1 && this.state.employee_id === "") {
+      const elmnt = document.getElementById("employee-ele");
+      elmnt.scrollIntoView({ behavior: "smooth", block: "center" });
+      this.setState({ employee_error: "Staff selection is required" });
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   closePicker() {
     this.setState({ pickerOpen: false });
   }
@@ -58,6 +87,7 @@ class ProductNew extends Component {
 
   componentDidMount() {
     this.props.fetchEmployees();
+    this.props.fetchProducts();
   }
 
   goBack() {
@@ -75,32 +105,43 @@ class ProductNew extends Component {
 
   handleSelection(selection) {
     this.closePicker();
-    let imageUrl = selection.selection[0].images[0].originalSrc;
-    let title = selection.selection[0].title;
+    this.setState({ product_error: "" });
     let idArr = selection.selection[0].id.split("Product/");
-    let handle = selection.selection[0].handle;
     let id = parseInt(idArr[idArr.length - 1]);
-    this.setState({
-      shopify_title: title,
-      shopify_image_url: imageUrl,
-      shopify_product_id: id,
-      shopify_handle: handle
-    });
+    const imageUrl = selection.selection[0].images[0].originalSrc;
+    const title = selection.selection[0].title;
+    const handle = selection.selection[0].handle;
+    const found = this.props.products.find(
+      (element) =>
+        (element.shopify_product_id === id && element.shopify_product_id !== this.state.original_id)
+    );
+    if (found) {
+      this.setState({ product_error: `${title} has already been reviewed` });
+    } else {
+      this.setState({
+        shopify_title: title,
+        shopify_image_url: imageUrl,
+        shopify_product_id: id,
+        shopify_handle: handle,
+      });
+    }
   }
 
   handleSubmit() {
-    let product = {
-      id: this.props.product.id,
-      shopify_title: this.state.shopify_title,
-      shopify_image_url: this.state.shopify_image_url,
-      shopify_product_id: this.state.shopify_product_id,
-      shopify_handle: this.state.shopify_handle,
-      review: this.state.review,
-      employee_id: this.state.employee_id,
-    };
-    console.log(product);
-    this.props.updateProduct(product);
-    this.props.history.push("/");
+    if (this.checkForErrors() === false){
+      this.setState({ loading: true });
+      let product = {
+        id: this.props.product.id,
+        shopify_title: this.state.shopify_title,
+        shopify_image_url: this.state.shopify_image_url,
+        shopify_product_id: this.state.shopify_product_id,
+        shopify_handle: this.state.shopify_handle,
+        review: this.state.review,
+        employee_id: this.state.employee_id,
+      };
+      this.props.updateProduct(product)
+        .then((data) => this.props.history.push("/picks"));
+    }
   }
 
   handleChange(name, value) {
@@ -110,8 +151,9 @@ class ProductNew extends Component {
   }
 
   deletePick() {
-    this.props.deleteProduct(this.props.product.id);
-    this.props.history.push("/");
+    this.props
+      .deleteProduct(this.props.product.id)
+      .then((data) => this.props.history.push("/picks"));
   }
 
   handleSelectChange(e) {
@@ -121,6 +163,7 @@ class ProductNew extends Component {
   }
 
   render() {
+    const { loading } = this.state;
     const config = {
       apiKey: this.state.apiKey,
       shopOrigin: this.state.domain_name,
@@ -128,7 +171,9 @@ class ProductNew extends Component {
     const { deleting } = this.state;
     const delete_question = `Are you sure you want to delete this pick?`;
     let productInfo = "";
-    if (this.state.shopify_title.length < 1) {
+    if (this.state.product_error.length > 0) {
+      productInfo = "";
+    } else if (this.state.shopify_title.length < 1) {
       productInfo = <p>No product selected</p>;
     } else {
       productInfo = (
@@ -138,8 +183,9 @@ class ProductNew extends Component {
         </Stack>
       );
     }
+
     let options = [];
-    let selectorVal = '';
+    let selectorVal = "";
     if (this.props.employees.length > 0) {
       this.props.employees.forEach((employee) => {
         let val = `${employee.name}&${employee.id}`;
@@ -150,16 +196,15 @@ class ProductNew extends Component {
         }
       });
 
-    // let selectorVal = `${this.state.selectedEmployee}&${this.state.employee_id}`;
-    // this.setState({ selectedEmployee: selectorVal });
-    
     }
     return (
       <>
         <AppProvider>
           <AppBridgeProvider config={config}>
             <Page>
-              <Link to="/">
+              <br />
+              <br />
+              <Link to="/picks">
                 <p id="back-link">
                   <svg height="20" width="20">
                     <path
@@ -186,30 +231,46 @@ class ProductNew extends Component {
                     }}
                   >
                     {productInfo}
+                    <div id="product-ele"></div>
+                    <TextStyle variation="negative">
+                      {this.state.product_error}
+                    </TextStyle>
                   </Card>
                   <Card title="Edit Staff Member" sectioned>
                     <Select
+                      id="employee-ele"
                       placeholder={"Select a staff member"}
                       options={options}
                       onChange={this.handleSelectChange}
                       value={selectorVal}
+                      error={this.state.employee_error}
                     />
                   </Card>
                   <Card title="Edit Review" sectioned>
                     <TextField
+                      id="review-ele"
                       value={this.state.review}
                       onChange={this.handleChange.bind(this, "review")}
                       multiline={true}
                       rows={7}
                       maxLength={400}
                       showCharacterCount={true}
+                      error={this.state.review_error}
                     />
                   </Card>
                   <Stack distribution="trailing">
-                    <Button destructive onClick={() => this.openModal()}>
+                    <Button
+                      loading={loading}
+                      destructive
+                      onClick={() => this.openModal()}
+                    >
                       Delete
                     </Button>
-                    <Button primary onClick={() => this.handleSubmit()}>
+                    <Button
+                      loading={loading}
+                      primary
+                      onClick={() => this.handleSubmit()}
+                    >
                       Save
                     </Button>
                   </Stack>
@@ -224,6 +285,8 @@ class ProductNew extends Component {
               onSelection={this.handleSelection}
               onCancel={this.closePicker}
             />
+            <br />
+            <br />
           </AppBridgeProvider>
         </AppProvider>
         <AppProvider>

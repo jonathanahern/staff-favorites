@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import ProductNew from "./product_new";
-import { createProduct } from "../../actions/product_actions";
+import { createProduct, fetchProducts } from "../../actions/product_actions";
 import { fetchEmployees } from "../../actions/employee_actions";
 
 const mapStateToProps = (state) => ({
@@ -13,11 +13,13 @@ const mapStateToProps = (state) => ({
     shop_id: "",
   },
   employees: Object.values(state.entities.employees),
+  products: Object.values(state.entities.products),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   createProduct: (product) => dispatch(createProduct(product)),
   fetchEmployees: () => dispatch(fetchEmployees()),
+  fetchProducts: () => dispatch(fetchProducts()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductNew);
