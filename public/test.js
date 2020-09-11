@@ -4,6 +4,7 @@ var shop = window.location.host;
 var handle = url.split("/").pop();
 var pickedProducts = getPicks();
 var prodID = null;
+var pickAlreadyFound = false;
 
 if (url.includes('/products/')) {
     prodID = meta.product.id;
@@ -11,13 +12,17 @@ if (url.includes('/products/')) {
 }
     
 if (url.includes("/collections/")) {
-    console.log(pickedProducts);
+    setPicks(shop);
     let eles = document.getElementsByClassName("staff-pick-alert");
     for (var i = 0; i < eles.length; i++) {
         let ele = eles[i];
         let idCheck = parseInt(ele.dataset.prodid);
         if (pickedProducts.includes(idCheck)){
             insertPickPic(ele);
+            if (!pickAlreadyFound){
+                pickAlreadyFound = true;
+                setupPageForCollections();
+            }
         }
     }
 }
@@ -29,13 +34,13 @@ if (url.includes("/pages/")) {
     if (eles.length > 0){
         let staffid = eles[0].dataset.staffid.toString();
         console.log(staffid);
-        fetch(`https://b0eb13a3b4bf.ngrok.io/api/pages?employeeid=${staffid}`, {
-            method: "GET"
+        fetch(`https://8e8b8c613970.ngrok.io/api/pages?employeeid=${staffid}`, {
+          method: "GET",
         })
-            .then(res => res.json())
-            .then(resp => {
-                createProducts(eles[0], Object.values(resp))
-            });
+          .then((res) => res.json())
+          .then((resp) => {
+            createProducts(eles[0], Object.values(resp));
+          });
     }
     
 }
@@ -71,36 +76,58 @@ function createProducts(container, data) {
 }
 
 function insertPickPic(ele) {
-
+  
   let container = document.createElement("div");
-    container.style.position = "absolute";
-    container.style.top = "0px";
-    container.style.right = "0px";
-    container.style.margin = "10px";
-    ele.appendChild(container);
-
+  container.className = "starburst-container";
+  container.style.margin = "10px";
+  ele.appendChild(container);
 
   let circle = document.createElement("img");
-  circle.src = "https://i.ibb.co/7yzF9zw/Starburst-High-Quality-PNG.png";
-  circle.style.width = "84px";
-  circle.style.height = "84px";
+  circle.src = "https://i.ibb.co/3kW5XsV/red-burst.png";
   
   container.appendChild(circle);
 
   let text = document.createElement("h4");
   text.innerHTML = "STAFF<br/>PICK!";
-text.style.position = "absolute";
-text.style.textAlign = "center";
-text.style.top = "24%";
-text.style.right = "15%";
-  text.style.color = "white";
+  text.className = "staff-pick-lettering";
   
   container.appendChild(text);
 }
 
+function setupPageForCollections() {
+  var style = document.createElement("style");
+  style.innerHTML =
+    ".starburst-container {" +
+        "position: absolute;" +
+        "top: 0px;" +
+        "right: 0px;" +
+        "width: 40%;" +
+    "}" +
+    ".staff-pick-alert h4 {" +
+        "position: absolute;" +
+        "transform: translate(50%, -50%);" +
+        "top: 46%;" +
+        "right: 50%;" +
+        "color: white;" +
+        "text-align: center;" +
+        "font-size: .95em;" +
+    "}" +
+    "@media screen and (max-width: 420px) {" +
+        ".staff-pick-alert h4 {" +
+            "font-size: .80em;" +
+        "}" +
+    "}";
+
+  // Get the first script tag
+  var ref = document.querySelector("script");
+
+  // Insert our new styles before the first script tag
+  ref.parentNode.insertBefore(style, ref);
+}
+
 if (url.includes('/products/') && pickedProducts.includes(prodID)) {
     setupPageForPick();
-    fetch(`https://b0eb13a3b4bf.ngrok.io/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
+    fetch(`https://b0eb13a3b4bf..io/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
     method: "GET",
     })
   .then(res => res.json())
@@ -110,7 +137,7 @@ if (url.includes('/products/') && pickedProducts.includes(prodID)) {
 }
 
 function setPicks (shop) {
-    fetch(`https://b0eb13a3b4bf.ngrok.io/api/front_end?shop=${shop}`, {
+    fetch(`https://8e8b8c613970.ngrok.io/api/front_end?shop=${shop}`, {
       method: "GET",
     })
       .then((res) => res.json())

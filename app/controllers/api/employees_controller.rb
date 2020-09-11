@@ -32,7 +32,7 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
       else
         render json: {error: "Page didn't save"}, status: 422
       end
-      
+
     else
 
       render json: {error: @employee.errors.full_messages, status: 422 }
