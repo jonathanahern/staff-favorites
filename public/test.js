@@ -83,7 +83,7 @@ function insertPickPic(ele) {
   ele.appendChild(container);
 
   let circle = document.createElement("img");
-  circle.src = "https://i.ibb.co/3kW5XsV/red-burst.png";
+  circle.src = "https://i.ibb.co/JRgFHfL/blue-burst.png";
   
   container.appendChild(circle);
 
@@ -106,8 +106,8 @@ function setupPageForCollections() {
     ".staff-pick-alert h4 {" +
         "position: absolute;" +
         "transform: translate(50%, -50%);" +
-        "top: 46%;" +
-        "right: 50%;" +
+        "top: 48%;" +
+        "right: 49%;" +
         "color: white;" +
         "text-align: center;" +
         "font-size: .95em;" +
