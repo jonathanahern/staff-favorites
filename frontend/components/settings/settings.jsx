@@ -22,7 +22,7 @@ class Settings extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      stickerURL: "https://i.ibb.co/3kW5XsV/red-burst.png",
+      sticker: "red",
     };
     // this.handleSubmit = this.handleSubmit.bind(this);
     this.handleStickerChange = this.handleStickerChange.bind(this);
@@ -30,11 +30,11 @@ class Settings extends Component {
 
   handleStickerChange(checked, newVal, test) {
     console.log(newVal);
-    this.setState({ stickerURL: newVal });
+    this.setState({ sticker: newVal });
   }
 
   render() {
-    let selected = this.state.stickerURL;
+    let selected = this.state.sticker;
     const red = <img src="https://i.ibb.co/3kW5XsV/red-burst.png" alt="Price Vectors by Vecteezy" width="50px" />
     const purple = <img src="https://i.ibb.co/cC3Ry3v/purple-burst.png" alt="Price Vectors by Vecteezy" width="50px" />
     const green = <img src="https://i.ibb.co/cxqQbg9/green-burst.png" alt="Price Vectors by Vecteezy" width="50px" />
@@ -50,32 +50,32 @@ class Settings extends Component {
           <Stack>
             <RadioButton
               label={red}
-              id="https://i.ibb.co/3kW5XsV/red-burst.png"
-              checked={selected === "https://i.ibb.co/3kW5XsV/red-burst.png"}
+              id="red"
+              checked={selected === "red"}
               onChange={this.handleStickerChange}
             />
             <RadioButton
               label={purple}
-              id="https://i.ibb.co/cC3Ry3v/purple-burst.png"
-              checked={selected === "https://i.ibb.co/cC3Ry3v/purple-burst.png"}
+              id="purple"
+              checked={selected === "purple"}
               onChange={this.handleStickerChange}
             />
             <RadioButton
               label={green}
-              id="https://i.ibb.co/cxqQbg9/green-burst.png"
-              checked={selected === "https://i.ibb.co/cxqQbg9/green-burst.png"}
+              id="green"
+              checked={selected === "green"}
               onChange={this.handleStickerChange}
             />
             <RadioButton
               label={blue}
-              id="https://i.ibb.co/JRgFHfL/blue-burst.png"
-              checked={selected === "https://i.ibb.co/JRgFHfL/blue-burst.png"}
+              id="blue"
+              checked={selected === "blue"}
               onChange={this.handleStickerChange}
             />
             <RadioButton
               label={yellow}
-              id="https://i.ibb.co/HXqddbd/yellow-burst.png"
-              checked={selected === "https://i.ibb.co/HXqddbd/yellow-burst.png"}
+              id="yellow"
+              checked={selected === "yellow"}
               onChange={this.handleStickerChange}
             />
           </Stack>
