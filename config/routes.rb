@@ -6,7 +6,10 @@ Rails.application.routes.draw do
       resources :products
       resources :front_end
       resources :pages
+      resources :settings
+      # patch '/settings/createSticker', to: 'settings#createSticker', as: 'createSticker'
     end
+
   
   root to: 'static_pages#root'
 
