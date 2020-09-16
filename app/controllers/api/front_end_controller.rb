@@ -1,13 +1,13 @@
 class Api::FrontEndController < ApplicationController
 
     def index
-        @shopsProdcuts = Product.getProductIDs(params[:shop])
-        render json: @shopsProdcuts
+        @shopsProducts = Product.getProductIDsSettings(params[:shop])
+        render json: @shopsProducts
     end
 
     def show
-        @front_end_data = Product.pickInfo(params[:prodID])
-        render json: @front_end_data
+        @picks = Product.pickInfo(params[:prodID])
+        render json: @picks
     end
 
     private

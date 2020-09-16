@@ -100,7 +100,6 @@ class Settings extends Component {
         <br />
         <br />
         <Page title="Settings">
-          <br />
           <Card sectioned title="Select Picks Sticker">
             <Stack>
               <RadioButton

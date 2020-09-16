@@ -5,6 +5,7 @@ var handle = url.split("/").pop();
 var pickedProducts = getPicks();
 var prodID = null;
 var pickAlreadyFound = false;
+var collectionEles = [];
 
 if (url.includes('/products/')) {
     prodID = meta.product.id;
@@ -18,6 +19,7 @@ if (url.includes("/collections/")) {
         let ele = eles[i];
         let idCheck = parseInt(ele.dataset.prodid);
         if (pickedProducts.includes(idCheck)){
+            collectionEles.push(ele);
             insertPickPic(ele);
             if (!pickAlreadyFound){
                 pickAlreadyFound = true;
@@ -79,11 +81,12 @@ function insertPickPic(ele) {
   
   let container = document.createElement("div");
   container.className = "starburst-container";
-  container.style.margin = "10px";
+  container.style.margin = "15px";
   ele.appendChild(container);
 
   let circle = document.createElement("img");
-  circle.src = "https://i.ibb.co/JRgFHfL/blue-burst.png";
+  circle.className = "sticker-img";
+  circle.src = loadStickerImage();
   
   container.appendChild(circle);
 
@@ -92,6 +95,24 @@ function insertPickPic(ele) {
   text.className = "staff-pick-lettering";
   
   container.appendChild(text);
+}
+
+function loadStickerImage(){
+    let settings = JSON.parse(localStorage.getItem("staffPicksSettings"));
+    switch (settings["sticker"]) {
+      case "red":
+        return "https://i.ibb.co/3kW5XsV/red-burst.png";
+      case "blue":
+        return "https://i.ibb.co/JRgFHfL/blue-burst.png";
+      case "yellow":
+        return "https://i.ibb.co/HXqddbd/yellow-burst.png";
+      case "green":
+        return "https://i.ibb.co/cxqQbg9/green-burst.png";
+      case "purple":
+        return "https://i.ibb.co/cC3Ry3v/purple-burst.png";
+      default:
+        return "https://i.ibb.co/3kW5XsV/red-burst.png";
+    }
 }
 
 function setupPageForCollections() {
@@ -142,14 +163,47 @@ function setPicks (shop) {
     })
       .then((res) => res.json())
       .then((resp) => {
-        let newArr = [];
-        resp.forEach((element) => {
-          ele = element["shopify_product_id"];
-          newArr.push(ele);
-        });
-        localStorage.setItem("pickedProducts", JSON.stringify(newArr));
+        populateLocalStorage(resp);
       });
 }
+
+function populateLocalStorage(data){
+    const origProducts = getPicks();
+    const origSettings = localStorage.getItem("staffPicksSettings");
+    localStorage.setItem("pickedProducts", JSON.stringify(data["ids"]));
+    localStorage.setItem("staffPicksSettings", JSON.stringify(data["settings"]));
+
+    if (data["settings"]["sticker"] !== JSON.parse(origSettings)["sticker"]){
+      let eles = document.getElementsByClassName("sticker-img");
+      for (let i = 0; i < eles.length; i++) {
+        eles[i].src = loadStickerImage();
+      }
+    }
+
+    if(origProducts.length > data["ids"].length){
+        let idsToDelete = origProducts.filter((x) => !data["ids"].includes(x));
+        for (var j = 0; j < collectionEles.length; j++) {
+            let ele = collectionEles[j];
+            let idCheck = parseInt(ele.dataset.prodid);
+            if (idsToDelete.includes(idCheck)) {
+                ele.innerHTML = "";
+            }
+        }
+    } else if (origProducts.length < data["ids"].length) {
+        let idsToAdd = data["ids"].filter((x) => !origProducts.includes(x));
+        let eles = document.getElementsByClassName("staff-pick-alert");
+        for (var e = 0; e < eles.length; e++) {
+          let ele = eles[e];
+          let idCheck = parseInt(ele.dataset.prodid);
+          if (idsToAdd.includes(idCheck)) {
+            collectionEles.push(ele);
+            insertPickPic(ele);
+          }
+        }
+    }
+
+}
+
 
 function getPicks (){
     let data = localStorage.getItem('pickedProducts');

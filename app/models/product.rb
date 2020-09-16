@@ -32,8 +32,10 @@ class Product < ApplicationRecord
         Product.select(:shopify_title, :shopify_image_url, :shopify_product_id, :shopify_handle, :review, :shop_id, :employee_id, "employees.name, employees.job_title, employees.profile_url, employees.description").joins(:employee).where("products.shopify_product_id = #{data}")
     end
 
-    def self.getProductIDs(shopDomain)
-        test = Product.select(:id, :shopify_product_id).joins(:shop).where("shops.shopify_domain = '#{shopDomain}'")
+    def self.getProductIDsSettings(shopDomain)
+        products = Product.joins(:shop).where("shops.shopify_domain = '#{shopDomain}'").pluck(:shopify_product_id)
+        shop = Shop.find_by(shopify_domain: shopDomain)
+        {ids: products, settings: {sticker: shop[:sticker], layout: "3-col"}}
     end
 
     def self.webhookChange(prodID, img, title)
