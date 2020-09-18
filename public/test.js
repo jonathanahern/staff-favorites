@@ -204,7 +204,6 @@ function populateLocalStorage(data){
 
 }
 
-
 function getPicks (){
     let data = localStorage.getItem('pickedProducts');
     if (data === null) {
