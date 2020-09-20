@@ -7,6 +7,7 @@ class Api::FrontEndController < ApplicationController
 
     def show
         @picks = Product.pickInfo(params[:prodID])
+        @page_url = Employee.find(52)
         render json: @picks
     end
 

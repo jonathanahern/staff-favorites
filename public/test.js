@@ -9,6 +9,7 @@ var collectionEles = [];
 
 if (url.includes('/products/')) {
     prodID = meta.product.id;
+    console.log(pickedProducts);
     setPicks(shop);
 }
     
@@ -148,7 +149,8 @@ function setupPageForCollections() {
 
 if (url.includes('/products/') && pickedProducts.includes(prodID)) {
     setupPageForPick();
-    fetch(`https://b0eb13a3b4bf..io/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
+
+    fetch(`https://e1e158dbaf6a.ngrok.io/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
     method: "GET",
     })
   .then(res => res.json())
@@ -228,10 +230,13 @@ function setupPageForPick(){
             'width: 20%;' +
             'margin-left: 20px;' +
         '}' +
-        '#staff_pick_ele > h1{' +
-            'text-align: center;' +
-            'font-size: 1.75em;' +
-            'margin: 4px 0;' +
+        // '#staff_pick_ele > h1{' +
+        //     'text-align: center;' +
+        //     'font-size: 1.75em;' +
+        //     'margin: 4px 0;' +
+        // '}' +
+        '#staff_pick_ele p{' +
+            'margin-bottom: 0px;' +
         '}' +
         '@media screen and (max-width: 750px) {'+
             '#full_container {' +
@@ -246,7 +251,7 @@ function setupPageForPick(){
                 'margin: 0 auto;' +          
             '}' +
             '#staff_pick_ele img {' +
-                'max-width: 150px;' +
+                'max-width: 500px;' +
                 'max-height: 250px;' +
             '}' +
             '#staff_pick_ele > div {' +
@@ -266,11 +271,12 @@ function setupPageForPick(){
 }
 
 function insertData(data){
+    console.log(data);
     const staffPick = document.getElementById(`staff_pick_ele`);
 
-    let h1 = document.createElement("h1");
-    h1.innerHTML = "Staff Pick";
-    staffPick.appendChild(h1);
+    // let h1 = document.createElement("h1");
+    // h1.innerHTML = "Staff Pick";
+    // staffPick.appendChild(h1);
 
     const staffDiv = document.createElement("div");
     staffPick.appendChild(staffDiv);
@@ -283,13 +289,22 @@ function insertData(data){
     staffDiv.appendChild(wordsDiv);
 
     let pDescription = document.createElement("p");
-    pDescription.innerHTML = data["review"];
+    pDescription.innerHTML = data["review"].replace(/\n/g, "<br />");
     pDescription.style.fontStyle = "italic";
     pDescription.style.margin = "0px";
+    pDescription.style.marginBottom = "12px";
     wordsDiv.appendChild(pDescription);
 
     let pName = document.createElement("p");
-    let nameString = `-${data["name"]}`
+    let nameString = `${data["name"]}`;
+    pName.style.fontWeight = "900";
     pName.innerHTML = nameString;
     wordsDiv.appendChild(pName);
+
+    let jobTitleString = `${data["job_title"]}`;
+    if (jobTitleString.length > 0){
+        let pJobtitle = document.createElement("p");
+        pJobtitle.innerHTML = jobTitleString;
+        wordsDiv.appendChild(pJobtitle);
+    }
 }

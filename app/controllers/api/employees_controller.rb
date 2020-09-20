@@ -124,7 +124,7 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
             };\n
         </style>"
       if @page.save
-        employee.update(:shopify_page_id => @page.id);
+        employee.update(:shopify_page_id => @page.id, :page_url => @page.handle);
         return true
       else
         return false
