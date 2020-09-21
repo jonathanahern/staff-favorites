@@ -9,7 +9,6 @@ var collectionEles = [];
 
 if (url.includes('/products/')) {
     prodID = meta.product.id;
-    console.log(pickedProducts);
     setPicks(shop);
 }
     
@@ -155,7 +154,7 @@ if (url.includes('/products/') && pickedProducts.includes(prodID)) {
     })
   .then(res => res.json())
   .then(resp => {
-      insertData(resp[0]);
+      insertData(resp);
   })
 }
 
@@ -271,22 +270,23 @@ function setupPageForPick(){
 }
 
 function insertData(data){
-    console.log(data);
     const staffPick = document.getElementById(`staff_pick_ele`);
 
     // let h1 = document.createElement("h1");
     // h1.innerHTML = "Staff Pick";
     // staffPick.appendChild(h1);
 
-    const staffDiv = document.createElement("div");
-    staffPick.appendChild(staffDiv);
+    let staffA = document.createElement("a");
+    staffA.href = `/pages/${data["page_url"]}`;
+    staffA.target = "_blank";
+    staffPick.appendChild(staffA);
 
     let img = document.createElement("img");
     img.src = data["profile_url"];
-    staffDiv.appendChild(img);
+    staffA.appendChild(img);
 
     const wordsDiv = document.createElement("div");
-    staffDiv.appendChild(wordsDiv);
+    staffA.appendChild(wordsDiv);
 
     let pDescription = document.createElement("p");
     pDescription.innerHTML = data["review"].replace(/\n/g, "<br />");
@@ -307,4 +307,9 @@ function insertData(data){
         pJobtitle.innerHTML = jobTitleString;
         wordsDiv.appendChild(pJobtitle);
     }
+    // console.log(shop);
+    // let a = document.createElement("a");
+    // a.href = `${shop}/pages/${data["page_url"]}`;
+    // a.appendChild(staffDiv);
+
 }
