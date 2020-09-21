@@ -37,7 +37,7 @@ if (url.includes("/pages/")) {
     if (eles.length > 0){
         let staffid = eles[0].dataset.staffid.toString();
         console.log(staffid);
-        fetch(`https://e1e158dbaf6a.ngrok.io/api/pages?employeeid=${staffid}`, {
+        fetch(`https://8f231ad73915.ngrok.io/api/pages?employeeid=${staffid}`, {
           method: "GET",
         })
           .then((res) => res.json())
@@ -150,7 +150,7 @@ function setupPageForCollections() {
 if (url.includes('/products/') && pickedProducts.includes(prodID)) {
     setupPageForPick();
 
-    fetch(`https://e1e158dbaf6a.ngrok.io/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
+  fetch(`https://8f231ad73915.ngrok.io/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
     method: "GET",
     })
   .then(res => res.json())
@@ -160,7 +160,7 @@ if (url.includes('/products/') && pickedProducts.includes(prodID)) {
 }
 
 function setPicks (shop) {
-    fetch(`https://e1e158dbaf6a.ngrok.io/api/front_end?shop=${shop}`, {
+  fetch(`https://8f231ad73915.ngrok.io/api/front_end?shop=${shop}`, {
       method: "GET",
     })
       .then((res) => res.json())
