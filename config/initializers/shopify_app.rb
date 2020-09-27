@@ -9,10 +9,10 @@ ShopifyApp.configure do |config|
   config.api_version = "2020-04"
   config.shop_session_repository = 'Shop'
   config.scripttags = [
-    {event:'onload', src: 'https://8f231ad73915.ngrok.io/test.js'}
+    {event:'onload', src: 'https://6c069b6d768c.ngrok.io/test.js'}
   ]
   config.webhooks = [
-    {topic: 'products/update', address: 'https://8f231ad73915.ngrok.io/webhooks/products_update', format: 'json'},
+    {topic: 'products/update', address: 'https://6c069b6d768c.ngrok.io/webhooks/products_update', format: 'json'},
   ]
 end
 

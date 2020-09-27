@@ -18,7 +18,7 @@ class Api::SettingsController < ShopifyApp::AuthenticatedController
 private
 
     def setting_params
-        params.require(:setting).permit(:sticker)
+        params.require(:setting).permit(:sticker, :layout)
     end
 
 end

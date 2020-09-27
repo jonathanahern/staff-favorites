@@ -36,7 +36,7 @@ if (url.includes("/pages/")) {
     if (eles.length > 0){
         let staffid = eles[0].dataset.staffid.toString();
         console.log(staffid);
-        fetch(`https://8f231ad73915.ngrok.io/api/pages?employeeid=${staffid}`, {
+        fetch(`https://6c069b6d768c.ngrok.io/api/pages?employeeid=${staffid}`, {
           method: "GET",
         })
           .then((res) => res.json())
@@ -123,19 +123,23 @@ function setupPageForCollections() {
         "top: 0px;" +
         "right: 0px;" +
         "width: 40%;" +
+        "max-width: 70px;" +
     "}" +
     ".staff-pick-alert h4 {" +
         "position: absolute;" +
         "transform: translate(50%, -50%);" +
         "top: 48%;" +
-        "right: 49%;" +
+        "right: 50%;" +
         "color: white;" +
         "text-align: center;" +
-        "font-size: .95em;" +
+        "font-size: .80em;" +
     "}" +
-    "@media screen and (max-width: 420px) {" +
+    "@media screen and (max-width: 500px) {" +
         ".staff-pick-alert h4 {" +
             "font-size: .80em;" +
+        "}" +
+        ".starburst-container {" +
+          "max-width: 55px;" +
         "}" +
     "}";
 
@@ -149,7 +153,7 @@ function setupPageForCollections() {
 if (url.includes('/products/') && pickedProducts.includes(prodID)) {
     setupPageForPick();
 
-  fetch(`https://8f231ad73915.ngrok.io/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
+  fetch(`https://6c069b6d768c.ngrok.io/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
     method: "GET",
     })
   .then(res => res.json())
@@ -159,7 +163,7 @@ if (url.includes('/products/') && pickedProducts.includes(prodID)) {
 }
 
 function setPicks (shop) {
-  fetch(`https://8f231ad73915.ngrok.io/api/front_end?shop=${shop}`, {
+  fetch(`https://6c069b6d768c.ngrok.io/api/front_end?shop=${shop}`, {
       method: "GET",
     })
       .then((res) => res.json())
@@ -173,6 +177,8 @@ function populateLocalStorage(data){
     const origSettings = localStorage.getItem("staffPicksSettings");
     localStorage.setItem("pickedProducts", JSON.stringify(data["ids"]));
     localStorage.setItem("staffPicksSettings", JSON.stringify(data["settings"]));
+
+    console.log(data["settings"]["layout"]);
 
     if (data["settings"]["sticker"] !== JSON.parse(origSettings)["sticker"]){
       let eles = document.getElementsByClassName("sticker-img");
@@ -216,7 +222,6 @@ function getPicks (){
 }
 
 function setupPageForPick(){
-
     var style = document.createElement('style');
     style.innerHTML =
         '#main_content {' +
@@ -229,11 +234,6 @@ function setupPageForPick(){
             'width: 20%;' +
             'margin-left: 20px;' +
         '}' +
-        // '#staff_pick_ele > h1{' +
-        //     'text-align: center;' +
-        //     'font-size: 1.75em;' +
-        //     'margin: 4px 0;' +
-        // '}' +
         '#staff_pick_ele p{' +
             'margin-bottom: 0px;' +
         '}' +
@@ -249,9 +249,16 @@ function setupPageForPick(){
                 'width: 75%;' +
                 'margin: 0 auto;' +          
             '}' +
+            '#staff_pick_ele a {' +
+                'display: flex;' +
+                'justify-content: center;' +
+                'align-items: center;' +
+                'flex-direction: column;' +
+            '}' +
             '#staff_pick_ele img {' +
                 'max-width: 500px;' +
                 'max-height: 250px;' +
+                'margin: 12px 0;' +
             '}' +
             '#staff_pick_ele > div {' +
             'display:flex;' +
@@ -271,10 +278,6 @@ function setupPageForPick(){
 
 function insertData(data){
     const staffPick = document.getElementById(`staff_pick_ele`);
-
-    // let h1 = document.createElement("h1");
-    // h1.innerHTML = "Staff Pick";
-    // staffPick.appendChild(h1);
 
     let staffA = document.createElement("a");
     staffA.href = `/pages/${data["page_url"]}`;
@@ -302,14 +305,11 @@ function insertData(data){
     wordsDiv.appendChild(pName);
 
     let jobTitleString = `${data["job_title"]}`;
+
     if (jobTitleString.length > 0){
         let pJobtitle = document.createElement("p");
         pJobtitle.innerHTML = jobTitleString;
         wordsDiv.appendChild(pJobtitle);
     }
-    // console.log(shop);
-    // let a = document.createElement("a");
-    // a.href = `${shop}/pages/${data["page_url"]}`;
-    // a.appendChild(staffDiv);
 
 }

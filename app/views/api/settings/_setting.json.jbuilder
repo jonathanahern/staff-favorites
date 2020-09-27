@@ -1,1 +1,1 @@
-json.extract! setting, :id, :shopify_domain, :sticker
+json.extract! setting, :id, :shopify_domain, :sticker, :layout

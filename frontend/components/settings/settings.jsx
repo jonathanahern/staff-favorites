@@ -23,11 +23,14 @@ class Settings extends Component {
     super(props);
     this.state = {
       sticker: this.props.settings.sticker,
+      layout: this.props.settings.layout,
       save_loading: false,
       save_disabled: true,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleStickerChange = this.handleStickerChange.bind(this);
+    this.handleLayoutChange = this.handleLayoutChange.bind(this);
+
   }
 
   componentDidMount() {
@@ -36,6 +39,7 @@ class Settings extends Component {
 
   setupSettings(){
     this.setState({ sticker: this.props.settings["sticker"] });
+    this.setState({ layout: this.props.settings["layout"] });
   }
 
   handleStickerChange(checked, newVal) {
@@ -43,6 +47,13 @@ class Settings extends Component {
       this.setState({ save_disabled: false });
     }
     this.setState({ sticker: newVal });
+  }
+
+  handleLayoutChange(checked, newVal) {
+    if (this.state.save_disabled) {
+      this.setState({ save_disabled: false });
+    }
+    this.setState({ layout: newVal });
   }
 
   handleSubmit() {
@@ -58,6 +69,8 @@ class Settings extends Component {
 
   render() {
     let selected = this.state.sticker;
+    let selectedLayout = this.state.layout;
+
     const {save_disabled, save_loading} = this.state;
     const red = (
       <img
@@ -95,6 +108,35 @@ class Settings extends Component {
       />
     );
 
+    const sideCol = (
+      <Stack vertical={true} spacing="tight">
+        <TextStyle variation="strong">Side Column Pick</TextStyle>
+        <img
+          src="https://i.ibb.co/r7YgtdY/sideCol.png"
+          width="120px"
+        />
+      </Stack>
+    );
+    const bottomPage = (
+      <Stack vertical={true} spacing="tight">
+        <TextStyle variation="strong">Bottom Page Pick</TextStyle>
+      <img
+        src="https://i.ibb.co/9yfGdFT/bottom-Page.png"
+        width="120px"
+      />
+      </Stack>
+
+    );
+    const insideCol = (
+      <Stack vertical={true} spacing="tight">
+        <TextStyle variation="strong">Inside Column Pick</TextStyle>
+      <img
+        src="https://i.ibb.co/k9WMmsP/inside-Col.png"
+        width="120px"
+      />
+      </Stack >
+
+    );
     return (
       <AppProvider>
         <br />
@@ -135,6 +177,29 @@ class Settings extends Component {
             </Stack>
           </Card>
           <br />
+          <Card sectioned title="Select Product Page Layout">
+            <Stack>
+              <RadioButton
+                label={sideCol}
+                id="side-col"
+                checked={selectedLayout === "side-col"}
+                onChange={this.handleLayoutChange}
+              />
+              <RadioButton
+                label={bottomPage}
+                id="inside-col"
+                checked={selectedLayout === "inside-col"}
+                onChange={this.handleLayoutChange}
+              />
+              <RadioButton
+                label={insideCol}
+                id="bottom-col"
+                checked={selectedLayout === "bottom-col"}
+                onChange={this.handleLayoutChange}
+              />
+            </Stack>
+          </Card>
+            <br />
           <Button
             primary={true}
             loading={save_loading}
