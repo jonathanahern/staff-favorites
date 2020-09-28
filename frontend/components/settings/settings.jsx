@@ -186,15 +186,15 @@ class Settings extends Component {
                 onChange={this.handleLayoutChange}
               />
               <RadioButton
-                label={bottomPage}
+                label={insideCol}
                 id="inside-col"
                 checked={selectedLayout === "inside-col"}
                 onChange={this.handleLayoutChange}
               />
               <RadioButton
-                label={insideCol}
-                id="bottom-col"
-                checked={selectedLayout === "bottom-col"}
+                label={bottomPage}
+                id="bottom-page"
+                checked={selectedLayout === "bottom-page"}
                 onChange={this.handleLayoutChange}
               />
             </Stack>

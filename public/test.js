@@ -178,8 +178,6 @@ function populateLocalStorage(data){
     localStorage.setItem("pickedProducts", JSON.stringify(data["ids"]));
     localStorage.setItem("staffPicksSettings", JSON.stringify(data["settings"]));
 
-    console.log(data["settings"]["layout"]);
-
     if (data["settings"]["sticker"] !== JSON.parse(origSettings)["sticker"]){
       let eles = document.getElementsByClassName("sticker-img");
       for (let i = 0; i < eles.length; i++) {
@@ -222,6 +220,19 @@ function getPicks (){
 }
 
 function setupPageForPick(){
+  let settings = JSON.parse(localStorage.getItem("staffPicksSettings"));
+  console.log(settings["layout"]);
+  switch (settings["layout"]) {
+    case "side-col":
+      setupPageForSideCol();
+    case "bottom-page":
+      setupPageForBottomPage();
+    default:
+      setupPageForSideCol();
+  }
+}
+
+function setupPageForSideCol() {
     var style = document.createElement('style');
     style.innerHTML =
         '#main_content {' +
@@ -270,10 +281,61 @@ function setupPageForPick(){
 
     // Get the first script tag
     var ref = document.querySelector('script');
-
     // Insert our new styles before the first script tag
     ref.parentNode.insertBefore(style, ref);
+}
 
+function setupPageForSideCol() {
+    var style = document.createElement('style');
+    style.innerHTML =
+        '#main_content {' +
+            'width: 80%;' +
+        '}' +
+        '#full_container {' +
+            'display: flex;' +
+        '}' +
+        '#staff_pick_ele {' +
+            'width: 20%;' +
+            'margin-left: 20px;' +
+        '}' +
+        '#staff_pick_ele p{' +
+            'margin-bottom: 0px;' +
+        '}' +
+        '@media screen and (max-width: 750px) {'+
+            '#full_container {' +
+                'display: block;' +
+            '}' +
+            '#staff_pick_ele {' +
+                'display: flex;' +
+                'justify-content: center;' +
+                'flex-direction: column;' +
+                'align-items: center;' +
+                'width: 75%;' +
+                'margin: 0 auto;' +          
+            '}' +
+            '#staff_pick_ele a {' +
+                'display: flex;' +
+                'justify-content: center;' +
+                'align-items: center;' +
+                'flex-direction: column;' +
+            '}' +
+            '#staff_pick_ele img {' +
+                'max-width: 500px;' +
+                'max-height: 250px;' +
+                'margin: 12px 0;' +
+            '}' +
+            '#staff_pick_ele > div {' +
+            'display:flex;' +
+            '}' +
+            '#staff_pick_ele > div > div{' +
+            'padding: 0 20px;' +
+            '}' +
+        '}';
+
+    // Get the first script tag
+    var ref = document.querySelector('script');
+    // Insert our new styles before the first script tag
+    ref.parentNode.insertBefore(style, ref);
 }
 
 function insertData(data){
