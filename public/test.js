@@ -227,8 +227,6 @@ function setupPageForPick(){
       setupPageForSideCol();
     case "bottom-page":
       setupPageForBottomPage();
-    default:
-      setupPageForSideCol();
   }
 }
 
@@ -285,51 +283,25 @@ function setupPageForSideCol() {
     ref.parentNode.insertBefore(style, ref);
 }
 
-function setupPageForSideCol() {
+function setupPageForBottomPage() {
     var style = document.createElement('style');
     style.innerHTML =
-        '#main_content {' +
-            'width: 80%;' +
-        '}' +
-        '#full_container {' +
-            'display: flex;' +
-        '}' +
         '#staff_pick_ele {' +
-            'width: 20%;' +
-            'margin-left: 20px;' +
+            'width: 80%;' +
+            'margin: 20px auto;' +
+        '}' +
+        '#staff_pick_ele img{' +
+            'width: 160px;' +
+            'float: left;' +
+            'margin-right: 10px;' +
+        '}' +
+        '#staff_pick_ele img:: after {' +
+          'content: "";' +
+          'clear: both;' +
+          'display: table;' +
         '}' +
         '#staff_pick_ele p{' +
             'margin-bottom: 0px;' +
-        '}' +
-        '@media screen and (max-width: 750px) {'+
-            '#full_container {' +
-                'display: block;' +
-            '}' +
-            '#staff_pick_ele {' +
-                'display: flex;' +
-                'justify-content: center;' +
-                'flex-direction: column;' +
-                'align-items: center;' +
-                'width: 75%;' +
-                'margin: 0 auto;' +          
-            '}' +
-            '#staff_pick_ele a {' +
-                'display: flex;' +
-                'justify-content: center;' +
-                'align-items: center;' +
-                'flex-direction: column;' +
-            '}' +
-            '#staff_pick_ele img {' +
-                'max-width: 500px;' +
-                'max-height: 250px;' +
-                'margin: 12px 0;' +
-            '}' +
-            '#staff_pick_ele > div {' +
-            'display:flex;' +
-            '}' +
-            '#staff_pick_ele > div > div{' +
-            'padding: 0 20px;' +
-            '}' +
         '}';
 
     // Get the first script tag
