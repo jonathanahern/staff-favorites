@@ -227,6 +227,8 @@ function setupPageForPick(){
       setupPageForSideCol();
     case "bottom-page":
       setupPageForBottomPage();
+    case "inside-col":
+      setupPageForInsideCol();
   }
 }
 
@@ -308,6 +310,32 @@ function setupPageForBottomPage() {
     var ref = document.querySelector('script');
     // Insert our new styles before the first script tag
     ref.parentNode.insertBefore(style, ref);
+}
+
+function setupPageForInsideCol() {
+  var style = document.createElement('style');
+  style.innerHTML =
+    '#staff_pick_ele {' +
+      'margin-top: 16px;' +
+    '}' +
+    '#staff_pick_ele img{' +
+      'width: 170px;' +
+      'float: left;' +
+      'margin-right: 10px;' +
+    '}' +
+    '#staff_pick_ele img:: after {' +
+      'content: "";' +
+      'clear: both;' +
+      'display: table;' +
+    '}' +
+      '#staff_pick_ele p{' +
+      'margin-bottom: 0px;' +
+    '}';
+
+  // Get the first script tag
+  var ref = document.querySelector('script');
+  // Insert our new styles before the first script tag
+  ref.parentNode.insertBefore(style, ref);
 }
 
 function insertData(data){

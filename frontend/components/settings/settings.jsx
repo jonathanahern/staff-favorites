@@ -30,6 +30,8 @@ class Settings extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleStickerChange = this.handleStickerChange.bind(this);
     this.handleLayoutChange = this.handleLayoutChange.bind(this);
+    this.layoutText = this.layoutText.bind(this);
+
 
   }
 
@@ -60,6 +62,34 @@ class Settings extends Component {
     const settings = Object.assign({}, this.state);
     this.setState({ save_loading: true });
     this.props.updateSetting(settings).then((data) => this.returnToDisabled());
+  }
+
+  layoutText(){
+    const insideCol = `<!-- <div> The column container element-->
+      <!-- One column's content -->
+      <div id="staff_pick_ele"></div>
+<!-- </div>  -->`;
+
+    const sideCol = `<!-- <div> The column content -->
+      <div id="staff_pick_ele"></div>
+<!-- </div>  -->`;
+
+    const bottomPage = `<!-- <div>  The product container element-->
+    <!-- The product data -->
+<!-- </div>  -->
+<div id="staff_pick_ele"></div>`;
+
+    switch (this.state.layout) {
+      case "inside-col":
+        return insideCol;
+      case "side-col":
+        return sideCol;
+      case "bottom-page":
+        return bottomPage;
+      default:
+        return "";
+    }
+
   }
 
   returnToDisabled(){
@@ -142,7 +172,8 @@ class Settings extends Component {
         <br />
         <br />
         <Page title="Settings">
-          <Card sectioned title="Select Picks Sticker">
+          <Card sectioned title="Select a staff picks sticker to appear on collection pages">
+
             <Stack>
               <RadioButton
                 label={red}
@@ -177,7 +208,7 @@ class Settings extends Component {
             </Stack>
           </Card>
           <br />
-          <Card sectioned title="Select Product Page Layout">
+          <Card sectioned title="Select the section of the product page you'd like to insert each pick review">
             <Stack>
               <RadioButton
                 label={sideCol}
@@ -198,6 +229,11 @@ class Settings extends Component {
                 onChange={this.handleLayoutChange}
               />
             </Stack>
+            <TextField
+              value={this.layoutText()}
+              multiline={6}
+              readOnly={true}
+            />
           </Card>
             <br />
           <Button
