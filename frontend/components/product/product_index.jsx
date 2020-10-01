@@ -52,7 +52,7 @@ class ProductIndex extends React.Component {
     } = product;
     let name = "Employee";
     const { employees } = this.props;
-    if (Object.keys(employees).length > 0) {
+    if (Object.keys(employees).length > 0 && this.props.entities[0][employee_id] !== undefined) {
       name = this.props.entities[0][employee_id].name;
     }
     let title = `${name}'s ${shopify_title} review:`;

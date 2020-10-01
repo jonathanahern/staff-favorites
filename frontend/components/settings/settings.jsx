@@ -1,22 +1,15 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import {
   AppProvider,
   Page,
-  ChoiceList,
   Stack,
   RadioButton,
   Button,
-  Form,
-  FormLayout,
   Card,
   TextField,
-  DisplayText,
   TextStyle,
-  Select,
+  List
 } from "@shopify/polaris";
-
-import { Provider as AppBridgeProvider, ResourcePicker } from "@shopify/app-bridge-react";
 
 class Settings extends Component {
   constructor(props) {
@@ -31,7 +24,7 @@ class Settings extends Component {
     this.handleStickerChange = this.handleStickerChange.bind(this);
     this.handleLayoutChange = this.handleLayoutChange.bind(this);
     this.layoutText = this.layoutText.bind(this);
-
+    this.layoutInstructions = this.layoutInstructions.bind(this);
 
   }
 
@@ -64,20 +57,62 @@ class Settings extends Component {
     this.props.updateSetting(settings).then((data) => this.returnToDisabled());
   }
 
+  layoutInstructions(){
+    const insideCol = <List type="number">
+      <List.Item>Navigate to Online Store/Themes and in the Actions dropdown click Edit code. It is also recommended to "Download theme file" for a backup.</List.Item>
+      <List.Item>Open the product-template liquid file, or the file that displays the product page.</List.Item>
+      <List.Item>Locate the div or other element that contains the column.</List.Item>
+      <List.Item>Copy and paste the staff-pick-ele div into the bottom of the container element.</List.Item>
+    </List>;
+
+    const sideCol = <List type="number">
+      <List.Item>Navigate to Online Store/Themes and in the Actions dropdown click Edit code. It is also recommended to "Download theme file" for a backup.</List.Item>
+      <List.Item>Open the product-template liquid file, or the file that displays the product page.</List.Item>
+      <List.Item>Locate the div or other element that contains the product information.</List.Item>
+      <List.Item>Wrap a main-content-sp div element around the large container element.</List.Item>
+      <List.Item>Wrap a full-container-sp div element around the main content div.</List.Item>
+      <List.Item>Between the closing div tags of the main content and full container, paste the staff-pick-ele div.</List.Item>
+    </List>;
+
+    const bottomPage = <List type="number">
+      <List.Item>Navigate to Online Store/Themes and in the Actions dropdown click Edit code. It is also recommended to "Download theme file" for a backup.</List.Item>
+      <List.Item>Open the product-template liquid file, or the file that displays the product page.</List.Item>
+      <List.Item>Locate the div or other element that contains the product information.</List.Item>
+      <List.Item>Copy and paste the staff-pick-ele div directly beneath the container element.</List.Item>
+    </List>;
+
+    switch (this.state.layout) {
+      case "inside-col":
+        return insideCol;
+      case "side-col":
+        return sideCol;
+      case "bottom-page":
+        return bottomPage;
+      default:
+        return "";
+    }
+
+  }
+
   layoutText(){
-    const insideCol = `<!-- <div> The column container element-->
-      <!-- One column's content -->
-      <div id="staff_pick_ele"></div>
+    const insideCol = `<!-- <div> The column container element -->
+    <!-- Column's content -->
+    <div id="staff-pick-ele"></div>
 <!-- </div>  -->`;
 
-    const sideCol = `<!-- <div> The column content -->
-      <div id="staff_pick_ele"></div>
-<!-- </div>  -->`;
-
-    const bottomPage = `<!-- <div>  The product container element-->
+    const bottomPage = `<!-- <div>  The product container element -->
     <!-- The product data -->
 <!-- </div>  -->
-<div id="staff_pick_ele"></div>`;
+<div id="staff-pick-ele"></div>`;
+
+    const sideCol = `<div id="full-container-sp">
+    <div id="main-content-sp">
+        <!-- <div>  The product container element -->
+          <!-- The product data -->
+        <!-- </div> -->
+    </div>
+    <div id="staff-pick-ele"></div>
+</div>`;
 
     switch (this.state.layout) {
       case "inside-col":
@@ -138,6 +173,9 @@ class Settings extends Component {
       />
     );
 
+    const stickerInsertion = `<!-- <img>  The product image -->
+<div class="staff-pick-alert" data-prodID="{{ product.id }}"></div>`;
+
     const sideCol = (
       <Stack vertical={true} spacing="tight">
         <TextStyle variation="strong">Side Column Pick</TextStyle>
@@ -171,9 +209,8 @@ class Settings extends Component {
       <AppProvider>
         <br />
         <br />
-        <Page title="Settings">
-          <Card sectioned title="Select a staff picks sticker to appear on collection pages">
-
+        <Page title="Settings/Setup">
+          <Card sectioned title="Select a staff picks sticker for collection pages">
             <Stack>
               <RadioButton
                 label={red}
@@ -206,9 +243,23 @@ class Settings extends Component {
                 onChange={this.handleStickerChange}
               />
             </Stack>
+            <br />
+            <List type="number">
+              <List.Item>Navigate to Online Store/Themes and in the Actions dropdown click Edit code. It is also recommended to "Download theme file" for a backup.</List.Item>
+              <List.Item>Open the product-card-grid liquid file, or the file that displays the product on collection pages.</List.Item>
+              <List.Item>Locate the img element that displays the product image.</List.Item>
+              <List.Item>Copy and paste the staff-pick-alert div directly beneath the img element.</List.Item>
+            </List>
+            <br />
+            <TextField
+              value={stickerInsertion}
+              multiline={2}
+              readOnly={true}
+              helpText="The <!-- --> line is only for context and should not be pasted into your liquid files"
+            />
           </Card>
           <br />
-          <Card sectioned title="Select the section of the product page you'd like to insert each pick review">
+          <Card sectioned title="Select a product page layout">
             <Stack>
               <RadioButton
                 label={sideCol}
@@ -229,10 +280,14 @@ class Settings extends Component {
                 onChange={this.handleLayoutChange}
               />
             </Stack>
+            <br />
+            {this.layoutInstructions()}
+            <br />
             <TextField
               value={this.layoutText()}
-              multiline={6}
+              multiline={4}
               readOnly={true}
+              helpText = "The <!-- --> lines are only for context and should not be pasted into your liquid files"
             />
           </Card>
             <br />

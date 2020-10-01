@@ -1,4 +1,4 @@
-var elem = document.getElementById(`staff_pick_element`);
+
 var url = window.location.href;
 var shop = window.location.host;
 var handle = url.split("/").pop();
@@ -206,7 +206,6 @@ function populateLocalStorage(data){
           }
         }
     }
-
 }
 
 function getPicks (){
@@ -221,63 +220,60 @@ function getPicks (){
 
 function setupPageForPick(){
   let settings = JSON.parse(localStorage.getItem("staffPicksSettings"));
-  console.log(settings["layout"]);
+  // console.log(settings["layout"]);
   switch (settings["layout"]) {
     case "side-col":
       setupPageForSideCol();
+      break;
     case "bottom-page":
       setupPageForBottomPage();
+      break;
     case "inside-col":
       setupPageForInsideCol();
+      break;
+    default:
+      break;
   }
 }
 
 function setupPageForSideCol() {
+  console.log("right one");
     var style = document.createElement('style');
     style.innerHTML =
-        '#main_content {' +
+        '#main-content-sp {' +
             'width: 80%;' +
         '}' +
-        '#full_container {' +
+        '#full-container-sp {' +
             'display: flex;' +
         '}' +
-        '#staff_pick_ele {' +
+        '#staff-pick-ele {' +
             'width: 20%;' +
             'margin-left: 20px;' +
         '}' +
-        '#staff_pick_ele p{' +
+        '#staff-pick-ele p{' +
             'margin-bottom: 0px;' +
         '}' +
         '@media screen and (max-width: 750px) {'+
-            '#full_container {' +
+            '#full-container-sp {' +
                 'display: block;' +
             '}' +
-            '#staff_pick_ele {' +
-                'display: flex;' +
-                'justify-content: center;' +
-                'flex-direction: column;' +
-                'align-items: center;' +
-                'width: 75%;' +
-                'margin: 0 auto;' +          
+            '#staff-pick-ele {' +
+              'width: 80%;' +
+              'margin: 20px auto;' +
             '}' +
-            '#staff_pick_ele a {' +
-                'display: flex;' +
-                'justify-content: center;' +
-                'align-items: center;' +
-                'flex-direction: column;' +
+            '#staff-pick-ele img{' +
+              'width: 160px;' +
+              'float: left;' +
+              'margin-right: 10px;' +
             '}' +
-            '#staff_pick_ele img {' +
-                'max-width: 500px;' +
-                'max-height: 250px;' +
-                'margin: 12px 0;' +
+            '#staff-pick-ele img:: after {' +
+              'content: "";' +
+              'clear: both;' +
+              'display: table;' +
             '}' +
-            '#staff_pick_ele > div {' +
-            'display:flex;' +
-            '}' +
-            '#staff_pick_ele > div > div{' +
-            'padding: 0 20px;' +
-            '}' +
-        '}';
+            '#staff-pick-ele p{' +
+              'margin-bottom: 0px;' +
+            '}';
 
     // Get the first script tag
     var ref = document.querySelector('script');
@@ -286,23 +282,25 @@ function setupPageForSideCol() {
 }
 
 function setupPageForBottomPage() {
+  console.log("bottom one");
+
     var style = document.createElement('style');
     style.innerHTML =
-        '#staff_pick_ele {' +
+        '#staff-pick-ele {' +
             'width: 80%;' +
             'margin: 20px auto;' +
         '}' +
-        '#staff_pick_ele img{' +
+        '#staff-pick-ele img{' +
             'width: 160px;' +
             'float: left;' +
             'margin-right: 10px;' +
         '}' +
-        '#staff_pick_ele img:: after {' +
+        '#staff-pick-ele img:: after {' +
           'content: "";' +
           'clear: both;' +
           'display: table;' +
         '}' +
-        '#staff_pick_ele p{' +
+        '#staff-pick-ele p{' +
             'margin-bottom: 0px;' +
         '}';
 
@@ -313,22 +311,24 @@ function setupPageForBottomPage() {
 }
 
 function setupPageForInsideCol() {
+  console.log("inside one");
+
   var style = document.createElement('style');
   style.innerHTML =
-    '#staff_pick_ele {' +
+    '#staff-pick-ele {' +
       'margin-top: 16px;' +
     '}' +
-    '#staff_pick_ele img{' +
+    '#staff-pick-ele img{' +
       'width: 170px;' +
       'float: left;' +
       'margin-right: 10px;' +
     '}' +
-    '#staff_pick_ele img:: after {' +
+    '#staff-pick-ele img:: after {' +
       'content: "";' +
       'clear: both;' +
       'display: table;' +
     '}' +
-      '#staff_pick_ele p{' +
+      '#staff-pick-ele p{' +
       'margin-bottom: 0px;' +
     '}';
 
@@ -339,7 +339,7 @@ function setupPageForInsideCol() {
 }
 
 function insertData(data){
-    const staffPick = document.getElementById(`staff_pick_ele`);
+    const staffPick = document.getElementById(`staff-pick-ele`);
 
     let staffA = document.createElement("a");
     staffA.href = `/pages/${data["page_url"]}`;
