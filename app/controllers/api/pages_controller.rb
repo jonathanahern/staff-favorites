@@ -5,19 +5,9 @@ class Api::PagesController < ApplicationController
     render :index
   end
 
-  def show
-
+  def getStaff
+    @employees = Shop.find_by(shopify_domain: params[:shopDom]).employees
+    render json: @employees, status: 200
   end
-
-  def create
-  end
-
-  def update
-  end
-
-  def delete
-  end
-
-
 
 end

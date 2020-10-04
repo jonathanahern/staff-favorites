@@ -31,11 +31,10 @@ if (url.includes("/collections/")) {
 
 if (url.includes("/pages/")) {
 
-    let eles = document.getElementsByClassName("staff-picks-products");
+    const eles = document.getElementsByClassName("staff-picks-products");
 
     if (eles.length > 0){
         let staffid = eles[0].dataset.staffid.toString();
-        console.log(staffid);
         fetch(`https://6c069b6d768c.ngrok.io/api/pages?employeeid=${staffid}`, {
           method: "GET",
         })
@@ -43,6 +42,20 @@ if (url.includes("/pages/")) {
           .then((resp) => {
             createProducts(eles[0], Object.values(resp));
           });
+    } else {
+
+      const staffEle = document.getElementById("staff-profiles-ele");
+      if (staffEle){
+        fetch(`https://6c069b6d768c.ngrok.io/api/pages/1/getStaff?shopDom=${shop}`, {
+          method: "GET",
+        })
+          .then((res) => res.json())
+          .then((resp) => {
+            console.log(resp)
+            // createProducts(eles[0], Object.values(resp));
+          });
+      }
+
     }
     
 }

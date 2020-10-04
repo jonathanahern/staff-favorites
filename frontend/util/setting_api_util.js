@@ -14,3 +14,13 @@ export const updateSetting = (setting) =>
     method: "patch",
     data: { setting },
   });
+
+export const createStaffPage = (pageData) =>
+  $.ajax({
+    url: `/api/settings`,
+    headers: {
+      "X-CSRF-Token": $('meta[name="csrf-token"]').attr("content"),
+    },
+    method: "post",
+    data: { pageData },
+  });

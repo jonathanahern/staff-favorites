@@ -15,16 +15,22 @@ class Settings extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      page_title: "",
+      subtitle: "",
       sticker: this.props.settings.sticker,
       layout: this.props.settings.layout,
       save_loading: false,
       save_disabled: true,
+      title_loading: false,
+      title_disabled: true,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleStickerChange = this.handleStickerChange.bind(this);
     this.handleLayoutChange = this.handleLayoutChange.bind(this);
+    this.handleCreatePage = this.handleCreatePage.bind(this);
     this.layoutText = this.layoutText.bind(this);
     this.layoutInstructions = this.layoutInstructions.bind(this);
+    this.resetPageCreation = this.resetPageCreation.bind(this);
 
   }
 
@@ -35,6 +41,20 @@ class Settings extends Component {
   setupSettings(){
     this.setState({ sticker: this.props.settings["sticker"] });
     this.setState({ layout: this.props.settings["layout"] });
+  }
+
+  handleCreatePage(){
+    this.setState({ title_loading: true });
+    const pageData = {page_title: this.state.page_title, subtitle: this.state.subtitle};
+    this.props.createStaffPage(pageData).then(data =>
+      this.resetPageCreation()
+    );
+  }
+
+  resetPageCreation(){
+    this.setState({ page_title: "" });
+    this.setState({ subtitle: "" });
+    this.setState({ title_loading: false });
   }
 
   handleStickerChange(checked, newVal) {
@@ -49,6 +69,17 @@ class Settings extends Component {
       this.setState({ save_disabled: false });
     }
     this.setState({ layout: newVal });
+  }
+
+  handleChange(name, value) {
+    if (name === "page_title" && value.length > 0){
+      this.setState({ title_disabled: false });
+    } else if (name === "page_title" && value.length < 1) {
+      this.setState({ title_disabled: true });
+    }
+    let state = this.state;
+    state[name] = value;
+    this.setState({ state });
   }
 
   handleSubmit() {
@@ -136,7 +167,7 @@ class Settings extends Component {
     let selected = this.state.sticker;
     let selectedLayout = this.state.layout;
 
-    const {save_disabled, save_loading} = this.state;
+    const {save_disabled, save_loading, title_disabled, title_loading} = this.state;
     const red = (
       <img
         src="https://i.ibb.co/3kW5XsV/red-burst.png"
@@ -244,6 +275,8 @@ class Settings extends Component {
               />
             </Stack>
             <br />
+            <TextStyle variation="strong">To Setup:</TextStyle>
+            <br />
             <List type="number">
               <List.Item>Navigate to Online Store/Themes and in the Actions dropdown click Edit code. It is also recommended to "Download theme file" for a backup.</List.Item>
               <List.Item>Open the product-card-grid liquid file, or the file that displays the product on collection pages.</List.Item>
@@ -281,6 +314,8 @@ class Settings extends Component {
               />
             </Stack>
             <br />
+            <TextStyle variation="strong">To Setup:</TextStyle>
+            <br/>
             {this.layoutInstructions()}
             <br />
             <TextField
@@ -291,6 +326,41 @@ class Settings extends Component {
             />
           </Card>
             <br />
+          <Card sectioned title="Staff Page">
+            <TextStyle variation="subdued">Automatically create a page with all your staff. Give it a title, an optional subtitle, and create your custom page.</TextStyle>
+            <br />
+            <br />
+            <TextField
+              value={this.state.page_title}
+              onChange={this.handleChange.bind(this, "page_title")}
+              label="Page Title"
+              type="text"
+              maxLength={24}
+              showCharacterCount={true}
+              fullWidth
+            />
+            <br />
+            <TextField
+              value={this.state.subtitle}
+              onChange={this.handleChange.bind(this, "subtitle")}
+              label="Subtitle (optional)"
+              type="text"
+              multiline={true}
+              maxLength={400}
+              showCharacterCount={true}
+              fullWidth
+            />
+            <br />
+            <Button
+              primary={true}
+              loading={title_loading}
+              disabled={title_disabled}
+              onClick={this.handleCreatePage}
+            >Create Staff Page
+          </Button>
+            <br />
+          </Card>
+          <br/>
           <Button
             primary={true}
             loading={save_loading}
