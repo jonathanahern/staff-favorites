@@ -51,13 +51,89 @@ if (url.includes("/pages/")) {
         })
           .then((res) => res.json())
           .then((resp) => {
-            console.log(resp)
-            // createProducts(eles[0], Object.values(resp));
+            createStaff(staffEle, resp);
           });
       }
 
     }
     
+}
+
+function createStaff(staffContainer,staffArr){
+  staffArr.forEach((staff) => {
+
+    let memberLink = document.createElement("a");
+    memberLink.href = url.split("/pages/")[0] + "/pages/" + staff.page_url;
+    memberLink.className += "staff-member-container";
+    memberLink.style.marginBottom = "12px";
+    staffContainer.appendChild(memberLink);
+
+    let containerImg = document.createElement("div");
+    containerImg.className += "staff-img-container";
+    memberLink.appendChild(containerImg);
+
+    let img = document.createElement("img");
+    img.src = staff.profile_url;
+    containerImg.appendChild(img);
+
+    let name = document.createElement("h4");
+    name.innerHTML = staff.name;
+    memberLink.appendChild(name);
+
+    let job_title = document.createElement("p");
+    job_title.className += "job-title";
+    job_title.innerHTML = staff.job_title;
+    memberLink.appendChild(job_title);
+
+    let description = document.createElement("p");
+    description.className += "description-staff-pick";
+    description.innerHTML = staff.description.replace(/\n/g, "<br />");
+    memberLink.appendChild(description);
+
+  });
+  setupPageForStaff();
+}
+
+function setupPageForStaff() {
+  var style = document.createElement("style");
+  style.innerHTML =
+    ".staff-member-container {" +
+      "width: 33%;" +
+      "padding-right: 24px;" +
+      "height: 400px;" +
+      "overflow: hidden;" +
+      "border-bottom: none !important;" +
+    "}" +
+    ".staff-img-container {" +
+      "width: 42%;" +
+      "padding-right: 6px;" +
+      "float: left;" +
+    "}" +
+    "#staff-profiles-ele {" +
+      "display: flex;" +
+    "}" +
+    '.staff-img-container:: after {' +
+      'content: "";' +
+      'clear: both;' +
+      'display: table;' +
+    '}' +
+    '.staff-member-container h4{' +
+      'margin: 0;' +
+      'font-size: 16px;' +
+    '}' +
+    
+    "@media screen and (max-width: 690px) {" +
+      "#staff-profiles-ele {" +
+        "flex-direction: column;" +
+        // "background-color: purple;" +
+      "}" +
+    "}";
+
+  // Get the first script tag
+  var ref = document.querySelector("script");
+
+  // Insert our new styles before the first script tag
+  ref.parentNode.insertBefore(style, ref);
 }
 
 function createProducts(container, data) {
