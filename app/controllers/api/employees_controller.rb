@@ -1,7 +1,7 @@
 class Api::EmployeesController < ShopifyApp::AuthenticatedController
 
   def index
-    @employees = Employee.all
+    @employees = Shop.find(session[:shop_id]).employees
     render :index
   end
 

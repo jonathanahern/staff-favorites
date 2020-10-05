@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {
   AppProvider,
+  Banner,
   Page,
   Stack,
   RadioButton,
@@ -23,6 +24,7 @@ class Settings extends Component {
       save_disabled: true,
       title_loading: false,
       title_disabled: true,
+      page_created: false,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleStickerChange = this.handleStickerChange.bind(this);
@@ -55,6 +57,8 @@ class Settings extends Component {
     this.setState({ page_title: "" });
     this.setState({ subtitle: "" });
     this.setState({ title_loading: false });
+    this.setState({ page_created: true });
+
   }
 
   handleStickerChange(checked, newVal) {
@@ -161,6 +165,20 @@ class Settings extends Component {
   returnToDisabled(){
     this.setState({ save_loading: false });
     this.setState({ save_disabled: true });
+  }
+
+  pageCreatedAlert(){
+    if (this.state.page_created){
+      return <>
+        <br />
+        <Banner title="Page Created" status="success" onDismiss={() => { this.setState({ page_created: false }) }}>
+          <p>A staff page has been created. Link to it for customers to meet your staff!</p>
+        </Banner>
+        <br />
+      </>;
+    } else {
+      return <></>;
+    }  
   }
 
   render() {
@@ -359,6 +377,7 @@ class Settings extends Component {
             >Create Staff Page
           </Button>
             <br />
+            {this.pageCreatedAlert()}
           </Card>
           <br/>
           <Button

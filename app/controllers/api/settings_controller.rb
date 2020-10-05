@@ -46,7 +46,7 @@ private
           }\n
       .staff-member-container {\n
         width: 33%;\n
-        padding-right: 24px;\n
+        padding-right: 32px;\n
         height: 380px;\n
         overflow: hidden;\n
         border-bottom: none !important;\n
