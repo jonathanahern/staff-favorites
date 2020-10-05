@@ -39,58 +39,52 @@ private
       @page.body_html =
           "<p id='staff-subtitle'>#{subtitle}</p>\n
           <div id='staff-profiles-ele'></div>\n
-
           <style>\n
-            #profile-container {\n
-                display: flex;\n
-                justify-content: center;\n
-            }\n
-            #profile-container p {\n
-                max-width: 500px;\n
-            }\n
-            #profile-container img {\n
-                width: 220px;\n
-                margin-right: 20px;\n
-                margin-bottom: 20px;\n
-            }\n
-            #my-picks-header {\n
-                text-align: center;\n
-            }\n
-
-            .pick-container {\n
-                height: 320px;\n
-                width: 280px;\n
-                border-bottom: none !important;\n
-                overflow: hidden; \n
-            }\n
-            .staff-picks-products {\n
-                width: 100%;\n
-                display: flex;\n
-                flex-wrap: wrap;\n
-                justify-content: space-between;\n
-                align-items: center;\n
-            }\n
-            .clearfix:: after {\n
-                content: "";\n
-                clear: both;\n
-                display: table;\n
-            }\n
-            .img-container {\n
-                float: left;\n
-                width: 120px;\n
-                align-items: center;\n
-                margin-top: 4px;\n
-                margin-right: 8px;\n
-            }\n
-            .pick-container h4  {\n
-                margin: 6px 0;\n
-            }\n
-            @media screen and (max-width: 790px) {\n
-                #profile-container {\n
-                    flex-direction: column;\n
-                    align-items: center;\n
-                }\n
-            };\n
+          #staff-subtitle {\n
+            text-align:center;\n
+            margin-bottom: 32px;\n
+          }\n
+      .staff-member-container {\n
+        width: 33%;\n
+        padding-right: 24px;\n
+        height: 380px;\n
+        overflow: hidden;\n
+        border-bottom: none !important;\n
+      }\n
+      .staff-img-container {\n
+        width: 42%;\n
+        padding-right: 6px;\n
+        float: left;\n
+      } \n
+      #staff-profiles-ele {\n
+        display: flex;\n
+        flex-wrap: wrap;\n
+      }\n
+      .staff-img-container:: after {\n
+        content: "";\n
+        clear: both;\n
+        display: table;\n
+      }\n
+      .staff-member-container h4{\n
+        margin: 0;\n
+        font-size: 16px;\n
+      }
+      .section-header {\n
+        margin-bottom: 0px;\n
+      }\n
+      @media screen and (max-width: 900px) {\n
+        #staff-profiles-ele {\n
+          flex-direction: column;\n
+          align-items: center;\n
+        }\n
+        .staff-member-container {\n
+          width: 70%;\n
+          height: inherit;\n
+          margin-top: 24px;\n
+        }\n
+        .staff-img-container {\n
+          width: 45%;\n
+        }\n
         </style>"
       if @page.save
         return true

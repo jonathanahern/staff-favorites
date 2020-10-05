@@ -87,11 +87,15 @@ function createStaff(staffContainer,staffArr){
 
     let description = document.createElement("p");
     description.className += "description-staff-pick";
-    description.innerHTML = staff.description.replace(/\n/g, "<br />");
+    let descriptionEdit = staff.description;
+    if (descriptionEdit.length > 300) {
+      descriptionEdit = descriptionEdit.substr(0, 300) + "...";
+    }
+    description.innerHTML = descriptionEdit.replace(/\n/g, "<br />");
     memberLink.appendChild(description);
 
   });
-  setupPageForStaff();
+  // setupPageForStaff();
 }
 
 function setupPageForStaff() {
@@ -100,7 +104,7 @@ function setupPageForStaff() {
     ".staff-member-container {" +
       "width: 33%;" +
       "padding-right: 24px;" +
-      "height: 400px;" +
+      "height: 380px;" +
       "overflow: hidden;" +
       "border-bottom: none !important;" +
     "}" +
@@ -111,6 +115,7 @@ function setupPageForStaff() {
     "}" +
     "#staff-profiles-ele {" +
       "display: flex;" +
+      "flex-wrap: wrap;" +
     "}" +
     '.staff-img-container:: after {' +
       'content: "";' +
@@ -120,12 +125,23 @@ function setupPageForStaff() {
     '.staff-member-container h4{' +
       'margin: 0;' +
       'font-size: 16px;' +
+  '}'+
+    '.section-header {' +
+      'margin: 0px !important;' +
     '}' +
     
-    "@media screen and (max-width: 690px) {" +
+    "@media screen and (max-width: 900px) {" +
       "#staff-profiles-ele {" +
         "flex-direction: column;" +
-        // "background-color: purple;" +
+        "align-items: center;" +
+      "}" +
+      ".staff-member-container {" +
+        "width: 70%;" +
+        "height: inherit;" +
+        "margin-top: 24px;" +
+      "}" +
+      ".staff-img-container {" +
+        "width: 45%;" +
       "}" +
     "}";
 
