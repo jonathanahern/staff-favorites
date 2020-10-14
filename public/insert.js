@@ -35,7 +35,7 @@ if (url.includes("/pages/")) {
 
     if (eles.length > 0){
         let staffid = eles[0].dataset.staffid.toString();
-        fetch(`https://6c069b6d768c.ngrok.io/api/pages?employeeid=${staffid}`, {
+        fetch(`https://4316957f8de7.ngrok.io/api/pages?employeeid=${staffid}`, {
           method: "GET",
         })
           .then((res) => res.json())
@@ -46,7 +46,7 @@ if (url.includes("/pages/")) {
 
       const staffEle = document.getElementById("staff-profiles-ele");
       if (staffEle){
-        fetch(`https://6c069b6d768c.ngrok.io/api/pages/1/getStaff?shopDom=${shop}`, {
+        fetch(`https://4316957f8de7.ngrok.io/api/pages/1/getStaff?shopDom=${shop}`, {
           method: "GET",
         })
           .then((res) => res.json())
@@ -258,7 +258,7 @@ function setupPageForCollections() {
 if (url.includes('/products/') && pickedProducts.includes(prodID)) {
     setupPageForPick();
 
-  fetch(`https://6c069b6d768c.ngrok.io/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
+  fetch(`https://4316957f8de7.ngrok.io/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
     method: "GET",
     })
   .then(res => res.json())
@@ -268,7 +268,7 @@ if (url.includes('/products/') && pickedProducts.includes(prodID)) {
 }
 
 function setPicks (shop) {
-  fetch(`https://6c069b6d768c.ngrok.io/api/front_end?shop=${shop}`, {
+  fetch(`https://4316957f8de7.ngrok.io/api/front_end?shop=${shop}`, {
       method: "GET",
     })
       .then((res) => res.json())
@@ -342,7 +342,6 @@ function setupPageForPick(){
 }
 
 function setupPageForSideCol() {
-  console.log("right one");
     var style = document.createElement('style');
     style.innerHTML =
         '#main-content-sp {' +
@@ -387,7 +386,6 @@ function setupPageForSideCol() {
 }
 
 function setupPageForBottomPage() {
-  console.log("bottom one");
 
     var style = document.createElement('style');
     style.innerHTML =
@@ -416,7 +414,6 @@ function setupPageForBottomPage() {
 }
 
 function setupPageForInsideCol() {
-  console.log("inside one");
 
   var style = document.createElement('style');
   style.innerHTML =

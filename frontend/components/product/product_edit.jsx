@@ -99,7 +99,6 @@ class ProductNew extends Component {
   }
 
   openModal() {
-    console.log("here");
     this.setState({ deleting: true });
   }
 
