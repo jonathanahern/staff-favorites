@@ -35,7 +35,7 @@ if (url.includes("/pages/")) {
 
     if (eles.length > 0){
         let staffid = eles[0].dataset.staffid.toString();
-        fetch(`https://4316957f8de7.ngrok.io/api/pages?employeeid=${staffid}`, {
+        fetch(`https://https://uncles-staff-picks.herokuapp.com/api/pages?employeeid=${staffid}`, {
           method: "GET",
         })
           .then((res) => res.json())
@@ -46,7 +46,7 @@ if (url.includes("/pages/")) {
 
       const staffEle = document.getElementById("staff-profiles-ele");
       if (staffEle){
-        fetch(`https://4316957f8de7.ngrok.io/api/pages/1/getStaff?shopDom=${shop}`, {
+        fetch(`https://https://uncles-staff-picks.herokuapp.com/api/pages/1/getStaff?shopDom=${shop}`, {
           method: "GET",
         })
           .then((res) => res.json())
@@ -258,7 +258,7 @@ function setupPageForCollections() {
 if (url.includes('/products/') && pickedProducts.includes(prodID)) {
     setupPageForPick();
 
-  fetch(`https://4316957f8de7.ngrok.io/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
+  fetch(`https://https://uncles-staff-picks.herokuapp.com/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
     method: "GET",
     })
   .then(res => res.json())
@@ -268,7 +268,7 @@ if (url.includes('/products/') && pickedProducts.includes(prodID)) {
 }
 
 function setPicks (shop) {
-  fetch(`https://4316957f8de7.ngrok.io/api/front_end?shop=${shop}`, {
+  fetch(`https://https://uncles-staff-picks.herokuapp.com/api/front_end?shop=${shop}`, {
       method: "GET",
     })
       .then((res) => res.json())
