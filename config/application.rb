@@ -17,16 +17,7 @@ module StaffFavorites
     # the framework and any gems in your application.
     config.generators.system_tests = nil
 
-    config.middleware.insert_before 0, "Rack::Cors" do
-      allow do
-        origins '*'
-        resource(
-          '*',
-          headers: :any,
-          methods: [:get, :patch, :put, :delete, :post, :options]
-          )
-      end
-    end
+
 
   end
 end
