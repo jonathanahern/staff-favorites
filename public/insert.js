@@ -1,4 +1,4 @@
-
+import "./scripts/productsFrontend";
 
 var url = window.location.href;
 var shop = window.location.host;
