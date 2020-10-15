@@ -317,7 +317,7 @@ function populateLocalStorage(data){
 function getPicks (){
     let data = localStorage.getItem('pickedProducts');
     if (data === "undefined") {
-        setPicks(shop);
+        // setPicks(shop);
         return null
     } else {
         let newData = JSON.parse(data)
