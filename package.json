@@ -1,5 +1,4 @@
 {
-  "type": "module",
   "name": "staff_favorites",
   "private": true,
   "dependencies": {
