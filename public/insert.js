@@ -8,6 +8,7 @@ var pickAlreadyFound = false;
 var collectionEles = [];
 
 if (url.includes('/products/')) {
+  console.log("Product Page")
     prodID = meta.product.id;
     setPicks(shop);
 }
@@ -263,7 +264,6 @@ if (url.includes('/products/') && pickedProducts.includes(prodID)) {
     })
   .then(res => res.json())
   .then(resp => {
-      console.log("product resp", resp);
       insertData(resp);
   })
 }
