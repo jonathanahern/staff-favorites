@@ -9,7 +9,6 @@ var pickAlreadyFound = false;
 var collectionEles = [];
 
 if (url.includes('/products/')) {
-  console.log("Product Page")
   prodID = meta.product.id;
   setPicks(shop);
 }
@@ -257,17 +256,17 @@ if (url.includes('/products/')) {
 //   ref.parentNode.insertBefore(style, ref);
 // }
 
-if (url.includes('/products/') && pickedProducts && pickedProducts.includes(prodID)) {
-    setupPageForPick();
+// if (url.includes('/products/') && pickedProducts && pickedProducts.includes(prodID)) {
+//     setupPageForPick();
 
-  fetch(`https://uncles-staff-picks.herokuapp.com/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
-    method: "GET",
-    })
-  .then(res => res.json())
-  .then(resp => {
-      insertData(resp);
-  })
-}
+//   fetch(`https://uncles-staff-picks.herokuapp.com/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
+//     method: "GET",
+//     })
+//   .then(res => res.json())
+//   .then(resp => {
+//       insertData(resp);
+//   })
+// }
 
 function setPicks (shop) {
   fetch(`https://uncles-staff-picks.herokuapp.com/api/front_end?shop=${shop}`, {
@@ -275,7 +274,8 @@ function setPicks (shop) {
     })
       .then((res) => res.json())
       .then((resp) => {
-        populateLocalStorage(resp);
+        console.log(resp);
+        // populateLocalStorage(resp);
       });
 }
 
@@ -318,8 +318,7 @@ function populateLocalStorage(data){
 function getPicks (){
     let data = localStorage.getItem('pickedProducts');
     if (data === "undefined") {
-        // setPicks(shop);
-        return null
+        return undefined
     } else {
         let newData = JSON.parse(data)
         return Object.values(newData)
