@@ -9,10 +9,10 @@ ShopifyApp.configure do |config|
   config.api_version = "2020-04"
   config.shop_session_repository = 'Shop'
   config.scripttags = [
-    {event:'onload', src: 'https://https://uncles-staff-picks.herokuapp.com/insert.js'}
+    {event:'onload', src: 'https://uncles-staff-picks.herokuapp.com/insert.js'}
   ]
   config.webhooks = [
-    {topic: 'products/update', address: 'https://https://uncles-staff-picks.herokuapp.com/webhooks/products_update', format: 'json'},
+    {topic: 'products/update', address: 'https://uncles-staff-picks.herokuapp.com/webhooks/products_update', format: 'json'},
   ]
 end
 
