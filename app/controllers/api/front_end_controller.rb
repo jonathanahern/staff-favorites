@@ -1,7 +1,6 @@
 class Api::FrontEndController < ApplicationController
 
     def index
-        # render json: {"try again index": params[:shop]}
         @shopsProducts = Product.getProductIDsSettings(params[:shop])
         render json: @shopsProducts
     end
