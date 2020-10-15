@@ -254,17 +254,17 @@ if (url.includes('/products/')) {
 //   ref.parentNode.insertBefore(style, ref);
 // }
 
-// if (url.includes('/products/') && pickedProducts && pickedProducts.includes(prodID)) {
-//     setupPageForPick();
+if (url.includes('/products/') && pickedProducts && pickedProducts.includes(prodID)) {
+    setupPageForPick();
 
-//   fetch(`https://uncles-staff-picks.herokuapp.com/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
-//     method: "GET",
-//     })
-//   .then(res => res.json())
-//   .then(resp => {
-//       insertData(resp);
-//   })
-// }
+  fetch(`https://uncles-staff-picks.herokuapp.com/api/front_end/show?shop=uncles-games.myshopify.com&prodID=${meta.product.id}`, {
+    method: "GET",
+    })
+  .then(res => res.json())
+  .then(resp => {
+      insertData(resp);
+  })
+}
 
 function setPicks (shop) {
   fetch(`https://uncles-staff-picks.herokuapp.com/api/front_end?shop=uncles-games.myshopify.com`, {
@@ -324,7 +324,7 @@ function getPicks (){
 
 function setupPageForPick(){
   let settings = JSON.parse(localStorage.getItem("staffPicksSettings"));
-  // console.log(settings["layout"]);
+
   switch (settings["layout"]) {
     case "side-col":
       setupPageForSideCol();
