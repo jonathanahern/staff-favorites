@@ -256,7 +256,7 @@ function setupPageForCollections() {
   ref.parentNode.insertBefore(style, ref);
 }
 
-if (url.includes('/products/') && pickedProducts.includes(prodID)) {
+if (url.includes('/products/') && pickedProducts && pickedProducts.includes(prodID)) {
     setupPageForPick();
 
   fetch(`https://uncles-staff-picks.herokuapp.com/api/front_end/show?shop=${shop}&prodID=${meta.product.id}`, {
@@ -274,6 +274,7 @@ function setPicks (shop) {
     })
       .then((res) => res.json())
       .then((resp) => {
+        console.log("resp", resp)
         populateLocalStorage(resp);
       });
 }
