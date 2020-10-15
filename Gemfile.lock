@@ -243,7 +243,7 @@ GEM
     tilt (2.0.10)
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
-    uglifier (4.2.0)
+    uglifier (4.0.2)
       execjs (>= 0.3.0, < 3)
     web-console (3.7.0)
       actionview (>= 5.0)
@@ -283,7 +283,7 @@ DEPENDENCIES
   spring
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data
-  uglifier (~> 4.2)
+  uglifier (~> 4.0.2)
   web-console (>= 3.3.0)
 
 RUBY VERSION
