@@ -267,7 +267,7 @@ if (url.includes('/products/')) {
 // }
 
 function setPicks (shop) {
-  fetch(`https://uncles-staff-picks.herokuapp.com/api/front_end?shop=${shop}`, {
+  fetch(`https://uncles-staff-picks.herokuapp.com/api/front_end?shop=uncles-games.myshopify.com`, {
       method: "GET",
     })
       .then((res) => res.json())
