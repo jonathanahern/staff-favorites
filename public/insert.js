@@ -272,8 +272,7 @@ function setPicks (shop) {
     })
       .then((res) => res.json())
       .then((resp) => {
-        console.log(resp);
-        // populateLocalStorage(resp);
+        populateLocalStorage(resp);
       });
 }
 
