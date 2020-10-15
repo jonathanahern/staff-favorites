@@ -263,6 +263,7 @@ if (url.includes('/products/') && pickedProducts.includes(prodID)) {
     })
   .then(res => res.json())
   .then(resp => {
+      console.log("product resp", resp);
       insertData(resp);
   })
 }
