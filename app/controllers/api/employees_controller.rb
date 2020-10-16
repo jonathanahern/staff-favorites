@@ -115,11 +115,15 @@ class Api::EmployeesController < ShopifyApp::AuthenticatedController
             }\n
             .pick-container h4  {\n
                 margin: 6px 0;\n
+                font-size: 18px;\n
             }\n
             @media screen and (max-width: 790px) {\n
                 #profile-container {\n
                     flex-direction: column;\n
                     align-items: center;\n
+                }\n
+                .staff-picks-products {\n
+                  flex-direction: column;\n
                 }\n
             };\n
         </style>"
