@@ -181,25 +181,25 @@ if (url.includes("/collections/") && !(url.includes('/products/'))) {
     
 // }
 
-// function insertPickPic(ele) {
+function insertPickPic(ele) {
   
-//   let container = document.createElement("div");
-//   container.className = "starburst-container";
-//   container.style.margin = "15px";
-//   ele.appendChild(container);
+  let container = document.createElement("div");
+  container.className = "starburst-container";
+  container.style.margin = "15px";
+  ele.appendChild(container);
 
-//   let circle = document.createElement("img");
-//   circle.className = "sticker-img";
-//   circle.src = loadStickerImage();
+  let circle = document.createElement("img");
+  circle.className = "sticker-img";
+  circle.src = loadStickerImage();
   
-//   container.appendChild(circle);
+  container.appendChild(circle);
 
-//   let text = document.createElement("h4");
-//   text.innerHTML = "STAFF<br/>PICK!";
-//   text.className = "staff-pick-lettering";
+  let text = document.createElement("h4");
+  text.innerHTML = "STAFF<br/>PICK!";
+  text.className = "staff-pick-lettering";
   
-//   container.appendChild(text);
-// }
+  container.appendChild(text);
+}
 
 function loadStickerImage(){
     let settings = JSON.parse(localStorage.getItem("staffPicksSettings"));
