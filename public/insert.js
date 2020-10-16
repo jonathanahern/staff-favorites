@@ -11,22 +11,22 @@ if (url.includes('/products/')) {
   setPicks(shop);
 }
 
-// if (url.includes("/collections/")) {
-//     setPicks(shop);
-//     let eles = document.getElementsByClassName("staff-pick-alert");
-//     for (var i = 0; i < eles.length; i++) {
-//         let ele = eles[i];
-//         let idCheck = parseInt(ele.dataset.prodid);
-//         if (pickedProducts.includes(idCheck)){
-//             collectionEles.push(ele);
-//             insertPickPic(ele);
-//             if (!pickAlreadyFound){
-//                 pickAlreadyFound = true;
-//                 setupPageForCollections();
-//             }
-//         }
-//     }
-// }
+if (url.includes("/collections/") && !(url.includes('/products/'))) {
+    setPicks(shop);
+    let eles = document.getElementsByClassName("staff-pick-alert");
+    for (var i = 0; i < eles.length; i++) {
+        let ele = eles[i];
+        let idCheck = parseInt(ele.dataset.prodid);
+        if (pickedProducts.includes(idCheck)){
+            collectionEles.push(ele);
+            insertPickPic(ele);
+            if (!pickAlreadyFound){
+                pickAlreadyFound = true;
+                setupPageForCollections();
+            }
+        }
+    }
+}
 
 // if (url.includes("/pages/")) {
 
@@ -201,58 +201,63 @@ if (url.includes('/products/')) {
 //   container.appendChild(text);
 // }
 
-// function loadStickerImage(){
-//     let settings = JSON.parse(localStorage.getItem("staffPicksSettings"));
-//     switch (settings["sticker"]) {
-//       case "red":
-//         return "https://i.ibb.co/3kW5XsV/red-burst.png";
-//       case "blue":
-//         return "https://i.ibb.co/JRgFHfL/blue-burst.png";
-//       case "yellow":
-//         return "https://i.ibb.co/HXqddbd/yellow-burst.png";
-//       case "green":
-//         return "https://i.ibb.co/cxqQbg9/green-burst.png";
-//       case "purple":
-//         return "https://i.ibb.co/cC3Ry3v/purple-burst.png";
-//       default:
-//         return "https://i.ibb.co/3kW5XsV/red-burst.png";
-//     }
-// }
+function loadStickerImage(){
+    let settings = JSON.parse(localStorage.getItem("staffPicksSettings"));
+    switch (settings["sticker"]) {
+      case "red":
+        return "https://i.ibb.co/3kW5XsV/red-burst.png";
+      case "blue":
+        return "https://i.ibb.co/JRgFHfL/blue-burst.png";
+      case "yellow":
+        return "https://i.ibb.co/HXqddbd/yellow-burst.png";
+      case "green":
+        return "https://i.ibb.co/cxqQbg9/green-burst.png";
+      case "purple":
+        return "https://i.ibb.co/cC3Ry3v/purple-burst.png";
+      default:
+        return "https://i.ibb.co/3kW5XsV/red-burst.png";
+    }
+}
 
-// function setupPageForCollections() {
-//   var style = document.createElement("style");
-//   style.innerHTML =
-//     ".starburst-container {" +
-//         "position: absolute;" +
-//         "top: 0px;" +
-//         "right: 0px;" +
-//         "width: 40%;" +
-//         "max-width: 70px;" +
-//     "}" +
-//     ".staff-pick-alert h4 {" +
-//         "position: absolute;" +
-//         "transform: translate(50%, -50%);" +
-//         "top: 48%;" +
-//         "right: 50%;" +
-//         "color: white;" +
-//         "text-align: center;" +
-//         "font-size: .80em;" +
-//     "}" +
-//     "@media screen and (max-width: 500px) {" +
-//         ".staff-pick-alert h4 {" +
-//             "font-size: .80em;" +
-//         "}" +
-//         ".starburst-container {" +
-//           "max-width: 55px;" +
-//         "}" +
-//     "}";
+function setupPageForCollections() {
+  var style = document.createElement("style");
+  style.innerHTML =
+    ".starburst-container {" +
+        "position: absolute;" +
+        "top: 0px;" +
+        "right: 0px;" +
+        "width: 40%;" +
+        "max-width: 70px;" +
+    "}" +
+    ".staff-pick-alert h4 {" +
+        "position: absolute;" +
+        "transform: translate(50%, -50%);" +
+        "top: 48%;" +
+        "right: 50%;" +
+        "color: white;" +
+        "text-align: center;" +
+        "font-size: .80em;" +
+    "}" +
+    "@media screen and (max-width: 500px) {" +
+        ".staff-pick-alert h4 {" +
+            "font-size: .80em;" +
+        "}" +
+        ".starburst-container {" +
+          "max-width: 55px;" +
+        "}" +
+    "}";
 
-//   // Get the first script tag
-//   var ref = document.querySelector("script");
+  // Get the first script tag
+  var ref = document.querySelector("script");
 
-//   // Insert our new styles before the first script tag
-//   ref.parentNode.insertBefore(style, ref);
-// }
+  // Insert our new styles before the first script tag
+  ref.parentNode.insertBefore(style, ref);
+}
+
+
+
+//PRODUCT PAGE CODE//
+
 
 if (url.includes('/products/') && pickedProducts && pickedProducts.includes(prodID)) {
     setupPageForPick();
