@@ -237,6 +237,7 @@ function setupPageForCollections() {
         "color: white;" +
         "text-align: center;" +
         "font-size: .80em;" +
+        "text-shadow: 2px 2px #000000" +
     "}" +
     "@media screen and (max-width: 500px) {" +
         ".staff-pick-alert h4 {" +
