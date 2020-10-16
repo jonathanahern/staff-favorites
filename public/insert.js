@@ -262,7 +262,8 @@ if (url.includes('/products/') && pickedProducts && pickedProducts.includes(prod
     })
   .then(res => res.json())
   .then(resp => {
-      insertData(resp);
+    console.log(resp);
+      // insertData(resp);
   })
 }
 
