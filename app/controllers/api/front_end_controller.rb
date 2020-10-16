@@ -8,7 +8,7 @@ class Api::FrontEndController < ApplicationController
     def show
         # @picks = Product.pickInfo(params[:prodID]).first
         @pick = Product.find_by(shopify_product_id: params[:prodID])
-        @employee = Employee.find(@picks.employee_id)
+        @employee = Employee.find(@pick.employee_id)
         render json: { pick: @pick, employee: @employee }
         # render json: {hi: "got this through"}
     end
