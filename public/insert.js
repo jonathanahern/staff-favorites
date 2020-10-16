@@ -28,74 +28,72 @@ if (url.includes("/collections/") && !(url.includes('/products/'))) {
     }
 }
 
-// if (url.includes("/pages/")) {
 
-//     const eles = document.getElementsByClassName("staff-picks-products");
+if (url.includes("/pages/")) {
 
-//     if (eles.length > 0){
-//         let staffid = eles[0].dataset.staffid.toString();
-//         fetch(`https://uncles-staff-picks.herokuapp.com/api/pages?employeeid=${staffid}`, {
-//           method: "GET",
-//         })
-//           .then((res) => res.json())
-//           .then((resp) => {
-//             createProducts(eles[0], Object.values(resp));
-//           });
-//     } else {
+    const eles = document.getElementsByClassName("staff-picks-products");
 
-//       const staffEle = document.getElementById("staff-profiles-ele");
-//       if (staffEle){
-//         fetch(`https://uncles-staff-picks.herokuapp.com/api/pages/1/getStaff?shopDom=${shop}`, {
-//           method: "GET",
-//         })
-//           .then((res) => res.json())
-//           .then((resp) => {
-//             createStaff(staffEle, resp);
-//           });
-//       }
+    if (eles.length > 0){
+        let staffid = eles[0].dataset.staffid.toString();
+        fetch(`https://uncles-staff-picks.herokuapp.com/api/pages?employeeid=${staffid}`, {
+          method: "GET",
+        })
+          .then((res) => res.json())
+          .then((resp) => {
+            createProducts(eles[0], Object.values(resp));
+          });
+    } else {
+      const staffEle = document.getElementById("staff-profiles-ele");
+      if (staffEle){
+        fetch(`https://uncles-staff-picks.herokuapp.com/api/pages/1/getStaff?shopDom=uncles-games.myshopify.com`, {
+          method: "GET",
+        })
+          .then((res) => res.json())
+          .then((resp) => {
+            createStaff(staffEle, resp);
+          });
+      }
+    }
+}
 
-//     }
-    
-// }
+function createStaff(staffContainer,staffArr){
+  staffArr.forEach((staff) => {
 
-// function createStaff(staffContainer,staffArr){
-//   staffArr.forEach((staff) => {
+    let memberLink = document.createElement("a");
+    memberLink.href = url.split("/pages/")[0] + "/pages/" + staff.page_url;
+    memberLink.className += "staff-member-container";
+    memberLink.style.marginBottom = "12px";
+    staffContainer.appendChild(memberLink);
 
-//     let memberLink = document.createElement("a");
-//     memberLink.href = url.split("/pages/")[0] + "/pages/" + staff.page_url;
-//     memberLink.className += "staff-member-container";
-//     memberLink.style.marginBottom = "12px";
-//     staffContainer.appendChild(memberLink);
+    let containerImg = document.createElement("div");
+    containerImg.className += "staff-img-container";
+    memberLink.appendChild(containerImg);
 
-//     let containerImg = document.createElement("div");
-//     containerImg.className += "staff-img-container";
-//     memberLink.appendChild(containerImg);
+    let img = document.createElement("img");
+    img.src = staff.profile_url;
+    containerImg.appendChild(img);
 
-//     let img = document.createElement("img");
-//     img.src = staff.profile_url;
-//     containerImg.appendChild(img);
+    let name = document.createElement("h4");
+    name.innerHTML = staff.name;
+    memberLink.appendChild(name);
 
-//     let name = document.createElement("h4");
-//     name.innerHTML = staff.name;
-//     memberLink.appendChild(name);
+    let job_title = document.createElement("p");
+    job_title.className += "job-title";
+    job_title.innerHTML = staff.job_title;
+    memberLink.appendChild(job_title);
 
-//     let job_title = document.createElement("p");
-//     job_title.className += "job-title";
-//     job_title.innerHTML = staff.job_title;
-//     memberLink.appendChild(job_title);
+    let description = document.createElement("p");
+    description.className += "description-staff-pick";
+    let descriptionEdit = staff.description;
+    if (descriptionEdit.length > 300) {
+      descriptionEdit = descriptionEdit.substr(0, 300) + "...";
+    }
+    description.innerHTML = descriptionEdit.replace(/\n/g, "<br />");
+    memberLink.appendChild(description);
 
-//     let description = document.createElement("p");
-//     description.className += "description-staff-pick";
-//     let descriptionEdit = staff.description;
-//     if (descriptionEdit.length > 300) {
-//       descriptionEdit = descriptionEdit.substr(0, 300) + "...";
-//     }
-//     description.innerHTML = descriptionEdit.replace(/\n/g, "<br />");
-//     memberLink.appendChild(description);
-
-//   });
-//   // setupPageForStaff();
-// }
+  });
+  // setupPageForStaff();
+}
 
 // function setupPageForStaff() {
 //   var style = document.createElement("style");
@@ -151,35 +149,38 @@ if (url.includes("/collections/") && !(url.includes('/products/'))) {
 //   ref.parentNode.insertBefore(style, ref);
 // }
 
-// function createProducts(container, data) {
+function createProducts(container, data) {
     
-//     data.forEach((pick) => {
+    data.forEach((pick) => {
 
-//         let containerPick = document.createElement("a");
-//         containerPick.href = url.split("/pages/")[0] + "/products/" + pick.shopify_handle;
-//         containerPick.className += "pick-container clearfix";
-//         containerPick.style.marginBottom = "12px";
-//         container.appendChild(containerPick);
+        let containerPick = document.createElement("a");
+        containerPick.href = url.split("/pages/")[0] + "/products/" + pick.shopify_handle;
+        containerPick.className += "pick-container clearfix";
+        containerPick.style.marginBottom = "12px";
+        container.appendChild(containerPick);
 
-//         let containerImg = document.createElement("div");
-//         containerImg.className += "img-container";
-//         containerPick.appendChild(containerImg);
+        let containerImg = document.createElement("div");
+        containerImg.className += "img-container";
+        containerPick.appendChild(containerImg);
 
-//         let img = document.createElement("img");
-//         img.src = pick.shopify_image_url;
-//         containerImg.appendChild(img);
+        let img = document.createElement("img");
+        img.src = pick.shopify_image_url;
+        containerImg.appendChild(img);
     
-//         let title = document.createElement("h4");
-//         title.innerHTML = pick.shopify_title;
-//         containerPick.appendChild(title); 
+        let title = document.createElement("h4");
+        title.innerHTML = pick.shopify_title;
+        containerPick.appendChild(title); 
     
-//         let description = document.createElement("p");
-//         description.innerHTML = pick.review.replace(/\n/g, "<br />");
-//         containerPick.appendChild(description);
+        let description = document.createElement("p");
+        description.innerHTML = pick.review.replace(/\n/g, "<br />");
+        containerPick.appendChild(description);
 
-//     });
+    });
     
-// }
+}
+
+
+// COLLECTIONS PAGE CODE //
 
 function insertPickPic(ele) {
   
@@ -232,12 +233,12 @@ function setupPageForCollections() {
     ".staff-pick-alert h4 {" +
         "position: absolute;" +
         "transform: translate(50%, -50%);" +
-        "top: 48%;" +
-        "right: 50%;" +
+        "top: 46%;" +
+        "right: 51%;" +
         "color: white;" +
         "text-align: center;" +
         "font-size: .80em;" +
-        "text-shadow: 2px 2px #000000" +
+        "text-shadow: 1px 1px #000000" +
     "}" +
     "@media screen and (max-width: 500px) {" +
         ".staff-pick-alert h4 {" +
