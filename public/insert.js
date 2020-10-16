@@ -262,8 +262,7 @@ if (url.includes('/products/') && pickedProducts && pickedProducts.includes(prod
     })
   .then(res => res.json())
   .then(resp => {
-    console.log(resp);
-      // insertData(resp);
+      insertData(resp);
   })
 }
 
@@ -444,31 +443,31 @@ function insertData(data){
     const staffPick = document.getElementById(`staff-pick-ele`);
 
     let staffA = document.createElement("a");
-    staffA.href = `/pages/${data["page_url"]}`;
+    staffA.href = `/pages/${data["employee"]["page_url"]}`;
     staffA.target = "_blank";
     staffPick.appendChild(staffA);
 
     let img = document.createElement("img");
-    img.src = data["profile_url"];
+    img.src = data["employee"]["profile_url"];
     staffA.appendChild(img);
 
     const wordsDiv = document.createElement("div");
     staffA.appendChild(wordsDiv);
 
     let pDescription = document.createElement("p");
-    pDescription.innerHTML = data["review"].replace(/\n/g, "<br />");
+    pDescription.innerHTML = data["pick"]["review"].replace(/\n/g, "<br />");
     pDescription.style.fontStyle = "italic";
     pDescription.style.margin = "0px";
     pDescription.style.marginBottom = "12px";
     wordsDiv.appendChild(pDescription);
 
     let pName = document.createElement("p");
-    let nameString = `${data["name"]}`;
+    let nameString = `${data["employee"]["name"]}`;
     pName.style.fontWeight = "900";
     pName.innerHTML = nameString;
     wordsDiv.appendChild(pName);
 
-    let jobTitleString = `${data["job_title"]}`;
+    let jobTitleString = `${data["employee"]["job_title"]}`;
 
     if (jobTitleString.length > 0){
         let pJobtitle = document.createElement("p");

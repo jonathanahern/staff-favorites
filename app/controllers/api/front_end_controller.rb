@@ -10,7 +10,6 @@ class Api::FrontEndController < ApplicationController
         @pick = Product.find_by(shopify_product_id: params[:prodID])
         @employee = Employee.find(@pick.employee_id)
         render json: { pick: @pick, employee: @employee }
-        # render json: {hi: "got this through"}
     end
 
     private
