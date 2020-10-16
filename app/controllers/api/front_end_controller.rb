@@ -6,8 +6,9 @@ class Api::FrontEndController < ApplicationController
     end
 
     def show
-        @picks = Product.pickInfo(params[:prodID]).first
-        render json: @picks
+        # @picks = Product.pickInfo(params[:prodID]).first
+        # render json: @picks
+        render json: {hi: "got this through"}
     end
 
     private
