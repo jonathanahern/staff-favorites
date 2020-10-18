@@ -235,10 +235,13 @@ function populateLocalStorage(data){
     localStorage.setItem("pickedProducts", JSON.stringify(data["ids"]));
     localStorage.setItem("staffPicksSettings", JSON.stringify(data["settings"]));
 
-    if (data["settings"]["sticker"] !== JSON.parse(origSettings)["sticker"]){
-      let eles = document.getElementsByClassName("sticker-img");
-      for (let i = 0; i < eles.length; i++) {
-        eles[i].src = loadStickerImage();
+
+    if (data["settings"] == null){
+      if (data["settings"]["sticker"] !== JSON.parse(origSettings)["sticker"]){
+        let eles = document.getElementsByClassName("sticker-img");
+        for (let i = 0; i < eles.length; i++) {
+          eles[i].src = loadStickerImage();
+        }
       }
     }
 
@@ -267,7 +270,6 @@ function populateLocalStorage(data){
 
 function getPicks (){
     let data = localStorage.getItem('pickedProducts');
-    console.log(data);
     if (data === "undefined" || data === null) {
         return undefined
     } else {
