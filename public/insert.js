@@ -28,6 +28,7 @@ if (url.includes("/collections/") && !(url.includes('/products/'))) {
     }
 }
 
+// PAGE CODE //
 
 if (url.includes("/pages/")) {
 
@@ -92,62 +93,7 @@ function createStaff(staffContainer,staffArr){
     memberLink.appendChild(description);
 
   });
-  // setupPageForStaff();
 }
-
-// function setupPageForStaff() {
-//   var style = document.createElement("style");
-//   style.innerHTML =
-//     ".staff-member-container {" +
-//       "width: 33%;" +
-//       "padding-right: 24px;" +
-//       "height: 380px;" +
-//       "overflow: hidden;" +
-//       "border-bottom: none !important;" +
-//     "}" +
-//     ".staff-img-container {" +
-//       "width: 42%;" +
-//       "padding-right: 6px;" +
-//       "float: left;" +
-//     "}" +
-//     "#staff-profiles-ele {" +
-//       "display: flex;" +
-//       "flex-wrap: wrap;" +
-//     "}" +
-//     '.staff-img-container:: after {' +
-//       'content: "";' +
-//       'clear: both;' +
-//       'display: table;' +
-//     '}' +
-//     '.staff-member-container h4{' +
-//       'margin: 0;' +
-//       'font-size: 16px;' +
-//   '}'+
-//     '.section-header {' +
-//       'margin: 0px !important;' +
-//     '}' +
-    
-//     "@media screen and (max-width: 900px) {" +
-//       "#staff-profiles-ele {" +
-//         "flex-direction: column;" +
-//         "align-items: center;" +
-//       "}" +
-//       ".staff-member-container {" +
-//         "width: 70%;" +
-//         "height: inherit;" +
-//         "margin-top: 24px;" +
-//       "}" +
-//       ".staff-img-container {" +
-//         "width: 45%;" +
-//       "}" +
-//     "}";
-
-//   // Get the first script tag
-//   var ref = document.querySelector("script");
-
-//   // Insert our new styles before the first script tag
-//   ref.parentNode.insertBefore(style, ref);
-// }
 
 function createProducts(container, data) {
     
